@@ -1,58 +1,13 @@
-library(coda)
 library(scales)
 library(MASS)
 library(viridisLite)
 library(EnvStats)
 library(dplyr)
 library(tidyr)
-library(lubridate)
-library(signal)
+library(sf)
+library(zoo)
 
-############helper functions##############
-###fn 1: convert time stamp to seconds####
-time.total <- function(df){
-  if(is.na(df$milisecond[1])==T){
-    df.h.s <- as.numeric(df$hour) * 3600
-    df.m.s <- as.numeric(df$minute) * 60
-    df.s.s <- as.numeric(df$second)
-    df.s.total <- df.h.s + df.m.s + df.s.s
-  }else{
-    df.h.s <- as.numeric(df$hour) * 3600
-    df.m.s <- as.numeric(df$minute) * 60
-    df.s.s <- as.numeric(df$second)
-    df.s.ms <- as.numeric(df$milisecond) * 1e-3
-    
-    df.s.total <- df.h.s + df.m.s + df.s.s + df.s.ms
-  }
-  return(df.s.total)
-}
-
-##fn 2: linear interpolate x and y from time stamp after conversion####
-li.interp <- function (df, ref){
-  #initiate vectors
-  x.li.int <- rep(0, nrow(df))
-  y.li.int <- rep(0, nrow(df))
-  
-  require(signal)
-  for(i in 1:nrow(df)){
-    
-    x.li.int[i] <- interp1(ref$tt, ref$x, xi=df$tt[i], method = "linear", extrap=T)
-    y.li.int[i] <- interp1(ref$tt, ref$y, xi=df$tt[i], method = "linear", extrap=T)
-    
-  }
-  
-  return(tibble(df, x.li.int, y.li.int))
-  
-}
-
-##fn 3: correct 87/86 ratio by Sr88 voltage
-
-Corr.87.86.to.88 <- function(Sr88, Sr87.86){
-  accuracy <- 0.002333/Sr88 + 0.999462
-  corr.Sr87.86 <- Sr87.86/accuracy
-  return(corr.Sr87.86)
-}
-
+source("code/1 Helper functions.R")
 
 setwd("C:/Users/ydmag/Google Drive/U of U/Elephant molar/Enamel_Sr")
 
@@ -67,20 +22,122 @@ Enamel6 <- read.csv("data/Enamel6.csv")
 Enamel6ext <- read.csv("data/Enamel6ext.csv")
 Enamel7 <- read.csv("data/Enamel7.csv")
 
+pl.EDJ.dentin1 <- read.csv("data/pl_EDJ_dentin1.csv")
+pl.EDJ.dentin2 <- read.csv("data/pl_EDJ_dentin2.csv")
+pl.Enamel1 <- read.csv("data/pl_Enamel1.csv")
+pl.Enamel2 <- read.csv("data/pl_Enamel2.csv")
+pl.Enamel3 <- read.csv("data/pl_Enamel3.csv")
+pl.Enamel4 <- read.csv("data/pl_Enamel4.csv")
+pl.Enamel5 <- read.csv("data/pl_Enamel5.csv")
+pl.Enamel6 <- read.csv("data/pl_Enamel6.csv")
+pl.Enamel6ext <- read.csv("data/pl_Enamel6ext.csv")
+pl.Enamel7 <- read.csv("data/pl_Enamel7.csv")
 
-EDJ.dentin1.ef <- EDJ.dentin1 %>% filter(X88Sr > 0.2)
-EDJ.dentin1.ef <- select(EDJ.dentin1.ef, -Column1) #remove last column
+############data processing using custom function###########
 
-EDJ.dentin1.ef <- na.omit(EDJ.dentin1.ef)
+#dentine at EDJ
+proc.EDJ.dentin1 <- data.process(EDJ.dentin1, pl.EDJ.dentin1)
+proc.EDJ.dentin1
+proc.EDJ.dentin1.rm <- moving.avg(proc.EDJ.dentin1, 25)
 
-EDJ.dentin1.ef$X87Sr.86Sr..5.<- as.numeric(EDJ.dentin1.ef$X87Sr.86Sr..5.)
-EDJ.dentin1.ef$X87Sr.86Sr..8.<- as.numeric(EDJ.dentin1.ef$X87Sr.86Sr..8.)
-EDJ.dentin1.ef$X88Sr.86Sr..9.<- as.numeric(EDJ.dentin1.ef$X88Sr.86Sr..9.)
+proc.EDJ.dentin2 <- data.process(EDJ.dentin2, pl.EDJ.dentin2)
+proc.EDJ.dentin2
+proc.EDJ.dentin2.rm <- moving.avg(proc.EDJ.dentin2, 25)
 
-#get time stamp from the Time coloumn
-EDJ.dentin1.ef <- EDJ.dentin1.ef %>%
-  separate_wider_delim(Time, delim = ":", names = c("hour", "minute", "second", "milisecond"),
-                       too_few = "align_start")
+#enamel at EDJ
+proc.Enamel1 <- data.process(Enamel1, pl.Enamel1)
+proc.Enamel1
+proc.Enamel1.rm <- moving.avg(proc.Enamel1, 25)
+
+#enamel transect 2
+proc.Enamel2 <- data.process(Enamel2, pl.Enamel2)
+proc.Enamel2
+proc.Enamel2.rm <- moving.avg(proc.Enamel2, 25)
+
+#enamel transect 3
+proc.Enamel3 <- data.process(Enamel3, pl.Enamel3)
+proc.Enamel3
+proc.Enamel3.rm <- moving.avg(proc.Enamel3, 25)
+
+#enamel transect 4
+proc.Enamel4 <- data.process(Enamel4, pl.Enamel4)
+proc.Enamel4
+proc.Enamel4.rm <- moving.avg(proc.Enamel4, 25)
+
+#enamel transect 5
+proc.Enamel5 <- data.process(Enamel5, pl.Enamel5)
+proc.Enamel5
+proc.Enamel5.rm <- moving.avg(proc.Enamel5, 25)
+
+#enamel transect 6
+proc.Enamel6 <- data.process(Enamel6, pl.Enamel6)
+proc.Enamel6
+proc.Enamel6.rm <- moving.avg(proc.Enamel6, 25)
+
+
+#enamel transect 6
+proc.Enamel6ext <- data.process(Enamel6ext, pl.Enamel6ext)
+proc.Enamel6ext
+proc.Enamel6ext.rm <- moving.avg(proc.Enamel6ext, 25)
+
+proc.Enamel7 <- data.process(Enamel7, pl.Enamel7)
+proc.Enamel7
+proc.Enamel7.rm <- moving.avg(proc.Enamel7, 25)
+#####use the sf package to plot those values
+
+all.dat <- rbind(proc.EDJ.dentin1, proc.EDJ.dentin2, proc.Enamel1, proc.Enamel2, proc.Enamel3,
+                 proc.Enamel4, proc.Enamel5, proc.Enamel6, proc.Enamel6ext, proc.Enamel7)
+
+all.dat.rm <- rbind(proc.EDJ.dentin1.rm, proc.EDJ.dentin2.rm, proc.Enamel1.rm, proc.Enamel2.rm, proc.Enamel3.rm,
+      proc.Enamel4.rm, proc.Enamel5.rm, proc.Enamel6.rm, proc.Enamel6ext.rm, proc.Enamel7.rm)
+
+all.enamel.rm <- rbind(proc.Enamel1.rm, proc.Enamel2.rm, proc.Enamel3.rm,
+                    proc.Enamel4.rm, proc.Enamel5.rm, proc.Enamel6.rm, proc.Enamel6ext.rm, proc.Enamel7.rm)
+all.dentine.rm <- rbind(proc.EDJ.dentin1.rm, proc.EDJ.dentin2.rm)
+
+require(sf)
+sf.all.dat <- st_as_sf(all.dat,  agr = NA_agr_,
+                       coords = c("x","y"),
+                       dim = "XYZ",
+                       remove = TRUE,
+                       na.fail = TRUE,
+                       sf_column_name = NULL)
+
+sf.all.dat.rm <- st_as_sf(all.dat.rm,  agr = NA_agr_,
+                       coords = c("x","y"),
+                       dim = "XYZ",
+                       remove = TRUE,
+                       na.fail = TRUE,
+                       sf_column_name = NULL)
+
+sf.all.enamel.rm <- st_as_sf(all.enamel.rm,  agr = NA_agr_,
+                          coords = c("x","y"),
+                          dim = "XYZ",
+                          remove = TRUE,
+                          na.fail = TRUE,
+                          sf_column_name = NULL)
+
+sf.all.dentine.rm <- st_as_sf(all.dentine.rm,  agr = NA_agr_,
+                             coords = c("x","y"),
+                             dim = "XYZ",
+                             remove = TRUE,
+                             na.fail = TRUE,
+                             sf_column_name = NULL)
+
+
+proc.Enamel6.rm
+
+plot(sf.all.dat, breaks = seq(0.703, 0.715,by = 0.001), pch=16)
+
+plot(sf.all.dat.rm, breaks = seq(0.700, 0.716,by = 0.001), pch=16)
+
+plot(sf.all.enamel.rm, breaks = seq(0.700, 0.716,by = 0.001), pch=16)
+
+plot(sf.all.dentine.rm,add = T)
+
+# plot extent
+plot(st_geometry(bb_sol))
+
 
 
 #convert time stamp to time in seconds
@@ -96,63 +153,6 @@ tibble(EDJ.dentin1.ef, Corr.87.86.to.88(EDJ.dentin1.ef$X88Sr, EDJ.dentin1.ef$X87
 
 EDJ.dentin1.ef$X88Sr
 
-Corr.87.86.to.88 <- function(Sr88, Sr87.86){
-  accuracy <- 0.002333/Sr88 + 0.999462
-  corr.Sr87.86 <- Sr87.86/accuracy
-  return(corr.Sr87.86)
-}
-
-
-tt.EDJ.dentin1.ef <- time.total(EDJ.dentin1.ef)
-#calculate time interval between time stamps
-diff(time.total(EDJ.dentin1.ef)) #~0.527 sec per acquisition
-
-#position log has fewer data points than data points
-#so data points have to be interpolated to the position log
-
-####intake of position log####
-#pl stands for "position log"
-pl.EDJ.dentin1 <- read.csv("data/pl_EDJ_dentin1.csv")
-pl.EDJ.dentin1.ef <- pl.EDJ.dentin1 %>%
-  separate_wider_delim(Time, delim = ":", names = c("hour", "minute", "second", "milisecond"),
-                       too_few = "align_start")
-
-tt.pl.EDJ.dentin1.ef <- time.total(pl.EDJ.dentin1.ef)
-
-tt.EDJ.dentin1.ef[1]
-tt.pl.EDJ.dentin1.ef[1] #about 6 seconds of difference.
-tt.EDJ.dentin1.ef[1] - tt.pl.EDJ.dentin1.ef[1]
-
-
-tt.EDJ.dentin1.ef[length(tt.EDJ.dentin1.ef)]
-tt.pl.EDJ.dentin1.ef[length(tt.pl.EDJ.dentin1.ef)] #about 7.5 seconds of difference.
-
-tt.EDJ.dentin1.ef[length(tt.EDJ.dentin1.ef)] - tt.pl.EDJ.dentin1.ef[length(tt.pl.EDJ.dentin1.ef)]
-
-#Q: is pl wider?
-tt.pl.EDJ.dentin1.ef[length(tt.pl.EDJ.dentin1.ef)] - tt.pl.EDJ.dentin1.ef[1]
-
-tt.EDJ.dentin1.ef[length(tt.EDJ.dentin1.ef)] - tt.EDJ.dentin1.ef[1]
-#pl is wider! So some choice of time should work!
-
-#try a 7 second delay
-
-EDJ.dentin1.ef.tt <- tibble(EDJ.dentin1.ef, tt = tt.EDJ.dentin1.ef -7)
-
-EDJ.dentin1.ef.tt$tt
-
-pl.EDJ.dentin1.ef.tt <- tibble(pl.EDJ.dentin1.ef, tt = tt.pl.EDJ.dentin1.ef)
-
-pl.EDJ.dentin1.ef.tt$tt
-
-EDJ.dentin1.ef.tt.li <- li.interp(df = EDJ.dentin1.ef.tt, ref = pl.EDJ.dentin1.ef.tt)
-
-EDJ.dentin1.ef.tt.li$x.li.int
-EDJ.dentin1.ef.tt.li$y.li.int
-
-plot(EDJ.dentin1.ef.tt.li$x.li.int, EDJ.dentin1.ef.tt.li$y.li.int)
-
-####next step: packaging this into a function for data proccessing#####
 
 
 
