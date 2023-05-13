@@ -1,7 +1,4 @@
-library(scales)
 library(MASS)
-library(viridisLite)
-library(EnvStats)
 library(dplyr)
 library(tidyr)
 
@@ -55,14 +52,20 @@ li.interp <- function (df, ref){
 
 ##fn 3: correct 87/86 ratio by Sr88 voltage
 
-Corr.87.86.to.88 <- function(Sr88, Sr87.86){
+Corr1.87.86.to.88 <- function(Sr88, Sr87.86){
   accuracy <- 0.002333/Sr88 + 0.999462
   corr.Sr87.86 <- Sr87.86/accuracy
   return(corr.Sr87.86)
 }
 
+Corr2.87.86.to.88 <- function(Sr88, Sr87.86){
+  accuracy <- 0.0005954/Sr88 + 1.0000077
+  corr.Sr87.86 <- Sr87.86/accuracy
+  return(corr.Sr87.86)
+}
+
 ################data processing function###########
-data.process <- function(df,log){
+data.process <- function(df, log, type = "e"){
   require(tidyr)
   require(dplyr)
   df.ef <- filter(.data = df, df$X88Sr > 0.1)
@@ -76,7 +79,12 @@ data.process <- function(df,log){
   df.ef$X88Sr.86Sr..9.<- as.numeric(df.ef$X88Sr.86Sr..9.)
   
   #correction by Sr 88 voltage
-  X87Sr.86Sr.corr <- Corr.87.86.to.88(df.ef$X88Sr, df.ef$X87Sr.86Sr..5.)
+  if(type == "d"){#dentine
+    X87Sr.86Sr.corr <- Corr1.87.86.to.88(df.ef$X88Sr, df.ef$X87Sr.86Sr..5.)
+  }
+  else{
+    X87Sr.86Sr.corr <- Corr2.87.86.to.88(df.ef$X88Sr, df.ef$X87Sr.86Sr..5.)
+  }
   
   #get time stamp from the Time coloumn
   df.ef <-  separate_wider_delim(df.ef, Time, delim = ":", names = c("hour", "minute", "second", "milisecond"),
