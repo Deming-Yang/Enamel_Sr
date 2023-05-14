@@ -9,6 +9,7 @@ library(zoo)
 library(changepoint)
 library(ggplot2)
 
+##################plot moving averages###################
 par(mfrow=c(3,3))
 
 plot(nrow(proc.EDJ.dentin2.rm):1,proc.EDJ.dentin2.rm$avg, ylim=c(0.702,0.712),type="l")
@@ -28,6 +29,76 @@ plot(1:nrow(proc.Enamel6ext.rm),proc.Enamel6ext.rm$avg, ylim=c(0.702,0.712),type
 
 plot(1:nrow(proc.Enamel7.rm),proc.Enamel7.rm$avg, ylim=c(0.702,0.712),type="l")
 
+#################plot transitions using moving averages###############
+
+par(mfrow=c(3,3))
+#preliminary plot
+plot(dent.rm.f$y, dent.rm.f$avg, main = "Dentine",col="darkgray", 
+     pch=16,xlim=c(4e4,8e4),ylim=c(0.705,0.711))
+plot(fit_segmented.D.rm, add = T)
+lines.segmented(fit_segmented.D.rm)
+points.segmented(fit_segmented.D.rm)
+
+#preliminary plot
+plot(proc.Enamel1.rm$y, proc.Enamel1.rm$avg, main = "Enamel 1",col="darkgray", 
+     pch=16,xlim=c(4e4,8e4),ylim=c(0.705,0.711))
+plot(fit_segmented.E1.rm, add = T)
+lines.segmented(fit_segmented.E1.rm)
+points.segmented(fit_segmented.E1.rm)
+
+#preliminary plot
+plot(proc.Enamel2.rm$y, proc.Enamel2.rm$avg, main = "Enamel 2",col="darkgray", 
+     pch=16,xlim=c(4e4,8e4),ylim=c(0.705,0.711))
+plot(fit_segmented.E2.rm, add=T)
+lines.segmented(fit_segmented.E2.rm)
+points.segmented(fit_segmented.E2.rm)
+
+#preliminary plot
+plot(proc.Enamel3.rm$y, proc.Enamel3.rm$avg, main = "Enamel 3",col="darkgray"
+     , pch=16,xlim=c(3e4,7e4),ylim=c(0.705,0.711))
+plot(fit_segmented.E3.rm, add=T)
+lines.segmented(fit_segmented.E3.rm)
+points.segmented(fit_segmented.E3.rm)
+
+#preliminary plot
+plot(proc.Enamel4.rm$y, proc.Enamel4.rm$avg, main = "Enamel 4",col="darkgray", 
+     pch=16,xlim=c(3e4,7e4),ylim=c(0.705,0.711))
+plot(fit_segmented.E4.rm, add=T)
+lines.segmented(fit_segmented.E4.rm)
+points.segmented(fit_segmented.E4.rm)
+
+#preliminary plot
+plot(proc.Enamel5.rm$y, proc.Enamel5.rm$avg, main = "Enamel 5",col="darkgray"
+     , pch=16,xlim=c(2e4,6e4),ylim=c(0.705,0.711))
+plot(fit_segmented.E5.rm, add =T)
+lines.segmented(fit_segmented.E5.rm)
+points.segmented(fit_segmented.E5.rm)
+
+#preliminary plot
+plot(proc.Enamel6.rm.f$y, proc.Enamel6.rm.f$avg, main = "Enamel 6",col="darkgray"
+     , pch=16,xlim=c(1e4,5e4),ylim=c(0.705,0.711))
+plot(fit_segmented.E6.rm, add =T)
+lines.segmented(fit_segmented.E6.rm)
+points.segmented(fit_segmented.E6.rm)
+
+#preliminary plot
+plot(proc.Enamel7.rm.f$y, proc.Enamel7.rm.f$avg, main = "Enamel 7",col="darkgray", 
+     pch=16,xlim=c(1e4,5e4),ylim=c(0.705,0.711))
+plot(fit_segmented.E7.rm, add =T)
+lines.segmented(fit_segmented.E7.rm)
+points.segmented(fit_segmented.E7.rm)
+
+plot(dent.rm.f$y, dent.rm.f$avg, main = "Dentine full length",col="darkgray", 
+     pch=16,ylim=c(0.705,0.711))
+plot(fit_segmented.D.rm, add = T)
+lines.segmented(fit_segmented.D.rm)
+points.segmented(fit_segmented.D.rm)
+
+plot(proc.Enamel1.rm$y, proc.Enamel1.rm$avg, main = "Enamel 1 full length",col="darkgray", 
+     pch=16,ylim=c(0.705,0.711))
+plot(fit_segmented.E1.rm, add = T)
+lines.segmented(fit_segmented.E1.rm)
+points.segmented(fit_segmented.E1.rm)
 
 #####use the sf package to plot those values
 

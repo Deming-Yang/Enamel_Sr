@@ -26,15 +26,6 @@ summary(fit_segmented.D.rm)
 cp.D.rm <- fit_segmented.D.rm$psi[5] #change point estimates, can use this to get x for plotting
 cp.D.rm.err <- fit_segmented.D.rm$psi[8]
 
-#preliminary plot
-plot(fit_segmented.D.rm)
-lines.segmented(fit_segmented.D.rm)
-points.segmented(fit_segmented.D.rm)
-points(dent.rm.f$y, dent.rm.f$avg)
-
-#extract slopes and intercepts
-# D.rm.sl1 <- fit_segmented.D.rm$coefficients[2]
-
 D.rm.sl1 <- fit_segmented.D.rm$coefficients[2] + fit_segmented.D.rm$coefficients[3] #second slope
 
 D.rm.sl2 <- fit_segmented.D.rm$coefficients[2]+ fit_segmented.D.rm$coefficients[3]+ fit_segmented.D.rm$coefficients[4] #third slope
@@ -46,12 +37,6 @@ fit_lm.E1.rm = lm(avg ~ 1 + y, data = proc.Enamel1.rm)  # intercept-only model
 fit_segmented.E1.rm = segmented(fit_lm.E1.rm, seg.Z = ~y, npsi = 2)  # Two change points along y
 
 summary(fit_segmented.E1.rm)
-
-#preliminary plot
-plot(fit_segmented.E1.rm)
-lines.segmented(fit_segmented.E1.rm)
-points.segmented(fit_segmented.E1.rm)
-points(proc.Enamel1.rm$y, proc.Enamel1.rm$avg)
 
 cp.E1.rm <- fit_segmented.E1.rm$psi[3] #change point estimates, can use this to get x for plotting
 cp.E1.rm.err <- fit_segmented.E1.rm$psi[5]
@@ -69,12 +54,6 @@ fit_segmented.E2.rm = segmented(fit_lm.E2.rm, seg.Z = ~y, npsi = 2)  # Two chang
 
 summary(fit_segmented.E2.rm)
 
-#preliminary plot
-plot(fit_segmented.E2.rm)
-lines.segmented(fit_segmented.E2.rm)
-points.segmented(fit_segmented.E2.rm)
-points(proc.Enamel2.rm$y, proc.Enamel2.rm$avg)
-
 cp.E2.rm <- fit_segmented.E2.rm$psi[3] #change point estimates, can use this to get x for plotting
 cp.E2.rm.err <- fit_segmented.E2.rm$psi[5]
 
@@ -91,12 +70,6 @@ fit_segmented.E3.rm = segmented(fit_lm.E3.rm, seg.Z = ~y, npsi = 2)  # Two chang
 
 summary(fit_segmented.E3.rm)
 
-#preliminary plot
-plot(fit_segmented.E3.rm)
-lines.segmented(fit_segmented.E3.rm)
-points.segmented(fit_segmented.E3.rm)
-points(proc.Enamel3.rm$y, proc.Enamel3.rm$avg)
-
 cp.E3.rm <- fit_segmented.E3.rm$psi[3] #change point estimates, can use this to get x for plotting
 cp.E3.rm.err <- fit_segmented.E3.rm$psi[5]
 
@@ -112,12 +85,6 @@ fit_lm.E4.rm = lm(avg ~ 1 + y, data = proc.Enamel4.rm)  # intercept-only model
 fit_segmented.E4.rm = segmented(fit_lm.E4.rm, seg.Z = ~y, npsi = 4)  # four change points along y to make sense
 
 summary(fit_segmented.E4.rm)
-
-#preliminary plot
-plot(fit_segmented.E4.rm)
-lines.segmented(fit_segmented.E4.rm)
-points.segmented(fit_segmented.E4.rm)
-points(proc.Enamel4.rm$y, proc.Enamel4.rm$avg)
 
 fit_segmented.E4.rm$psi
 
@@ -136,12 +103,6 @@ fit_lm.E5.rm = lm(avg ~ 1 + y, data = proc.Enamel5.rm)  # intercept-only model
 fit_segmented.E5.rm = segmented(fit_lm.E5.rm, seg.Z = ~y, npsi = 2)  # Two change points along y
 
 summary(fit_segmented.E5.rm)
-
-#preliminary plot
-plot(fit_segmented.E5.rm)
-lines.segmented(fit_segmented.E5.rm)
-points.segmented(fit_segmented.E5.rm)
-points(proc.Enamel5.rm$y, proc.Enamel5.rm$avg)
 
 cp.E5.rm <- fit_segmented.E5.rm$psi[3] #change point estimates, can use this to get x for plotting
 cp.E5.rm.err <- fit_segmented.E5.rm$psi[5]
@@ -162,12 +123,6 @@ fit_segmented.E6.rm = segmented(fit_lm.E6.rm, seg.Z = ~y, npsi = 1)  # one chang
 
 summary(fit_segmented.E6.rm)
 
-#preliminary plot
-plot(fit_segmented.E6.rm)
-lines.segmented(fit_segmented.E6.rm)
-points.segmented(fit_segmented.E6.rm)
-points(proc.Enamel6.rm.f$y, proc.Enamel6.rm.f$avg)
-
 cp.E6.rm <- fit_segmented.E6.rm$psi[2] #change point estimates, can use this to get x for plotting
 cp.E6.rm.err <- fit_segmented.E6.rm$psi[3]
 
@@ -182,12 +137,6 @@ fit_lm.E7.rm = lm(avg ~ 1 + y, data = proc.Enamel7.rm.f)  # intercept-only model
 fit_segmented.E7.rm = segmented(fit_lm.E7.rm, seg.Z = ~y, npsi = 1)  # one change point to make it work
 
 summary(fit_segmented.E7.rm)
-
-#preliminary plot
-plot(fit_segmented.E7.rm)
-lines.segmented(fit_segmented.E7.rm)
-points.segmented(fit_segmented.E7.rm)
-points(proc.Enamel7.rm.f$y, proc.Enamel7.rm.f$avg)
 
 cp.E7.rm <- fit_segmented.E7.rm$psi[2] #change point estimates, can use this to get x for plotting
 cp.E7.rm.err <- fit_segmented.E7.rm$psi[3]
@@ -243,4 +192,9 @@ cp.E.rm.x[6] <- approx(x = proc.Enamel6.rm$y, y = proc.Enamel6.rm$x, xout = cp.E
 cp.E.rm.x[7] <- approx(x = proc.Enamel7.rm$y, y = proc.Enamel7.rm$x, xout = cp.E.rm.y[7])$y
 
 
-cp.D.rm.x
+###########calculate shifts in x between enamel 2 3 and 4
+head(proc.Enamel2.rm)
+head(proc.Enamel3.rm)
+head(proc.Enamel4.rm)
+#300 micron shifts in x, ~5000 micron shifts in y
+atan(3/50)/pi*180 #~3.43 degrees appositional angle, exactly the same as Uno 2020
