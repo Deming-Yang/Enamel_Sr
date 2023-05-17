@@ -51,13 +51,14 @@ li.interp <- function (df, ref){
 }
 
 ##fn 3: correct 87/86 ratio by Sr88 voltage
-
+#Horstwood et al. (2008)
 Corr1.87.86.to.88 <- function(Sr88, Sr87.86){
   accuracy <- 0.002333/Sr88 + 0.999462
   corr.Sr87.86 <- Sr87.86/accuracy
   return(corr.Sr87.86)
 }
 
+#Lugli et al. (2017), rhino enamel
 Corr2.87.86.to.88 <- function(Sr88, Sr87.86){
   accuracy <- 0.0005954/Sr88 + 1.0000077
   corr.Sr87.86 <- Sr87.86/accuracy
