@@ -32,6 +32,8 @@ total.thick <- 2.8e3 #micron
 tr2.leng <- 5e3
 tr1.leng <- 30e3
 
+########################part I apposition######################
+
 #####identify starting and end value of Sr ratio
 
 Sr.int <- 0.7117#same as dentine and tusk data
@@ -39,11 +41,6 @@ Sr.int <- 0.7117#same as dentine and tusk data
 Sr.end <- 0.706  #from ICPMS data, Misha's tusk, Yang et al 2023
 
 #####identify slopes
-
-# sl.1 <- -6e-7 #estimated slope 1
-# 
-# sl.2 <- -9e-8 #estimated slope 2
-
 sl.2 <- -6e-7 #estimated slope 1
 
 sl.1 <- -9e-8 #estimated slope 2
@@ -59,7 +56,7 @@ Sr.tr.all <- c(Sr.tr1, Sr.tr2)
 plot(1:length(Sr.tr.all), Sr.tr.all)
 
 #####set location of the initial transition at EDJ####
-loc.tr <- 10e3
+loc.tr <- 20e3
 Sr.int.EDJ <- rep(Sr.int, loc.tr/pix.res)
 
 n.end.EDJ <- (total.leng - (tr1.leng+tr2.leng+loc.tr))/pix.res
@@ -69,31 +66,115 @@ Sr.EDJ.all <- c(Sr.int.EDJ, Sr.tr.all, Sr.end.EDJ)
 #this is the reference value, all others will be shifted based on this
 plot(1:length(Sr.EDJ.all), Sr.EDJ.all)
 
+#simulate appositional angle
 n.shift <- 1/3*50 #so every one pix, shift x towards the back for 16.67 pix
 
 Sr.grid <- matrix(0,ncol = total.leng/pix.res, nrow = total.thick/pix.res)
 
+#mineral density grid
+Md.grid <- matrix(0,ncol = total.leng/pix.res, nrow = total.thick/pix.res)
+
+#appositional fraction of mineral density: 0.65
+f.appo <- 0.65
+
 Sr.grid[total.thick/pix.res,] <- Sr.EDJ.all #28
+
+Md.grid[total.thick/pix.res,] <- rep(f.appo, ncol(Md.grid))#28
 
 for(i in (total.thick/pix.res -1):1){#28 shifts
   
   Sr.int.temp1 <- rep(NA, (round((total.thick/pix.res-i)*n.shift)))
   
+  Md.int.temp1 <- rep(NA, (round((total.thick/pix.res-i)*n.shift)))
+  
   Sr.int.temp2 <- rep(Sr.int, loc.tr/pix.res)
+  
+  Md.int.temp2 <- rep(f.appo, loc.tr/pix.res)
+  
   
   n.end.temp <- (total.leng - (tr1.leng+tr2.leng+loc.tr))/pix.res- round((total.thick/pix.res-i)*n.shift)
   Sr.end.temp <- rep(Sr.end,n.end.temp)
+  Md.end.temp <- rep(f.appo,n.end.temp)
   
   Sr.grid[i,] <- c(Sr.int.temp1, Sr.int.temp2, Sr.tr.all, Sr.end.temp)
+  
+  Md.grid[i,] <- c(Md.int.temp1, Md.int.temp2, rep(f.appo, length(Sr.tr.all)), Md.end.temp)
   
 }
 
 r.Sr <- raster(ncol = total.leng/pix.res, nrow = total.thick/pix.res,
-               xmn=0, xmx=1000, ymn=0, ymx=28)
+               xmn=0, xmx=total.leng/pix.res, ymn=0, ymx=total.thick/pix.res)
+
+r.Md <- raster(ncol = total.leng/pix.res, nrow = total.thick/pix.res,
+               xmn=0, xmx=total.leng/pix.res, ymn=0, ymx=total.thick/pix.res)
 
 values(r.Sr) <- Sr.grid
 
 plot(r.Sr,ylim=c(0,28))
+
+values(r.Md) <- Md.grid
+
+plot(r.Md,ylim=c(0,28))
+
+########################part II maturation######################
+#can use linear interpolation, or loess with predictions
+syn.dat <- data.frame(index = c(1:ncol(Sr.grid)), input = rev(Sr.grid[total.thick/pix.res,]))
+#synthetic hair data, in distance from root
+
+#use loess function to smooth and downsample the longer vector
+plot(1:ncol(Sr.grid), syn.dat$input, type="l")
+loess.Sr <- loess(input ~ index, data=syn.dat, span=0.02)
+lines(syn.dat$index, predict(loess.Sr),col="red")
+
+#use loess.Sr to rescale x axis to time
+#enamel growth: 55.3 microns/day, resolution is 100 microns, so one pixel is around 2 days
+
+n.days <- round(ncol(Sr.grid)/0.553) #n days represented in enamel 1808 days
+
+
+input.Sr <- predict(loess.Sr, newdata = 1:n.days*ncol(Sr.grid)/n.days)
+input.Sr[1] <- input.Sr[2]
+
+#obtain timeline of Sr input into enamel
+tl <- data.frame(index = 1:n.days, input = input.Sr)
+
+plot(tl$index, tl$input, type="l")
+
+#then model enamel formation
+#apposition is done
+
+#maturation: angle, length, and weight distribution
+#iteration 1: angle is the same as apposition, immediately starting
+#duration is evaluating using lm =700 pxiels or 70mm/ 70e3 microns
+#Duration to weight distribution: 70e3/55.3
+
+days.to.add <- round(70e3/55.3) #1266 days before start of the experiment!
+
+#need mineral density map
+for(i in (total.thick/pix.res -1):1){#28 shifts
+
+Sr.int.temp1 <- rep(NA, (round((total.thick/pix.res-i)*n.shift)))
+
+Sr.int.temp2 <- rep(Sr.int, loc.tr/pix.res)
+
+n.end.temp <- (total.leng - (tr1.leng+tr2.leng+loc.tr))/pix.res- round((total.thick/pix.res-i)*n.shift)
+Sr.end.temp <- rep(Sr.end,n.end.temp)
+
+Sr.grid[i,] <- c(Sr.int.temp1, Sr.int.temp2, Sr.tr.all, Sr.end.temp)
+
+}
+input.Sr.ext <- c(rep(input.Sr[1],days.to.add),input.Sr)
+
+#extended timeline to accommodate maturation averaging
+tl.ext <- data.frame(index = 1:(n.days+days.to.add), input = input.Sr.ext)
+
+plot(tl.ext$index, tl.ext$input, type="l")
+
+n.mat <- n.days+days.to.add
+
+
+#also assume evenly distributed weights? Yes
+
 
 #####simulate sample averaging######
 sample.wd <- 1e3 #1mm wide sampling groove
