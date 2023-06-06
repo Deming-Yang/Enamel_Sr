@@ -1,7 +1,6 @@
 library(scales)
 library(MASS)
 library(viridisLite)
-library(EnvStats)
 library(dplyr)
 library(tidyr)
 library(sf)
@@ -21,7 +20,14 @@ Enamel4 <- read.csv("data/Enamel4.csv")
 Enamel5 <- read.csv("data/Enamel5.csv")
 Enamel6 <- read.csv("data/Enamel6.csv")
 Enamel6ext <- read.csv("data/Enamel6ext.csv")
+Enamel6ext2 <- read.csv("data/Enamel6ext2.csv")
 Enamel7 <- read.csv("data/Enamel7.csv")
+Enamel7ext <- read.csv("data/Enamel7ext.csv")
+Enamel8 <- read.csv("data/Enamel8.csv")
+Enamel8ext <- read.csv("data/Enamel8ext.csv")
+Enamel9 <- read.csv("data/Enamel9.csv")
+Enamel9ext2 <- read.csv("data/Enamel9ext2.csv")
+Enamel10 <- read.csv("data/Enamel10.csv")
 
 pl.EDJ.dentin1 <- read.csv("data/pl_EDJ_dentin1.csv")
 pl.EDJ.dentin2 <- read.csv("data/pl_EDJ_dentin2.csv")
@@ -32,7 +38,14 @@ pl.Enamel4 <- read.csv("data/pl_Enamel4.csv")
 pl.Enamel5 <- read.csv("data/pl_Enamel5.csv")
 pl.Enamel6 <- read.csv("data/pl_Enamel6.csv")
 pl.Enamel6ext <- read.csv("data/pl_Enamel6ext.csv")
+pl.Enamel6ext2 <- read.csv("data/pl_Enamel6ext2.csv")
 pl.Enamel7 <- read.csv("data/pl_Enamel7.csv")
+pl.Enamel7ext <- read.csv("data/pl_Enamel7ext.csv")
+pl.Enamel8 <- read.csv("data/pl_Enamel8.csv")
+pl.Enamel8ext <- read.csv("data/pl_Enamel8ext.csv")
+pl.Enamel9 <- read.csv("data/pl_Enamel9.csv")
+pl.Enamel9ext2 <- read.csv("data/pl_Enamel9ext2.csv")
+pl.Enamel10 <- read.csv("data/pl_Enamel10.csv")
 
 ############data processing using custom function###########
 
@@ -76,11 +89,39 @@ proc.Enamel6
 proc.Enamel6.rm <- moving.avg(proc.Enamel6, 25)
 
 
-#enamel transect 6
+#enamel transect 6 ext
 proc.Enamel6ext <- data.process(Enamel6ext, pl.Enamel6ext)
 proc.Enamel6ext
 proc.Enamel6ext.rm <- moving.avg(proc.Enamel6ext, 25)
 
+proc.Enamel6ext2 <- data.process(Enamel6ext2, pl.Enamel6ext2)
+proc.Enamel6ext2
+proc.Enamel6ext2.rm <- moving.avg(proc.Enamel6ext2, 25)
+
 proc.Enamel7 <- data.process(Enamel7, pl.Enamel7)
 proc.Enamel7
 proc.Enamel7.rm <- moving.avg(proc.Enamel7, 25)
+
+proc.Enamel7ext <- data.process(Enamel7ext, pl.Enamel7ext)
+proc.Enamel7ext
+proc.Enamel7ext.rm <- moving.avg(proc.Enamel7ext, 25)
+
+proc.Enamel8 <- data.process(Enamel8, pl.Enamel8)
+proc.Enamel8
+proc.Enamel8.rm <- moving.avg(proc.Enamel8, 25)
+
+proc.Enamel8ext <- data.process(Enamel8ext, pl.Enamel8ext)
+proc.Enamel8ext
+proc.Enamel8ext.rm <- moving.avg(proc.Enamel8ext, 25)
+
+proc.Enamel9 <- data.process(Enamel9, pl.Enamel9)
+proc.Enamel9
+proc.Enamel9.rm <- moving.avg(proc.Enamel9, 25)
+
+proc.Enamel9ext2 <- data.process(Enamel9ext2, pl.Enamel9ext2)
+proc.Enamel9ext2
+proc.Enamel9ext2.rm <- moving.avg(proc.Enamel9ext2, 25)
+
+proc.Enamel10 <- data.process(Enamel10, pl.Enamel10)
+proc.Enamel10
+proc.Enamel10.rm <- moving.avg(proc.Enamel10, 25)

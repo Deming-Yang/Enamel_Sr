@@ -69,15 +69,19 @@ Corr2.87.86.to.88 <- function(Sr88, Sr87.86){
 data.process <- function(df, log, type = "e"){
   require(tidyr)
   require(dplyr)
-  df.ef <- filter(.data = df, df$X88Sr > 0.1)
-  df.ef <- select(df.ef, -Column1) #remove last column
-  
-  df.ef <- na.omit(df.ef)
   
   #convert character to number
-  df.ef$X87Sr.86Sr..5.<- as.numeric(df.ef$X87Sr.86Sr..5.)
-  df.ef$X87Sr.86Sr..8.<- as.numeric(df.ef$X87Sr.86Sr..8.)
-  df.ef$X88Sr.86Sr..9.<- as.numeric(df.ef$X88Sr.86Sr..9.)
+  df$X88Sr<- as.numeric(df$X88Sr)
+  df$X87Sr.86Sr..5.<- as.numeric(df$X87Sr.86Sr..5.)
+
+  df.ef <- filter(.data = df, df$X88Sr > 0.2)
+  
+  df.ef <- na.omit(df.ef)
+  # df.ef.na <- filter(.data = df.ef, is.numeric(df.ef$X87Sr.86Sr..5.))
+
+  # df.ef <- select(df.ef, -Column1) #remove last column
+  
+
   
   #correction by Sr 88 voltage
   if(type == "d"){#dentine
