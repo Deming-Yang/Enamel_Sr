@@ -150,7 +150,7 @@ plot(tl$index, tl$input, type="l")
 
 days.to.add <- round(70e3/55.3) #1266 days before start of the experiment!
 
-#need mineral density map
+#need mineral density map!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 for(i in (total.thick/pix.res -1):1){#28 shifts
 
 Sr.int.temp1 <- rep(NA, (round((total.thick/pix.res-i)*n.shift)))

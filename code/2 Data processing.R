@@ -94,34 +94,76 @@ proc.Enamel6ext <- data.process(Enamel6ext, pl.Enamel6ext)
 proc.Enamel6ext
 proc.Enamel6ext.rm <- moving.avg(proc.Enamel6ext, 25)
 
-proc.Enamel6ext2 <- data.process(Enamel6ext2, pl.Enamel6ext2)
-proc.Enamel6ext2
-proc.Enamel6ext2.rm <- moving.avg(proc.Enamel6ext2, 25)
-
 proc.Enamel7 <- data.process(Enamel7, pl.Enamel7)
 proc.Enamel7
 proc.Enamel7.rm <- moving.avg(proc.Enamel7, 25)
 
+###################################### transform corrdinates ###############
+x.transf <- 100
+y.transf <- -890
+
+proc.Enamel6ext2 <- data.process(Enamel6ext2, pl.Enamel6ext2)
+proc.Enamel6ext2.x.t <- proc.Enamel6ext2$x + x.transf
+proc.Enamel6ext2.y.t <- proc.Enamel6ext2$y + y.transf
+
+proc.Enamel6ext2.t <- tibble(corr.87Sr.86Sr = proc.Enamel6ext2$corr.87Sr.86Sr, 
+                             x = proc.Enamel6ext2.x.t, y = proc.Enamel6ext2.y.t)
+
+proc.Enamel6ext2.rm <- moving.avg(proc.Enamel6ext2.t, 25)
+
 proc.Enamel7ext <- data.process(Enamel7ext, pl.Enamel7ext)
-proc.Enamel7ext
-proc.Enamel7ext.rm <- moving.avg(proc.Enamel7ext, 25)
+proc.Enamel7ext.x.t <- proc.Enamel7ext$x + x.transf
+proc.Enamel7ext.y.t <- proc.Enamel7ext$y + y.transf
+
+proc.Enamel7ext.t <- tibble(corr.87Sr.86Sr = proc.Enamel7ext$corr.87Sr.86Sr, 
+                             x = proc.Enamel7ext.x.t, y = proc.Enamel7ext.y.t)
+
+proc.Enamel7ext.rm <- moving.avg(proc.Enamel7ext.t, 25)
 
 proc.Enamel8 <- data.process(Enamel8, pl.Enamel8)
-proc.Enamel8
-proc.Enamel8.rm <- moving.avg(proc.Enamel8, 25)
+proc.Enamel8.x.t <- proc.Enamel8$x + x.transf
+proc.Enamel8.y.t <- proc.Enamel8$y + y.transf
+
+proc.Enamel8.t <- tibble(corr.87Sr.86Sr = proc.Enamel8$corr.87Sr.86Sr, 
+                            x = proc.Enamel8.x.t, y = proc.Enamel8.y.t)
+
+proc.Enamel8.rm <- moving.avg(proc.Enamel8.t, 25)
 
 proc.Enamel8ext <- data.process(Enamel8ext, pl.Enamel8ext)
-proc.Enamel8ext
-proc.Enamel8ext.rm <- moving.avg(proc.Enamel8ext, 25)
+proc.Enamel8ext.x.t <- proc.Enamel8ext$x + x.transf
+proc.Enamel8ext.y.t <- proc.Enamel8ext$y + y.transf
+
+proc.Enamel8ext.t <- tibble(corr.87Sr.86Sr = proc.Enamel8ext$corr.87Sr.86Sr, 
+                         x = proc.Enamel8ext.x.t, y = proc.Enamel8ext.y.t)
+
+proc.Enamel8ext.rm <- moving.avg(proc.Enamel8ext.t, 25)
+
 
 proc.Enamel9 <- data.process(Enamel9, pl.Enamel9)
-proc.Enamel9
-proc.Enamel9.rm <- moving.avg(proc.Enamel9, 25)
+proc.Enamel9.x.t <- proc.Enamel9$x + x.transf
+proc.Enamel9.y.t <- proc.Enamel9$y + y.transf
+
+proc.Enamel9.t <- tibble(corr.87Sr.86Sr = proc.Enamel9$corr.87Sr.86Sr, 
+                         x = proc.Enamel9.x.t, y = proc.Enamel9.y.t)
+
+proc.Enamel9.rm <- moving.avg(proc.Enamel9.t, 25)
+
 
 proc.Enamel9ext2 <- data.process(Enamel9ext2, pl.Enamel9ext2)
-proc.Enamel9ext2
-proc.Enamel9ext2.rm <- moving.avg(proc.Enamel9ext2, 25)
+proc.Enamel9ext2.x.t <- proc.Enamel9ext2$x + x.transf
+proc.Enamel9ext2.y.t <- proc.Enamel9ext2$y + y.transf
+
+proc.Enamel9ext2.t <- tibble(corr.87Sr.86Sr = proc.Enamel9ext2$corr.87Sr.86Sr, 
+                             x = proc.Enamel9ext2.x.t, y = proc.Enamel9ext2.y.t)
+
+proc.Enamel9ext2.rm <- moving.avg(proc.Enamel9ext2.t, 25)
+
 
 proc.Enamel10 <- data.process(Enamel10, pl.Enamel10)
-proc.Enamel10
-proc.Enamel10.rm <- moving.avg(proc.Enamel10, 25)
+proc.Enamel10.x.t <- proc.Enamel10$x + x.transf
+proc.Enamel10.y.t <- proc.Enamel10$y + y.transf
+
+proc.Enamel10.t <- tibble(corr.87Sr.86Sr = proc.Enamel10$corr.87Sr.86Sr, 
+                         x = proc.Enamel10.x.t, y = proc.Enamel10.y.t)
+
+proc.Enamel10.rm <- moving.avg(proc.Enamel10.t, 25)
