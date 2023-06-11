@@ -43,12 +43,12 @@ cp1.E1.rm.err <- fit_segmented.E1.rm$psi[5]
 cp2.E1.rm <- fit_segmented.E1.rm$psi[4] #change point estimates, can use this to get x for plotting
 cp2.E1.rm.err <- fit_segmented.E1.rm$psi[6]
 
-#extract slopes and intercepts
-E1.rm.sl1 <- fit_segmented.E1.rm$coefficients[2]
-
-E1.rm.sl2 <- fit_segmented.E1.rm$coefficients[2] + fit_segmented.E1.rm$coefficients[3] #second slope
-
-E1.rm.sl3 <- fit_segmented.E1.rm$coefficients[2]+ fit_segmented.E1.rm$coefficients[3]+ fit_segmented.E1.rm$coefficients[4] #third slope
+# #extract slopes and intercepts
+# E1.rm.sl1 <- fit_segmented.E1.rm$coefficients[2]
+# 
+# E1.rm.sl2 <- fit_segmented.E1.rm$coefficients[2] + fit_segmented.E1.rm$coefficients[3] #second slope
+# 
+# E1.rm.sl3 <- fit_segmented.E1.rm$coefficients[2]+ fit_segmented.E1.rm$coefficients[3]+ fit_segmented.E1.rm$coefficients[4] #third slope
 
 ############Enamel 2###################
 proc.Enamel2.rm.f <- filter(proc.Enamel2.rm, proc.Enamel2.rm$avg > 0.703)
@@ -63,12 +63,12 @@ cp1.E2.rm.err <- fit_segmented.E2.rm$psi[5]
 cp2.E2.rm <- fit_segmented.E2.rm$psi[4] #change point estimates, can use this to get x for plotting
 cp2.E2.rm.err <- fit_segmented.E2.rm$psi[6]
 
-#extract slopes and intercepts
-E2.rm.sl1 <- fit_segmented.E2.rm$coefficients[2]
-
-E2.rm.sl2 <- fit_segmented.E2.rm$coefficients[2] + fit_segmented.E2.rm$coefficients[3] #second slope
-
-E2.rm.sl3 <- fit_segmented.E2.rm$coefficients[2]+ fit_segmented.E2.rm$coefficients[3]+ fit_segmented.E2.rm$coefficients[4] #third slope
+# #extract slopes and intercepts
+# E2.rm.sl1 <- fit_segmented.E2.rm$coefficients[2]
+# 
+# E2.rm.sl2 <- fit_segmented.E2.rm$coefficients[2] + fit_segmented.E2.rm$coefficients[3] #second slope
+# 
+# E2.rm.sl3 <- fit_segmented.E2.rm$coefficients[2]+ fit_segmented.E2.rm$coefficients[3]+ fit_segmented.E2.rm$coefficients[4] #third slope
 
 ############Enamel 3###################
 proc.Enamel3.rm.f <- filter(proc.Enamel3.rm, proc.Enamel3.rm$avg > 0.703)
@@ -83,12 +83,12 @@ cp1.E3.rm.err <- fit_segmented.E3.rm$psi[5]
 cp2.E3.rm <- fit_segmented.E3.rm$psi[4] #change point estimates, can use this to get x for plotting
 cp2.E3.rm.err <- fit_segmented.E3.rm$psi[6]
 
-#extract slopes and intercepts
-E3.rm.sl1 <- fit_segmented.E3.rm$coefficients[2]
-
-E3.rm.sl2 <- fit_segmented.E3.rm$coefficients[2] + fit_segmented.E3.rm$coefficients[3] #second slope
-
-E3.rm.sl3 <- fit_segmented.E3.rm$coefficients[2]+ fit_segmented.E3.rm$coefficients[3]+ fit_segmented.E3.rm$coefficients[4] #third slope
+# #extract slopes and intercepts
+# E3.rm.sl1 <- fit_segmented.E3.rm$coefficients[2]
+# 
+# E3.rm.sl2 <- fit_segmented.E3.rm$coefficients[2] + fit_segmented.E3.rm$coefficients[3] #second slope
+# 
+# E3.rm.sl3 <- fit_segmented.E3.rm$coefficients[2]+ fit_segmented.E3.rm$coefficients[3]+ fit_segmented.E3.rm$coefficients[4] #third slope
 
 ############Enamel 4###################
 proc.Enamel4.rm.f <- filter(proc.Enamel4.rm, proc.Enamel4.rm$avg > 0.703)
@@ -106,11 +106,11 @@ cp2.E4.rm <- fit_segmented.E4.rm$psi[6] #change point estimates, can use this to
 cp2.E4.rm.err <- fit_segmented.E4.rm$psi[10]
 
 #extract slopes and intercepts
-E4.rm.sl1 <- fit_segmented.E4.rm$coefficients[2]
-
-E4.rm.sl2 <- fit_segmented.E4.rm$coefficients[2] + fit_segmented.E4.rm$coefficients[3] #second slope
-
-E4.rm.sl3 <- fit_segmented.E4.rm$coefficients[2]+ fit_segmented.E4.rm$coefficients[3]+ fit_segmented.E4.rm$coefficients[4] #third slope
+# E4.rm.sl1 <- fit_segmented.E4.rm$coefficients[2]
+# 
+# E4.rm.sl2 <- fit_segmented.E4.rm$coefficients[2] + fit_segmented.E4.rm$coefficients[3] #second slope
+# 
+# E4.rm.sl3 <- fit_segmented.E4.rm$coefficients[2]+ fit_segmented.E4.rm$coefficients[3]+ fit_segmented.E4.rm$coefficients[4] #third slope
 
 ############Enamel 5###################
 proc.Enamel5.rm.f <- filter(proc.Enamel5.rm, proc.Enamel5.rm$avg > 0.703)
@@ -126,11 +126,11 @@ cp2.E5.rm <- fit_segmented.E5.rm$psi[4] #change point estimates, can use this to
 cp2.E5.rm.err <- fit_segmented.E5.rm$psi[6]
 
 #extract slopes and intercepts
-E5.rm.sl1 <- fit_segmented.E5.rm$coefficients[2]
-
-E5.rm.sl2 <- fit_segmented.E5.rm$coefficients[2] + fit_segmented.E5.rm$coefficients[3] #second slope
-
-E5.rm.sl3 <- fit_segmented.E5.rm$coefficients[2]+ fit_segmented.E5.rm$coefficients[3]+ fit_segmented.E5.rm$coefficients[4] #third slope
+# E5.rm.sl1 <- fit_segmented.E5.rm$coefficients[2]
+# 
+# E5.rm.sl2 <- fit_segmented.E5.rm$coefficients[2] + fit_segmented.E5.rm$coefficients[3] #second slope
+# 
+# E5.rm.sl3 <- fit_segmented.E5.rm$coefficients[2]+ fit_segmented.E5.rm$coefficients[3]+ fit_segmented.E5.rm$coefficients[4] #third slope
 
 ############Enamel 6###################
 proc.Enamel6.rm.c <- rbind(proc.Enamel6.rm, proc.Enamel6ext.rm, proc.Enamel6ext2.rm)
@@ -148,9 +148,9 @@ cp2.E6.rm <- fit_segmented.E6.rm$psi[4] #change point estimates, can use this to
 cp2.E6.rm.err <- fit_segmented.E6.rm$psi[6]
 
 #extract slopes and intercepts
-E6.rm.sl1 <- fit_segmented.E6.rm$coefficients[2]
-
-E6.rm.sl2 <- fit_segmented.E6.rm$coefficients[2] + fit_segmented.E6.rm$coefficients[3] #second slope
+# E6.rm.sl1 <- fit_segmented.E6.rm$coefficients[2]
+# 
+# E6.rm.sl2 <- fit_segmented.E6.rm$coefficients[2] + fit_segmented.E6.rm$coefficients[3] #second slope
 
 ############Enamel 7###################
 proc.Enamel7.rm.c <- rbind(proc.Enamel7.rm, proc.Enamel7ext.rm)
@@ -167,9 +167,9 @@ cp2.E7.rm <- fit_segmented.E7.rm$psi[4] #change point estimates, can use this to
 cp2.E7.rm.err <- fit_segmented.E7.rm$psi[6] 
 
 #extract slopes and intercepts
-E7.rm.sl1 <- fit_segmented.E7.rm$coefficients[2]
-
-E7.rm.sl2 <- fit_segmented.E7.rm$coefficients[2] + fit_segmented.E7.rm$coefficients[3] #second slope
+# E7.rm.sl1 <- fit_segmented.E7.rm$coefficients[2]
+# 
+# E7.rm.sl2 <- fit_segmented.E7.rm$coefficients[2] + fit_segmented.E7.rm$coefficients[3] #second slope
 
 ############Enamel 8###################
 proc.Enamel8.rm.c <- rbind(proc.Enamel8.rm, proc.Enamel8ext.rm)
@@ -186,9 +186,9 @@ cp2.E8.rm <- fit_segmented.E8.rm$psi[4] #change point estimates, can use this to
 cp2.E8.rm.err <- fit_segmented.E8.rm$psi[6]
 
 #extract slopes and intercepts
-E8.rm.sl1 <- fit_segmented.E8.rm$coefficients[2]
-
-E8.rm.sl2 <- fit_segmented.E8.rm$coefficients[2] + fit_segmented.E8.rm$coefficients[3] #second slope
+# E8.rm.sl1 <- fit_segmented.E8.rm$coefficients[2]
+# 
+# E8.rm.sl2 <- fit_segmented.E8.rm$coefficients[2] + fit_segmented.E8.rm$coefficients[3] #second slope
 
 ############Enamel 9###################
 proc.Enamel9.rm.c <- rbind(proc.Enamel9.rm, proc.Enamel9ext2.rm)
@@ -205,9 +205,9 @@ cp2.E9.rm <- fit_segmented.E9.rm$psi[4] #change point estimates, can use this to
 cp2.E9.rm.err <- fit_segmented.E9.rm$psi[6]
 
 #extract slopes and intercepts
-E9.rm.sl1 <- fit_segmented.E9.rm$coefficients[2]
-
-E9.rm.sl2 <- fit_segmented.E9.rm$coefficients[2] + fit_segmented.E9.rm$coefficients[3] #second slope
+# E9.rm.sl1 <- fit_segmented.E9.rm$coefficients[2]
+# 
+# E9.rm.sl2 <- fit_segmented.E9.rm$coefficients[2] + fit_segmented.E9.rm$coefficients[3] #second slope
 
 ############Enamel 10###################
 proc.Enamel10.rm.f <- filter(proc.Enamel10.rm, proc.Enamel10.rm$avg > 0.703)
@@ -223,9 +223,9 @@ cp2.E10.rm <- fit_segmented.E10.rm$psi[4] #change point estimates, can use this 
 cp2.E10.rm.err <- fit_segmented.E10.rm$psi[6]
 
 #extract slopes and intercepts
-E10.rm.sl1 <- fit_segmented.E10.rm$coefficients[2]
-
-E10.rm.sl2 <- fit_segmented.E10.rm$coefficients[2] + fit_segmented.E10.rm$coefficients[3] #second slope
+# E10.rm.sl1 <- fit_segmented.E10.rm$coefficients[2]
+# 
+# E10.rm.sl2 <- fit_segmented.E10.rm$coefficients[2] + fit_segmented.E10.rm$coefficients[3] #second slope
 
 
 D.rm.sl2
@@ -273,7 +273,7 @@ cp1.E.rm.y.err <- c(cp1.E1.rm.err,
              cp1.E9.rm.err,
              cp1.E10.rm.err)
 
-
+#second change point within enamel
 cp2.E.rm.y <- c(cp2.E1.rm,
                 cp2.E2.rm,
                 cp2.E3.rm,
@@ -325,9 +325,51 @@ cp2.E.rm.x[9] <- approx(x = proc.Enamel9.rm.f$y, y = proc.Enamel9.rm.f$x, xout =
 cp2.E.rm.x[10] <- approx(x = proc.Enamel10.rm.f$y, y = proc.Enamel10.rm.f$x, xout = cp2.E.rm.y[10])$y
 
 
-###########calculate shifts in x between enamel 2 3 and 4
-head(proc.Enamel2.rm)
-head(proc.Enamel3.rm)
-head(proc.Enamel4.rm)
-#300 micron shifts in x, ~5000 micron shifts in y
-atan(3/50)/pi*180 #~3.43 degrees appositional angle, exactly the same as Uno 2020
+###########calculate shifts in x between enamel transects################
+#first change point
+cp1.E.proj <- data.frame(x=rep(0,10),y=rep(0,10))
+
+for(i in 1:nrow(cp1.E.proj)){
+  cp1.E.proj[i,] <- proj.pt(cp1.E.rm.x[i], cp1.E.rm.y[i], dent.rm)
+}
+
+#second change point
+cp2.E.proj <- data.frame(x=rep(0,10),y=rep(0,10))
+
+for(i in 1:nrow(cp2.E.proj)){
+  cp2.E.proj[i,] <- proj.pt(cp2.E.rm.x[i], cp2.E.rm.y[i], dent.rm)
+}
+
+par(mfrow=c(1,2))
+plot(cp1.E.proj$x, cp1.E.proj$y)
+plot(cp2.E.proj$x, cp2.E.proj$y)
+
+#it seems that only the last 2-3 data points are not conforming to a linear trend
+#remove the points for E8-10
+cp1.E.proj.inner <- cp1.E.proj[1:7,]
+
+cp2.E.proj.inner <- cp2.E.proj[1:7,]
+
+#calculate slope using lm
+lm.cp1.E.proj.inner <- lm(y~x, data=cp1.E.proj.inner)
+summary(lm.cp1.E.proj.inner)
+#slope = -5.706e-02
+#Std. Error = 3.181e-03
+
+#calculate slope using lm
+lm.cp2.E.proj.inner <- lm(y~x, data=cp2.E.proj.inner)
+summary(lm.cp2.E.proj.inner)
+#slope = -5.747e-02
+#Std. Error = 9.325e-04
+
+#the slopes are within the std error range from each other
+
+#calculate appositional angle
+atan(abs(lm.cp1.E.proj.inner$coefficients[2]))/pi*180
+atan(abs(lm.cp2.E.proj.inner$coefficients[2]))/pi*180
+#3.3 degrees, which is identical to the appositional angle measured by Uno 2012
+
+#use mean of the two angles in the forward model
+fwd.appo.sl <- mean(lm.cp1.E.proj.inner$coefficients[2],lm.cp2.E.proj.inner$coefficients[2])
+
+#####################still need to transform all coordinates to evaluate Sr slopes

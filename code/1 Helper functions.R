@@ -135,3 +135,65 @@ moving.avg <- function(df, n){
   n.y <- df$y[(n.remove + 1): (nrow(df)-n.remove)]
   tibble(avg = rm.dat, x = n.x, y = n.y)
 }
+
+
+###########fn 5 projecting a point to a curve and transform its x and y ########
+proj.pt <- function(x, y, ref){
+  
+  ref.s <- dent.rm[order(ref$y),]
+  
+  ref.s.diff.x <- diff(ref.s$x)
+  ref.s.diff.y <- diff(ref.s$y)
+  
+  #calculate distance between adjacent points
+  ref.s.dist <- sqrt(ref.s.diff.x^2 + ref.s.diff.y^2)
+  
+  new.x.axis <- c(0, cumsum(ref.s.dist)) #"faltten" the EDJ with new "x" axis values
+  
+  dist.to.xy <- sqrt((x - ref.s$x)^2 + (y - ref.s$y)^2)
+  
+  new.y <- min(dist.to.xy) #smallest element between xy and the curve
+  
+  indx <- which(dist.to.xy == new.y) #extract index of the point
+  
+  new.x <- new.x.axis[indx]
+  
+  return(c(new.x, new.y))
+  
+}
+
+###########fn 6 projecting a transect to a curve and transform its x and y ########
+proj.transect <- function(x, y, ref){
+  
+  ref.s <- dent.rm[order(ref$y),]
+  
+  ref.s.diff.x <- diff(ref.s$x)
+  ref.s.diff.y <- diff(ref.s$y)
+  
+  ref.s.dist <- sqrt(ref.s.diff.x^2 + ref.s.diff.y^2)
+  
+  new.x.axis <- c(0, cumsum(ref.s.dist)) #"faltten" the EDJ with new "x" axis values
+  
+  #initiate vectors
+  new.x <- rep(0, length(x))
+  
+  new.y <- rep(0, length(y))
+  
+  indx <- rep(0, length(y))
+  
+  #calculate distance between adjacent points
+  for(i in 1:length(x)){
+    
+    dist.to.xy <- sqrt((x[i] - ref.s$x)^2 + (y[i] - ref.s$y)^2)
+    
+    new.y[i] <- min(dist.to.xy) #smallest element between xy and the curve
+    
+    indx[i] <- which(dist.to.xy == new.y[i]) #extract index of the point
+    
+    new.x[i] <- new.x.axis[indx[i]]
+    
+  }
+
+  return(data.frame(new.x, new.y))
+  
+}

@@ -31,11 +31,13 @@ library(ggplot2)
 
 #####use the sf package to plot these values
 
-all.dat <- rbind(proc.EDJ.dentin1, proc.EDJ.dentin2, proc.Enamel1, proc.Enamel2, proc.Enamel3,
-                 proc.Enamel4, proc.Enamel5, proc.Enamel6, proc.Enamel6ext, proc.Enamel7)
+all.dat <- rbind(proc.EDJ.dentin1, proc.EDJ.dentin2, proc.Enamel1.rm.f, proc.Enamel2.rm.f, proc.Enamel3.rm.f, proc.Enamel4.rm.f, 
+                       proc.Enamel5.rm.f, proc.Enamel6.rm.f, proc.Enamel7.rm.f, proc.Enamel8.rm.f,
+                       proc.Enamel9.rm.f, proc.Enamel10.rm.f)
 
-all.dat.rm <- rbind(dent.rm.f, proc.Enamel1.rm, proc.Enamel2.rm, proc.Enamel3.rm, proc.Enamel4.rm, 
-                    proc.Enamel5.rm, proc.Enamel6.rm, proc.Enamel6ext.rm, proc.Enamel7.rm.f)
+all.dat.rm <- rbind(dent.rm.f, proc.Enamel1.rm.f, proc.Enamel2.rm.f, proc.Enamel3.rm.f, proc.Enamel4.rm.f, 
+                    proc.Enamel5.rm.f, proc.Enamel6.rm.f, proc.Enamel7.rm.f, proc.Enamel8.rm.f,
+                    proc.Enamel9.rm.f, proc.Enamel10.rm.f)
 
 # all.enamel.rm <- rbind(proc.Enamel1.rm, proc.Enamel2.rm, proc.Enamel3.rm,
 #                        proc.Enamel4.rm, proc.Enamel5.rm, proc.Enamel6.rm, proc.Enamel6ext.rm, proc.Enamel7.rm.f)
