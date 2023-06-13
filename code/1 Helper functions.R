@@ -1,6 +1,7 @@
 library(MASS)
 library(dplyr)
 library(tidyr)
+library(sf)
 
 ############helper functions##############
 ###fn 1: convert time stamp to seconds####
@@ -140,7 +141,7 @@ moving.avg <- function(df, n){
 ###########fn 5 projecting a point to a curve and transform its x and y ########
 proj.pt <- function(x, y, ref){
   
-  ref.s <- dent.rm[order(ref$y),]
+  ref.s <- ref[order(ref$y),]
   
   ref.s.diff.x <- diff(ref.s$x)
   ref.s.diff.y <- diff(ref.s$y)
@@ -163,37 +164,45 @@ proj.pt <- function(x, y, ref){
 }
 
 ###########fn 6 projecting a transect to a curve and transform its x and y ########
-proj.transect <- function(x, y, ref){
+
+proj.transect <- function(trans, ref){
   
-  ref.s <- dent.rm[order(ref$y),]
+  n <- nrow(trans)
   
-  ref.s.diff.x <- diff(ref.s$x)
-  ref.s.diff.y <- diff(ref.s$y)
+  diff.x <- diff(ref$x)
+  diff.y <- diff(ref$y)
   
-  ref.s.dist <- sqrt(ref.s.diff.x^2 + ref.s.diff.y^2)
+  dist <- sqrt(diff.x^2 + diff.y^2)
   
-  new.x.axis <- c(0, cumsum(ref.s.dist)) #"faltten" the EDJ with new "x" axis values
+  ref.x <- c(0, cumsum(dist))
+  
+  new.x <- rep(0, n)
+  
+  dist.to.xy <- sqrt((trans$x[1] - ref$x)^2 + (trans$y[1] - ref$y)^2)
+  
+  indx <- which(dist.to.xy == min(dist.to.xy)) #extract index of the point
+  
+  #aligning the first data point to new x axis
+  
+  trans.diff.x <- diff(trans$x)
+  trans.diff.y <- diff(trans$y)
+  
+  trans.dist <- sqrt(trans.diff.x^2 + trans.diff.y^2)
   
   #initiate vectors
-  new.x <- rep(0, length(x))
+  new.x <- c(ref.x[indx], ref.x[indx] + cumsum(trans.dist))
   
-  new.y <- rep(0, length(y))
-  
-  indx <- rep(0, length(y))
+  new.y <- rep(0, n)
   
   #calculate distance between adjacent points
-  for(i in 1:length(x)){
+  for(i in 1:n){
     
-    dist.to.xy <- sqrt((x[i] - ref.s$x)^2 + (y[i] - ref.s$y)^2)
+    dist.to.ref <- sqrt((trans$x[i] - ref$x)^2 + (trans$y[i] - ref$y)^2)
     
-    new.y[i] <- min(dist.to.xy) #smallest element between xy and the curve
-    
-    indx[i] <- which(dist.to.xy == new.y[i]) #extract index of the point
-    
-    new.x[i] <- new.x.axis[indx[i]]
+    new.y[i] <- min(dist.to.ref) #smallest element between xy and the curve
     
   }
-
-  return(data.frame(new.x, new.y))
   
+  return(data.frame(new.x, new.y))
+ 
 }
