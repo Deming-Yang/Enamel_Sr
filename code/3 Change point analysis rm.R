@@ -107,72 +107,6 @@ E10.proj <- proj.transect(proc.Enamel10.rm.s, dent.rm.s)
 
 proc.Enamel10.rm.proj <- tibble(proc.Enamel10.rm.s, E10.proj)
 
-# #######Enamel 1######
-# E1.proj <- proj.transect(proc.Enamel1.rm$x, proc.Enamel1.rm$y, dent.rm)
-# 
-# proc.Enamel1.rm.proj <- tibble(proc.Enamel1.rm, E1.proj)
-# 
-# #######Enamel 2######
-# E2.proj <- proj.transect(proc.Enamel2.rm$x, proc.Enamel2.rm$y, dent.rm)
-# 
-# proc.Enamel2.rm.proj <- tibble(proc.Enamel2.rm, E2.proj)
-# 
-# #######Enamel 3######
-# E3.proj <- proj.transect(proc.Enamel3.rm$x, proc.Enamel3.rm$y, dent.rm)
-# 
-# proc.Enamel3.rm.proj <- tibble(proc.Enamel3.rm, E3.proj)
-# 
-# #######Enamel 4######
-# E4.proj <- proj.transect(proc.Enamel4.rm$x, proc.Enamel4.rm$y, dent.rm)
-# 
-# proc.Enamel4.rm.proj <- tibble(proc.Enamel4.rm, E4.proj)
-# 
-# #######Enamel 5######
-# E5.proj <- proj.transect(proc.Enamel5.rm$x, proc.Enamel5.rm$y, dent.rm)
-# 
-# proc.Enamel5.rm.proj <- tibble(proc.Enamel5.rm, E5.proj)
-# 
-# #######Enamel 6######
-# proc.Enamel6.rm <- rbind(proc.Enamel6.rm, proc.Enamel6ext.rm, proc.Enamel6ext2.rm)
-# 
-# proc.Enamel6.rm.s <- proc.Enamel6.rm[order(proc.Enamel6.rm$y),]
-# 
-# E6.proj <- proj.transect(proc.Enamel6.rm.s$x, proc.Enamel6.rm.s$y, dent.rm)
-# 
-# proc.Enamel6.rm.proj <- tibble(proc.Enamel6.rm.s, E6.proj)
-# 
-# #######Enamel 7######
-# proc.Enamel7.rm <- rbind(proc.Enamel7.rm, proc.Enamel7ext.rm)
-# 
-# proc.Enamel7.rm.s <- proc.Enamel7.rm[order(proc.Enamel7.rm$y),]
-# 
-# E7.proj <- proj.transect(proc.Enamel7.rm.s$x, proc.Enamel7.rm.s$y, dent.rm)
-# 
-# proc.Enamel7.rm.proj <- tibble(proc.Enamel7.rm.s, E7.proj)
-# 
-# #######Enamel 8######
-# proc.Enamel8.rm <- rbind(proc.Enamel8.rm, proc.Enamel8ext.rm)
-# 
-# proc.Enamel8.rm.s <- proc.Enamel8.rm[order(proc.Enamel8.rm$y),]
-# 
-# E8.proj <- proj.transect(proc.Enamel8.rm.s$x, proc.Enamel8.rm.s$y, dent.rm)
-# 
-# proc.Enamel8.rm.proj <- tibble(proc.Enamel8.rm.s, E8.proj)
-# 
-# #######Enamel 9######
-# proc.Enamel9.rm <- rbind(proc.Enamel9.rm, proc.Enamel9ext2.rm)
-# 
-# proc.Enamel9.rm.s <- proc.Enamel9.rm[order(proc.Enamel9.rm$y),]
-# 
-# E9.proj <- proj.transect(proc.Enamel9.rm.s$x, proc.Enamel9.rm.s$y, dent.rm)
-# 
-# proc.Enamel9.rm.proj <- tibble(proc.Enamel9.rm.s, E9.proj)
-# 
-# #######Enamel 10######
-# E10.proj <- proj.transect(proc.Enamel10.rm$x, proc.Enamel10.rm$y, dent.rm)
-# 
-# proc.Enamel10.rm.proj <- tibble(proc.Enamel10.rm, E10.proj)
-
 
 ######################## change point analysis ########################
 
@@ -186,12 +120,16 @@ fit_segmented.D.rm = segmented(fit_lm.D.rm, seg.Z = ~new.x, npsi = 3)  # Three c
 
 summary(fit_segmented.D.rm)
 
-cp.D.rm <- fit_segmented.D.rm$psi[5] #change point estimates, can use this to get x for plotting
-cp.D.rm.err <- fit_segmented.D.rm$psi[8]
+cp1.D.rm <- fit_segmented.D.rm$psi[5] #change point estimates, can use this to get x for plotting
+cp1.D.rm.err <- fit_segmented.D.rm$psi[8]
 
-D.rm.sl1 <- fit_segmented.D.rm$coefficients[2] + fit_segmented.D.rm$coefficients[3] #second slope
+cp2.D.rm <- fit_segmented.D.rm$psi[6] #change point estimates, can use this to get x for plotting
+cp2.D.rm.err <- fit_segmented.D.rm$psi[9]
 
-D.rm.sl2 <- fit_segmented.D.rm$coefficients[2]+ fit_segmented.D.rm$coefficients[3]+ fit_segmented.D.rm$coefficients[4] #third slope
+D.rm.sl1 <- fit_segmented.D.rm$coefficients[2] + fit_segmented.D.rm$coefficients[3]+ fit_segmented.D.rm$coefficients[4] #second slope
+
+D.rm.sl2 <- fit_segmented.D.rm$coefficients[2]+ fit_segmented.D.rm$coefficients[3]+ fit_segmented.D.rm$coefficients[4] + 
+  fit_segmented.D.rm$coefficients[5]#third slope
 
 # D.rm.sl3 <- fit_segmented.D.rm$coefficients[2]+ fit_segmented.D.rm$coefficients[3]+ 
 #   fit_segmented.D.rm$coefficients[4] + fit_segmented.D.rm$coefficients[5]#third slope
@@ -279,7 +217,8 @@ E4.rm.sl0 <- fit_segmented.E4.rm$coefficients[2]
 
 E4.rm.sl1 <- fit_segmented.E4.rm$coefficients[2] + fit_segmented.E4.rm$coefficients[3] #second slope
 
-E4.rm.sl2 <- fit_segmented.E4.rm$coefficients[2]+ fit_segmented.E4.rm$coefficients[3]+ fit_segmented.E4.rm$coefficients[4] #third slope
+E4.rm.sl2 <- fit_segmented.E4.rm$coefficients[2]+ fit_segmented.E4.rm$coefficients[3]+ fit_segmented.E4.rm$coefficients[4]+
+  fit_segmented.E4.rm$coefficients[5]#third slope
 
 ############Enamel 5###################
 proc.Enamel5.rm.f <- filter(proc.Enamel5.rm.proj, proc.Enamel5.rm.proj$avg > 0.703)
@@ -398,6 +337,8 @@ fit_segmented.E10.rm = segmented(fit_lm.E10.rm, seg.Z = ~new.x, npsi = 2)  # one
 
 summary(fit_segmented.E10.rm)
 
+
+
 cp1.E10.rm <- fit_segmented.E10.rm$psi[3] #change point estimates, can use this to get x for plotting
 cp1.E10.rm.err <- fit_segmented.E10.rm$psi[5]
 
@@ -411,14 +352,6 @@ E10.rm.sl1 <- fit_segmented.E10.rm$coefficients[2] + fit_segmented.E10.rm$coeffi
 
 E10.rm.sl2 <- fit_segmented.E10.rm$coefficients[2]+ fit_segmented.E10.rm$coefficients[3]+ fit_segmented.E10.rm$coefficients[4] #third slope
 
-D.rm.sl2
-E1.rm.sl2 #enamel is is about the same as dentine for slope 2
-E2.rm.sl2
-E3.rm.sl2
-E4.rm.sl2
-E5.rm.sl2
-E6.rm.sl2
-E7.rm.sl2
 
 #compile slopes of the first transition
 Sr.trans.sl1 <- c(D.rm.sl1, E1.rm.sl1, E2.rm.sl1, E3.rm.sl1, E4.rm.sl1, E5.rm.sl1, E6.rm.sl1, E7.rm.sl1,
@@ -507,7 +440,10 @@ cp2.E.proj <- data.frame(x = cp2.E.rm.x, y = cp2.E.rm.y)
 
 par(mfrow=c(1,2))
 plot(cp1.E.rm.x, cp1.E.rm.y, main = "Change point 1")
+abline(lm.cp1.E.proj.inner)
+
 plot(cp2.E.rm.x, cp2.E.rm.y, main = "Change point 2")
+abline(lm.cp2.E.proj.inner)
 
 #it seems that only the last 2 data points are not conforming to a linear trend
 #remove the points for E8-10
@@ -537,4 +473,59 @@ atan(abs(lm.cp2.E.proj.inner$coefficients[2]))/pi*180
 #use mean of the two angles in the forward model
 fwd.appo.sl <- mean(c(lm.cp1.E.proj.inner$coefficients[2],lm.cp2.E.proj.inner$coefficients[2]))
 
+#####################plot slopes of the first segment#####
+data.frame(slope1 = Sr.trans.sl1, slope2 = Sr.trans.sl2)
 
+plot(1:11,Sr.trans.sl1) #no significant difference in the first slope
+plot(1:11,Sr.trans.sl2) #lower slopes for the outer two transects
+
+newdataD <- data.frame(new.x = c(cp1.D.rm, cp2.D.rm))
+segmented.D.Sr <- predict.segmented(fit_segmented.D.rm, newdata = newdataD)
+Tr1.D <- segmented.D.Sr[2] - segmented.D.Sr[1]
+
+Tr1.E <- rep(0,10)
+
+newdataE1 <- data.frame(new.x = c(cp1.E1.rm, cp2.E1.rm))
+segmented.E1.Sr <- predict.segmented(fit_segmented.E1.rm, newdata = newdataE1)
+Tr1.E[1] <- segmented.E1.Sr[2] - segmented.E1.Sr[1]
+
+newdataE2 <- data.frame(new.x = c(cp1.E2.rm, cp2.E2.rm))
+segmented.E2.Sr <- predict.segmented(fit_segmented.E2.rm, newdata = newdataE2)
+Tr1.E[2] <- segmented.E2.Sr[2] - segmented.E2.Sr[1]
+
+newdataE3 <- data.frame(new.x = c(cp1.E3.rm, cp2.E3.rm))
+segmented.E3.Sr <- predict.segmented(fit_segmented.E3.rm, newdata = newdataE3)
+Tr1.E[3] <- segmented.E3.Sr[2] - segmented.E3.Sr[1]
+
+newdataE4 <- data.frame(new.x = c(cp1.E4.rm, cp2.E4.rm))
+segmented.E4.Sr <- predict.segmented(fit_segmented.E4.rm, newdata = newdataE4)
+Tr1.E[4] <- segmented.E4.Sr[2] - segmented.E4.Sr[1]
+
+newdataE5 <- data.frame(new.x = c(cp1.E5.rm, cp2.E5.rm))
+segmented.E5.Sr <- predict.segmented(fit_segmented.E5.rm, newdata = newdataE5)
+Tr1.E[5] <- segmented.E5.Sr[2] - segmented.E5.Sr[1]
+
+newdataE6 <- data.frame(new.x = c(cp1.E6.rm, cp2.E6.rm))
+segmented.E6.Sr <- predict.segmented(fit_segmented.E6.rm, newdata = newdataE6)
+Tr1.E[6] <- segmented.E6.Sr[2] - segmented.E6.Sr[1]
+
+newdataE7 <- data.frame(new.x = c(cp1.E7.rm, cp2.E7.rm))
+segmented.E7.Sr <- predict.segmented(fit_segmented.E7.rm, newdata = newdataE7)
+Tr1.E[7] <- segmented.E7.Sr[2] - segmented.E7.Sr[1]
+
+newdataE8 <- data.frame(new.x = c(cp1.E8.rm, cp2.E8.rm))
+segmented.E8.Sr <- predict.segmented(fit_segmented.E8.rm, newdata = newdataE8)
+Tr1.E[8] <- segmented.E8.Sr[2] - segmented.E8.Sr[1]
+
+newdataE9 <- data.frame(new.x = c(cp1.E9.rm, cp2.E9.rm))
+segmented.E9.Sr <- predict.segmented(fit_segmented.E9.rm, newdata = newdataE9)
+Tr1.E[9] <- segmented.E9.Sr[2] - segmented.E9.Sr[1]
+
+
+newdataE10 <- data.frame(new.x = c(cp1.E10.rm, cp2.E10.rm))
+segmented.E10.Sr <- predict.segmented(fit_segmented.E10.rm, newdata = newdataE10)
+Tr1.E[10] <- segmented.E10.Sr[2] - segmented.E10.Sr[1]
+
+Tr1.E
+
+#there is a higher fraction of UT Sr in E10 than in E9. Negligable in E8 
