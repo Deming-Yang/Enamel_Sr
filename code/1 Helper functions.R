@@ -127,7 +127,7 @@ data.process <- function(df, log, type = "e"){
   return(na.omit(corr.df))
 }
 
-###########fn 4 moving average, 25 points########
+###########fn 4 moving average, n points########
 moving.avg <- function(df, n){
   require(zoo)
   rm.dat <- rollmean(df$corr.87Sr.86Sr, n)

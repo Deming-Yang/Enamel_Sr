@@ -740,9 +740,17 @@ ggplot()+
 #solution 2: use geostats to predict missing values and Enamel only
 en.bbox <- st_bbox(sf.all.enamel.sim.xy)
 
+en.bbox[1] <- 800
+
+en.bbox[2] <- 200
+
+en.bbox[3] <- 77000
+
+en.bbox[4] <- 3200
+
 en.grid = st_as_stars(en.bbox, dx = 100, dy = 100)
 
-variog.Sr <- variogram(avg ~ x + y , data = sf.all.enamel.sim.xy)
+variog.Sr <- variogram(avg ~ x * y , data = sf.all.enamel.sim.xy)
 
 plot(variog.Sr, numbers = TRUE)
 
@@ -754,19 +762,19 @@ Sr.vgm1 = vgm(psill=modSill, "Sph", range=modRange, nugget=modNugget)
 Sr.vgm2 = fit.variogram(variog.Sr, Sr.vgm1) 
 plot(variog.Sr, Sr.vgm2)
 
-en.Sr.pred.uk <- krige(formula = avg ~ x + y, sf.all.enamel.sim.xy, en.grid, Sr.vgm2, 
+en.Sr.pred.uk <- krige(formula = avg ~ x * y, sf.all.enamel.sim.xy, en.grid, Sr.vgm2, 
                        nmin=40, nmax=100, maxdist=5e3)
 
-cont.en.Sr.pred.uk<- st_contour(en.Sr.pred.uk, contour_lines =F, breaks = seq(0.705,0.712,0.001))
+# cont.en.Sr.pred.uk<- st_contour(en.Sr.pred.uk, contour_lines =F, breaks = seq(0.705,0.712,0.001))
 
 plot(en.Sr.pred.uk, axes= T, breaks = seq(0.705,0.712,0.001), nbreaks = 8, col = viridis) #this works now!
 
 # plot(en.Sr.pred.uk, axes= T, breaks = seq(0.705,0.712,0.0005), nbreaks = 15, col = viridis) #this works now!
 
-plot(cont.en.Sr.pred.uk, col = viridis, add = T)#????
-
-cont.en.Sr.pred.uk <- st_contour(en.Sr.pred.uk, contour_lines =F, breaks = seq(0.706,0.711,0.001),
-                                 as_points=FALSE, merge=TRUE)
+# plot(cont.en.Sr.pred.uk, col = viridis, add = T)#????
+# 
+# cont.en.Sr.pred.uk <- st_contour(en.Sr.pred.uk, contour_lines =F, breaks = seq(0.706,0.711,0.001),
+#                                  as_points=FALSE, merge=TRUE)
 
 # xgrid <- seq(0, round(bbox$xmax), by=cell_size)
 # ygrid <- seq(0, round(bbox$ymax), by=cell_size)

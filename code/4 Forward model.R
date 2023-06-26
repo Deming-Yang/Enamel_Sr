@@ -13,9 +13,141 @@ source("code/1 Helper functions.R")
 
 setwd("C:/Users/ydmag/Google Drive/U of U/Elephant molar/Enamel_Sr")
 
+#load hand drill data
+Drill <- read.csv("data/Drill.csv")
+
+Drill.no <- na.omit(Drill)
+
 ###############forward model for Sr ratio transition at different enamel depths
 
-######build simulated enamel block#######
+######approach 1 use Kriging silulated enamel block######
+dim(en.Sr.pred.uk) #753 pix long, 28 pix thick
+
+en.Sr.pred.uk$var1.pred
+
+sim.en.Sr <- t(en.Sr.pred.uk$var1.pred)
+
+sample.res <- 100
+
+####simulate sample averaging######
+sample.wd <- 1e3 #1mm wide sampling groove
+sample.dp <- 1e3 #1mm wide sampling depth
+
+sample.grid <- matrix(1,ncol = sample.wd/sample.res, nrow = sample.dp/sample.res)
+
+sample.grid[7:10,1] <- 0
+sample.grid[9:10,2] <- 0
+sample.grid[10,3] <- 0
+sample.grid[10,4] <- 0
+sample.grid[7:10,10] <- 0
+sample.grid[9:10,9] <- 0
+sample.grid[10,8] <- 0
+sample.grid[10,7] <- 0
+
+sample.grid #sampling grid
+
+n <- floor(ncol(sim.en.Sr)/ncol(sample.grid))
+
+avg.Sr.samp <- rep(0,n) #initiate vector
+
+for(i in 1:n){#100 samples
+  #testing the upper right corner cell of the grid
+  if(is.na(sim.en.Sr[1,i*ncol(sample.grid)])==T){
+    #when there is NA at the upper right corner cell
+    j <- sum(!is.na(sim.en.Sr[,i*ncol(sample.grid)]))##record the number of valid cells in this column
+    if(j > nrow(sample.grid)){#more cells to sample
+      #increase depth of the sampling cell
+      l <- nrow(sim.en.Sr)-j+1
+      temp <- sim.en.Sr[l:(l+nrow(sample.grid)-1),((i-1)*ncol(sample.grid)+1):(i*ncol(sample.grid))]
+      temp <- replace(temp, is.na(temp), 0)
+      temp.prod <- temp * sample.grid 
+      avg.Sr.samp[i]<- sum(temp.prod)/sum(as.integer(temp.prod>0))
+    }
+    else{#not enough cells to sample, sample to the bottom
+      
+      temp <- sim.en.Sr[(nrow(sim.en.Sr)-nrow(sample.grid)+1):nrow(sim.en.Sr),((i-1)*ncol(sample.grid)+1):(i*ncol(sample.grid))]
+      temp <- replace(temp, is.na(temp), 0)
+      temp.prod <- temp * sample.grid
+      avg.Sr.samp[i]<- sum(temp.prod)/sum(as.integer(temp.prod>0))#here the sample grid is incorrect!
+    }
+  }else{#y,x
+    temp <- sim.en.Sr[1:nrow(sample.grid),((i-1)*ncol(sample.grid)+1):(i*ncol(sample.grid))]
+    temp <- replace(temp, is.na(temp), 0)
+    temp.prod <- temp * sample.grid 
+    avg.Sr.samp[i]<- sum(temp.prod)/sum(as.integer(temp.prod>0))
+  }
+}
+
+plot(Drill.no$Dist..From.cervix, Drill.no$X87Sr.86Sr,ylim = c(0.706,0.712),pch=16,col ="red")
+
+lines(84-(1:n), avg.Sr.samp, ylim = c(0.706,0.712),xlim = c(0,100),col = "blue",lwd =2)
+
+
+# ####simulate sample averaging, with higher depths######
+# sample.wd <- 1e3 #1mm wide sampling groove
+# sample.dp <- 0.6e3 #1mm wide sampling depth
+# 
+# make.avg.matrix <- function(sample.wd, sample.dp, sample.res){
+#   
+#   ncol <- sample.wd/sample.res
+#   nrow <- sample.dp/sample.res
+#   
+#   sample.grid <- matrix(1, ncol, nrow)
+#   
+#   sample.grid[7:10,1] <- 0
+#   sample.grid[7:10,10] <- 0
+#   
+#   sample.grid[9:10,2] <- 0
+#   sample.grid[9:10,9] <- 0
+#   
+#   sample.grid[10,3] <- 0
+#   sample.grid[10,4] <- 0
+#   sample.grid[10,8] <- 0
+#   sample.grid[10,7] <- 0
+#   
+# }
+# 
+# sample.grid <- matrix(1,ncol = sample.wd/sample.res, nrow = sample.dp/sample.res)
+# 
+# sample.grid #sampling grid
+# 
+# n <- floor(ncol(sim.en.Sr)/ncol(sample.grid))
+# 
+# avg.Sr.samp <- rep(0,n) #initiate vector
+# 
+# for(i in 1:n){#100 samples
+#   #testing the upper right corner cell of the grid
+#   if(is.na(sim.en.Sr[1,i*ncol(sample.grid)])==T){
+#     #when there is NA at the upper right corner cell
+#     j <- sum(!is.na(sim.en.Sr[,i*ncol(sample.grid)]))##record the number of valid cells in this column
+#     if(j > nrow(sample.grid)){#more cells to sample
+#       #increase depth of the sampling cell
+#       l <- nrow(sim.en.Sr)-j+1
+#       temp <- sim.en.Sr[l:(l+nrow(sample.grid)-1),((i-1)*ncol(sample.grid)+1):(i*ncol(sample.grid))]
+#       temp <- replace(temp, is.na(temp), 0)
+#       temp.prod <- temp * sample.grid 
+#       avg.Sr.samp[i]<- sum(temp.prod)/sum(as.integer(temp.prod>0))
+#     }
+#     else{#not enough cells to sample, sample to the bottom
+#       
+#       temp <- sim.en.Sr[(nrow(sim.en.Sr)-nrow(sample.grid)+1):nrow(sim.en.Sr),((i-1)*ncol(sample.grid)+1):(i*ncol(sample.grid))]
+#       temp <- replace(temp, is.na(temp), 0)
+#       temp.prod <- temp * sample.grid
+#       avg.Sr.samp[i]<- sum(temp.prod)/sum(as.integer(temp.prod>0))#here the sample grid is incorrect!
+#     }
+#   }else{#y,x
+#     temp <- sim.en.Sr[1:nrow(sample.grid),((i-1)*ncol(sample.grid)+1):(i*ncol(sample.grid))]
+#     temp <- replace(temp, is.na(temp), 0)
+#     temp.prod <- temp * sample.grid 
+#     avg.Sr.samp[i]<- sum(temp.prod)/sum(as.integer(temp.prod>0))
+#   }
+# }
+# 
+# plot(Drill.no$Dist..From.cervix, Drill.no$X87Sr.86Sr,ylim = c(0.706,0.712),pch=16,col ="red")
+# 
+# lines(85-(1:n), avg.Sr.samp, ylim = c(0.706,0.712),xlim = c(0,100),col = "blue",lwd =2)
+
+######approach 2 build simulated enamel block#######
 #enamel geometry: appositional angle: 3.5 degrees, atan = 3/50
 
 #smallest unit of the block: 100 microns -> 1000 pix long, 28 pix thick
@@ -53,7 +185,6 @@ tr2.x <- 1:(tr2.leng/pix.res)
 Sr.tr2 <- Sr.tr1[length(Sr.tr1)] + (tr2.x*pix.res)*sl.2
 
 Sr.tr.all <- c(Sr.tr1, Sr.tr2)
-plot(1:length(Sr.tr.all), Sr.tr.all)
 
 #####set location of the initial transition at EDJ####
 loc.tr <- 20e3
@@ -117,6 +248,38 @@ values(r.Md) <- Md.grid
 plot(r.Md,ylim=c(0,28))
 
 ########################part II maturation######################
+#Part 1: two-end mixing between 1.apposition transitions and 2. maturation constant 
+
+end.memb.appo1 <- segmented.D.Sr[1]
+
+end.memb.appo2 <- segmented.D.Sr[2]
+
+end.memb.mat <- 0.712
+
+r.mix <- seq(0,0.25,by = 0.05)
+
+#calculate 2 end mixing
+
+mix.E1 <- end.memb.mat*r.mix + end.memb.appo1*(1-r.mix)
+mix.E2 <- end.memb.mat*r.mix + end.memb.appo2*(1-r.mix)
+
+plot(proc.Enamel9.rm.f$new.x, proc.Enamel9.rm.f$avg, main = "Enamel 9",col="darkgray", 
+     pch=16,xlim=c(0,4e4),ylim=c(0.705,0.711))
+abline(h = mix.E1, col = viridis(length(mix.E1)),lty = 2, lwd = 1.5)
+abline(h = mix.E2, col = viridis(length(mix.E1)),lty = 3, lwd = 2)
+plot(fit_segmented.E9.rm, add =T)
+lines.segmented(fit_segmented.E9.rm)
+points.segmented(fit_segmented.E9.rm)
+
+plot(proc.Enamel10.rm.f$new.x, proc.Enamel10.rm.f$avg, main = "Enamel 10",col="darkgray", 
+     pch=16,xlim=c(0,4e4),ylim=c(0.705,0.711))
+abline(h = mix.E1, col = viridis(length(mix.E1)),lty = 2, lwd = 1.5)
+abline(h = mix.E2, col = viridis(length(mix.E1)),lty = 3, lwd = 2)
+plot(fit_segmented.E10.rm, add =T)
+lines.segmented(fit_segmented.E10.rm)
+points.segmented(fit_segmented.E10.rm)
+
+
 #can use linear interpolation, or loess with predictions
 syn.dat <- data.frame(index = c(1:ncol(Sr.grid)), input = rev(Sr.grid[total.thick/pix.res,]))
 #synthetic hair data, in distance from root
@@ -141,9 +304,13 @@ tl <- data.frame(index = 1:n.days, input = input.Sr)
 plot(tl$index, tl$input, type="l")
 
 #then model enamel formation
-#apposition is done
+#apposition is done, maturation only affects the outer 1/4 of the enamel and with decreasing weights towards EDJ
 
-#maturation: angle, length, and weight distribution
+
+#maturation: angle is assumed to be perpendicular to EDJ for simplicity, So a rectangular block
+#maturation length (or time) is assumed to be constant (e.g., x number of days)
+#maturation weight distribution is assuming to be even within the block, but with a depth distribution
+#less weights for deeper 
 #iteration 1: angle is the same as apposition, immediately starting
 #duration is evaluating using lm =700 pxiels or 70mm/ 70e3 microns
 #Duration to weight distribution: 70e3/55.3
@@ -279,7 +446,7 @@ for(i in 1:n){#100 samples
     avg.Sr.samp[i]<- sum(temp.prod)/sum(as.integer(temp.prod>0))
   }
 }
-
+par(mfrow=c(1,1))
 plot((1:n)*10-5, avg.Sr.samp, ylim = c(0.706,0.712))
 lines(1:ncol(Sr.grid), Sr.grid[1,])
 lines(1:ncol(Sr.grid), Sr.grid[nrow(Sr.grid),])
