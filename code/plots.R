@@ -10,7 +10,7 @@ library(changepoint)
 library(ggplot2)
 library(gstat)
 library(stars)
-library(rasterVis)
+library(segmented)
 
 ##################plot moving averages###################
 # par(mfrow=c(3,3))
@@ -128,7 +128,7 @@ ggplot()+
 
 
 #################plot 2 Sr ratio transitions using moving averages###############
-par(mfrow=c(2,5))
+par(mfrow=c(2,6))
 # preliminary plot
 plot(dent.rm.f$new.x, dent.rm.f$avg, main = "Dentine",col="darkgray",
      pch=16,ylim=c(0.705,0.712))
@@ -234,9 +234,9 @@ dent.rm.f2 <- rbind(dent.rm.fa, dent.rm.fb)
 
 par(mfrow=c(2,5))
 #enamel 1, no x- shift is needed
-plot(dent.rm.f2$new.x, dent.rm.f2$avg, main = "Enamel 1",col= alpha("lightcyan3", 0.2),
+plot(dent.rm.f2$new.x, dent.rm.f2$avg, main = "Enamel 1",col= alpha("lightcyan4", 0.2),
      pch=16, cex=2, xlim=c(4e4,8e4),ylim=c(0.705,0.711))
-points(proc.Enamel1.rm.f$new.x, proc.Enamel1.rm.f$avg, col= alpha("mistyrose1", 0.1),pch=16)
+points(proc.Enamel1.rm.f$new.x, proc.Enamel1.rm.f$avg, col= alpha("orange", 0.1),pch=16)
 
 abline(h = segmented.D.Sr[1], lty = 2, lwd = 1.5)
 abline(h = segmented.D.Sr[2], lty = 2, lwd = 1.5)
@@ -247,9 +247,9 @@ points.segmented(fit_segmented.E1.rm)
 #enamel 2, x- shift is needed, need to shift dentine values
 shift.x <- cp1.D.rm - cp1.E.rm.x[2]
 
-plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 2",col= alpha("lightcyan3", 0.2), 
+plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 2",col= alpha("lightcyan4", 0.2), 
      pch=16, cex=2, xlim=c(3.5e4,7.5e4),ylim=c(0.705,0.711))
-points(proc.Enamel2.rm.f$new.x, proc.Enamel2.rm.f$avg, col= alpha("mistyrose1", 0.1),pch=16)
+points(proc.Enamel2.rm.f$new.x, proc.Enamel2.rm.f$avg, col= alpha("orange", 0.1),pch=16)
 
 abline(h = segmented.D.Sr[1], lty = 2, lwd = 1.5)
 abline(h = segmented.D.Sr[2], lty = 2, lwd = 1.5)
@@ -260,9 +260,9 @@ points.segmented(fit_segmented.E2.rm)
 #enamel 3, x- shift is needed, need to shift dentine values
 shift.x <- cp1.D.rm - cp1.E.rm.x[3] 
 
-plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 3",col= alpha("lightcyan3", 0.2), 
+plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 3",col= alpha("lightcyan4", 0.2), 
      pch=16, cex=2, xlim=c(3e4,7e4),ylim=c(0.705,0.711))
-points(proc.Enamel3.rm.f$new.x, proc.Enamel3.rm.f$avg, col= alpha("mistyrose1", 0.1),pch=16)
+points(proc.Enamel3.rm.f$new.x, proc.Enamel3.rm.f$avg, col= alpha("orange", 0.1),pch=16)
 
 abline(h = segmented.D.Sr[1], lty = 2, lwd = 1.5)
 abline(h = segmented.D.Sr[2], lty = 2, lwd = 1.5)
@@ -273,9 +273,9 @@ points.segmented(fit_segmented.E3.rm)
 #enamel 4, x- shift is needed, need to shift dentine values
 shift.x <- cp1.D.rm - cp1.E.rm.x[4]
 
-plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 4",col= alpha("lightcyan3", 0.2), 
+plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 4",col= alpha("lightcyan4", 0.2), 
      pch=16, cex=2, xlim=c(2.5e4,6.5e4),ylim=c(0.705,0.711))
-points(proc.Enamel4.rm.f$new.x, proc.Enamel4.rm.f$avg, col= alpha("mistyrose1", 0.1),pch=16)
+points(proc.Enamel4.rm.f$new.x, proc.Enamel4.rm.f$avg, col= alpha("orange", 0.1),pch=16)
 
 abline(h = segmented.D.Sr[1], lty = 2, lwd = 1.5)
 abline(h = segmented.D.Sr[2], lty = 2, lwd = 1.5)
@@ -286,9 +286,9 @@ points.segmented(fit_segmented.E4.rm)
 #enamel 5, x- shift is needed, need to shift dentine values
 shift.x <- cp1.D.rm - cp1.E.rm.x[5]
 
-plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 5",col= alpha("lightcyan3", 0.2), 
+plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 5",col= alpha("lightcyan4", 0.2), 
      pch=16, cex=2, xlim=c(2e4,6e4),ylim=c(0.705,0.711))
-points(proc.Enamel5.rm.f$new.x, proc.Enamel5.rm.f$avg, col= alpha("mistyrose1", 0.1),pch=16)
+points(proc.Enamel5.rm.f$new.x, proc.Enamel5.rm.f$avg, col= alpha("orange", 0.1),pch=16)
 
 abline(h = segmented.D.Sr[1], lty = 2, lwd = 1.5)
 abline(h = segmented.D.Sr[2], lty = 2, lwd = 1.5)
@@ -299,9 +299,9 @@ points.segmented(fit_segmented.E5.rm)
 #enamel 6, x- shift is needed, need to shift dentine values
 shift.x <- cp1.D.rm - cp1.E.rm.x[6]
 
-plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 6",col= alpha("lightcyan3", 0.2), 
+plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 6",col= alpha("lightcyan4", 0.2), 
      pch=16, cex=2, xlim=c(1.5e4,5.5e4),ylim=c(0.705,0.711))
-points(proc.Enamel6.rm.f$new.x, proc.Enamel6.rm.f$avg, col= alpha("mistyrose1", 0.1),pch=16)
+points(proc.Enamel6.rm.f$new.x, proc.Enamel6.rm.f$avg, col= alpha("orange", 0.1),pch=16)
 
 abline(h = segmented.D.Sr[1], lty = 2, lwd = 1.5)
 abline(h = segmented.D.Sr[2], lty = 2, lwd = 1.5)
@@ -312,9 +312,9 @@ points.segmented(fit_segmented.E6.rm)
 #enamel 7, x- shift is needed, need to shift dentine values
 shift.x <- cp1.D.rm - cp1.E.rm.x[7]
 
-plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 7",col= alpha("lightcyan3", 0.2), 
+plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 7",col= alpha("lightcyan4", 0.2), 
      pch=16, cex=2, xlim=c(1e4,5e4),ylim=c(0.705,0.711))
-points(proc.Enamel7.rm.f$new.x, proc.Enamel7.rm.f$avg, col= alpha("mistyrose1", 0.1),pch=16)
+points(proc.Enamel7.rm.f$new.x, proc.Enamel7.rm.f$avg, col= alpha("orange", 0.1),pch=16)
 
 abline(h = segmented.D.Sr[1], lty = 2, lwd = 1.5)
 abline(h = segmented.D.Sr[2], lty = 2, lwd = 1.5)
@@ -325,9 +325,9 @@ points.segmented(fit_segmented.E7.rm)
 #enamel 8, x- shift is needed, need to shift dentine values
 shift.x <- cp1.D.rm - cp1.E.rm.x[8]
 
-plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 8",col= alpha("lightcyan3", 0.2), 
+plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 8",col= alpha("lightcyan4", 0.2), 
      pch=16, cex=2, xlim=c(0.5e4,4.5e4),ylim=c(0.705,0.711))
-points(proc.Enamel8.rm.f$new.x, proc.Enamel8.rm.f$avg, col= alpha("mistyrose1", 0.1),pch=16)
+points(proc.Enamel8.rm.f$new.x, proc.Enamel8.rm.f$avg, col= alpha("orange", 0.1),pch=16)
 
 abline(h = segmented.D.Sr[1], lty = 2, lwd = 1.5)
 abline(h = segmented.D.Sr[2], lty = 2, lwd = 1.5)
@@ -338,9 +338,9 @@ points.segmented(fit_segmented.E8.rm)
 #enamel 9, x- shift is needed, need to shift dentine values
 shift.x <- cp1.D.rm - cp1.E.rm.x[9]
 
-plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 9",col= alpha("lightcyan3", 0.2), 
+plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 9",col= alpha("lightcyan4", 0.2), 
      pch=16, cex=2, xlim=c(0.5e4,4.5e4),ylim=c(0.705,0.711))
-points(proc.Enamel9.rm.f$new.x, proc.Enamel9.rm.f$avg, col= alpha("mistyrose1", 0.1),pch=16)
+points(proc.Enamel9.rm.f$new.x, proc.Enamel9.rm.f$avg, col= alpha("orange", 0.1),pch=16)
 
 abline(h = segmented.D.Sr[1], lty = 2, lwd = 1.5)
 abline(h = segmented.D.Sr[2], lty = 2, lwd = 1.5)
@@ -351,9 +351,9 @@ points.segmented(fit_segmented.E9.rm)
 #enamel 10, x- shift is needed, need to shift dentine values
 shift.x <- cp1.D.rm - cp1.E.rm.x[10]
 
-plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 10",col= alpha("lightcyan3", 0.2), 
+plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 10",col= alpha("lightcyan4", 0.2), 
      pch=16, cex=2, xlim=c(0,4e4),ylim=c(0.705,0.711))
-points(proc.Enamel10.rm.f$new.x, proc.Enamel10.rm.f$avg, col= alpha("mistyrose1", 0.1),pch=16)
+points(proc.Enamel10.rm.f$new.x, proc.Enamel10.rm.f$avg, col= alpha("orange", 0.1),pch=16)
 
 abline(h = segmented.D.Sr[1], lty = 2, lwd = 1.5)
 abline(h = segmented.D.Sr[2], lty = 2, lwd = 1.5)
@@ -765,13 +765,21 @@ plot(variog.Sr, Sr.vgm2)
 en.Sr.pred.uk <- krige(formula = avg ~ x * y, sf.all.enamel.sim.xy, en.grid, Sr.vgm2, 
                        nmin=40, nmax=100, maxdist=5e3)
 
-# cont.en.Sr.pred.uk<- st_contour(en.Sr.pred.uk, contour_lines =F, breaks = seq(0.705,0.712,0.001))
+# cont.en.Sr.pred.uk <- contour(en.Sr.pred.uk, levels = seq(0.705,0.712,0.001), plot = F)
 
-plot(en.Sr.pred.uk, axes= T, breaks = seq(0.705,0.712,0.001), nbreaks = 8, col = viridis) #this works now!
+cont.en.Sr.pred.uk <- st_contour(en.Sr.pred.uk, contour_lines =T, breaks = seq(0.705,0.712,0.001))
+par(mfrow=c(2,1))
 
-# plot(en.Sr.pred.uk, axes= T, breaks = seq(0.705,0.712,0.0005), nbreaks = 15, col = viridis) #this works now!
 
-# plot(cont.en.Sr.pred.uk, col = viridis, add = T)#????
+# plot(en.Sr.pred.uk, axes = T, breaks = seq(0.705,0.712,0.001), nbreaks = 8, col = viridis) #this works now!
+
+plot(en.Sr.pred.uk, axes = T, breaks = seq(0.705,0.712,0.0005), nbreaks = 15, col = viridis) #this works now!
+
+plot(cont.en.Sr.pred.uk, col = "black",add = T)#????
+
+# st_bbox(en.Sr.pred.uk)
+# 
+# contour(en.Sr.pred.uk$var1.pred, levels = seq(0.705,0.712,0.001))
 # 
 # cont.en.Sr.pred.uk <- st_contour(en.Sr.pred.uk, contour_lines =F, breaks = seq(0.706,0.711,0.001),
 #                                  as_points=FALSE, merge=TRUE)
@@ -779,7 +787,7 @@ plot(en.Sr.pred.uk, axes= T, breaks = seq(0.705,0.712,0.001), nbreaks = 8, col =
 # xgrid <- seq(0, round(bbox$xmax), by=cell_size)
 # ygrid <- seq(0, round(bbox$ymax), by=cell_size)
 # 
-# #use a two-dimensional loess model to predict missing values in each transect!!!!!! this doesn't work
+# #use a two-dimensional loess model to smooth the values
 # all.enamel.sim.loess <- loess(avg ~ new.x + new.y, data = all.enamel.sim, 
 #                               degree = 2, span=0.18,
 #                               normalize = T, family = "gaussian")
