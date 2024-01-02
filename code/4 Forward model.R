@@ -78,9 +78,27 @@ for(i in 1:n){#100 samples
   }
 }
 
+#preliminary plot
 plot(Drill.no$Dist..From.cervix, Drill.no$X87Sr.86Sr,ylim = c(0.706,0.712),pch=16,col ="red")
 
 lines(84-(1:n), avg.Sr.samp, ylim = c(0.706,0.712),xlim = c(0,100),col = "blue",lwd =2)
+
+#preliminary plot comparing to dentine transect:
+#convert dist from crown top to dist from cervix
+dent.rm.new.x<- 92-dent.rm.f2$new.x/1e3
+proc.Enamel10.rm.new.x<- 92-proc.Enamel10.rm.f$new.x/1e3
+proc.Enamel5.rm.new.x<- 92-proc.Enamel5.rm.f$new.x/1e3
+proc.Enamel1.rm.new.x<- 92-proc.Enamel1.rm.f$new.x/1e3
+
+plot(dent.rm.new.x, dent.rm.f2$avg, col= alpha("lightcyan4", 0.2),
+     pch=16, cex=1, xlim=c(100,0),ylim=c(0.705,0.712),
+     xlab="Distance from cervix (mm)",
+     main = "Conventional vs LAICP-MS",
+     ylab = "87Sr/86Sr")
+points(proc.Enamel1.rm.new.x, proc.Enamel1.rm.f$avg, col= alpha("orange", 0.1),pch=16)
+points(proc.Enamel5.rm.new.x, proc.Enamel5.rm.f$avg, col= alpha("orange3", 0.1),pch=16)
+points(proc.Enamel10.rm.new.x, proc.Enamel10.rm.f$avg, col= alpha("orange4", 0.1),pch=16)
+points(Drill.no$Dist..From.cervix, Drill.no$X87Sr.86Sr,pch=16,col ="red")
 
 
 # ####simulate sample averaging, with higher depths######
@@ -147,7 +165,7 @@ lines(84-(1:n), avg.Sr.samp, ylim = c(0.706,0.712),xlim = c(0,100),col = "blue",
 # 
 # lines(85-(1:n), avg.Sr.samp, ylim = c(0.706,0.712),xlim = c(0,100),col = "blue",lwd =2)
 
-######approach 2 build simulated enamel block#######
+######approach 2 build simulated enamel block using assumptions of enamel maturation#######
 #enamel geometry: appositional angle: 3.5 degrees, atan = 3/50
 
 #smallest unit of the block: 100 microns -> 1000 pix long, 28 pix thick
@@ -165,6 +183,8 @@ tr2.leng <- 5e3
 tr1.leng <- 30e3
 
 ########################part I apposition######################
+
+#?????????????????????????? think about how to do the time to space conversion with enamel extension rate!!!!!
 
 #####identify starting and end value of Sr ratio
 
