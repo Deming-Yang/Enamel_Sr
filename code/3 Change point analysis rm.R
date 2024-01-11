@@ -8,9 +8,8 @@ library(sf)
 library(zoo)
 library(segmented)
 
-source("code/1 Helper functions.R")
+source("./code/1 Helper functions.R")
 
-setwd("C:/Users/ydmag/Google Drive/U of U/Elephant molar/Enamel_Sr")
 
 #####################transform all coordinates to evaluate Sr slopes###########
 dent.rm <- rbind(proc.EDJ.dentin1.rm, proc.EDJ.dentin2.rm)

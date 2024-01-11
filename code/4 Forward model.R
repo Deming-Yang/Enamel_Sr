@@ -9,12 +9,10 @@ library(zoo)
 library(segmented)
 library(raster)
 
-source("code/1 Helper functions.R")
-
-setwd("C:/Users/ydmag/Google Drive/U of U/Elephant molar/Enamel_Sr")
+source("./code/1 Helper functions.R")
 
 #load hand drill data
-Drill <- read.csv("data/Drill.csv")
+Drill <- read.csv("./data/Drill.csv")
 
 Drill.no <- na.omit(Drill)
 
