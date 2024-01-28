@@ -10,106 +10,9 @@ library(segmented)
 
 source("./code/1 Helper functions.R")
 
-
-#####################transform all coordinates to evaluate Sr slopes###########
-dent.rm <- rbind(proc.EDJ.dentin1.rm, proc.EDJ.dentin2.rm)
-#first transform dentine transect
-dent.rm.s <- dent.rm[order(dent.rm$y),]
-
-dent.rm.s.diff.x <- diff(dent.rm.s$x)
-dent.rm.s.diff.y <- diff(dent.rm.s$y)
-
-#calculate distance between adjacent points
-dent.rm.s.dist <- sqrt(dent.rm.s.diff.x^2 + dent.rm.s.diff.y^2)
-
-dent.rm.new.x <- c(0, cumsum(dent.rm.s.dist))
-
-dent.rm.new.y <- rep(-150, length(dent.rm.new.x)) #dentine is -150 microns away from EDJ
-
-dent.rm.proj <- tibble(dent.rm, data.frame(new.x = dent.rm.new.x, new.y = dent.rm.new.y))
-
-#######Enamel 1######
-proc.Enamel1.rm.s <- proc.Enamel1.rm[order(proc.Enamel1.rm$y),]
-
-E1.proj <- proj.transect(proc.Enamel1.rm.s, dent.rm.s)
-
-proc.Enamel1.rm.proj <- tibble(proc.Enamel1.rm.s, E1.proj)
-
-#######Enamel 2######
-proc.Enamel2.rm.s <- proc.Enamel2.rm[order(proc.Enamel2.rm$y),]
-
-E2.proj <- proj.transect(proc.Enamel2.rm.s, dent.rm.s)
-
-proc.Enamel2.rm.proj <- tibble(proc.Enamel2.rm.s, E2.proj)
-
-#######Enamel 3######
-proc.Enamel3.rm.s <- proc.Enamel3.rm[order(proc.Enamel3.rm$y),]
-
-E3.proj <- proj.transect(proc.Enamel3.rm.s, dent.rm.s)
-
-proc.Enamel3.rm.proj <- tibble(proc.Enamel3.rm.s, E3.proj)
-
-#######Enamel 4######
-proc.Enamel4.rm.s <- proc.Enamel4.rm[order(proc.Enamel4.rm$y),]
-
-E4.proj <- proj.transect(proc.Enamel4.rm.s, dent.rm.s)
-
-proc.Enamel4.rm.proj <- tibble(proc.Enamel4.rm.s, E4.proj)
-
-#######Enamel 5######
-proc.Enamel5.rm.s <- proc.Enamel5.rm[order(proc.Enamel5.rm$y),]
-
-E5.proj <- proj.transect(proc.Enamel5.rm.s, dent.rm.s)
-
-proc.Enamel5.rm.proj <- tibble(proc.Enamel5.rm.s, E5.proj)
-
-#######Enamel 6######
-proc.Enamel6.rm <- rbind(proc.Enamel6.rm, proc.Enamel6ext.rm, proc.Enamel6ext2.rm)
-
-proc.Enamel6.rm.s <- proc.Enamel6.rm[order(proc.Enamel6.rm$y),]
-
-E6.proj <- proj.transect(proc.Enamel6.rm.s, dent.rm.s)
-
-proc.Enamel6.rm.proj <- tibble(proc.Enamel6.rm.s, E6.proj)
-
-#######Enamel 7######
-proc.Enamel7.rm <- rbind(proc.Enamel7.rm, proc.Enamel7ext.rm)
-
-proc.Enamel7.rm.s <- proc.Enamel7.rm[order(proc.Enamel7.rm$y),]
-
-E7.proj <- proj.transect(proc.Enamel7.rm.s, dent.rm.s)
-
-proc.Enamel7.rm.proj <- tibble(proc.Enamel7.rm.s, E7.proj)
-
-#######Enamel 8######
-proc.Enamel8.rm <- rbind(proc.Enamel8.rm, proc.Enamel8ext.rm)
-
-proc.Enamel8.rm.s <- proc.Enamel8.rm[order(proc.Enamel8.rm$y),]
-
-E8.proj <- proj.transect(proc.Enamel8.rm.s, dent.rm.s)
-
-proc.Enamel8.rm.proj <- tibble(proc.Enamel8.rm.s, E8.proj)
-
-#######Enamel 9######
-proc.Enamel9.rm <- rbind(proc.Enamel9.rm, proc.Enamel9ext2.rm)
-
-proc.Enamel9.rm.s <- proc.Enamel9.rm[order(proc.Enamel9.rm$y),]
-
-E9.proj <- proj.transect(proc.Enamel9.rm.s, dent.rm.s)
-
-proc.Enamel9.rm.proj <- tibble(proc.Enamel9.rm.s, E9.proj)
-
-#######Enamel 10######
-proc.Enamel10.rm.s <- proc.Enamel10.rm[order(proc.Enamel10.rm$y),]
-
-E10.proj <- proj.transect(proc.Enamel10.rm.s, dent.rm.s)
-
-proc.Enamel10.rm.proj <- tibble(proc.Enamel10.rm.s, E10.proj)
-
-
 ######################## change point analysis ########################
 
-############Dentine combined###################
+############ Dentine combined ###################
 
 dent.rm.f <- filter(dent.rm.proj, dent.rm.proj$avg > 0.703)
 
@@ -437,13 +340,6 @@ cp2.E.rm.y[10] <- approx(x = proc.Enamel10.rm.f$new.x, y = proc.Enamel10.rm.f$ne
 cp1.E.proj <- data.frame(x = cp1.E.rm.x, y = cp1.E.rm.y)
 cp2.E.proj <- data.frame(x = cp2.E.rm.x, y = cp2.E.rm.y)
 
-par(mfrow=c(1,2))
-plot(cp1.E.rm.x, cp1.E.rm.y, main = "Change point 1")
-abline(lm.cp1.E.proj.inner)
-
-plot(cp2.E.rm.x, cp2.E.rm.y, main = "Change point 2")
-abline(lm.cp2.E.proj.inner)
-
 #it seems that only the last 2 data points are not conforming to a linear trend
 #remove the points for E8-10
 cp1.E.proj.inner <- cp1.E.proj[1:7,]
@@ -467,7 +363,7 @@ summary(lm.cp2.E.proj.inner)
 #calculate appositional angle
 atan(abs(lm.cp1.E.proj.inner$coefficients[2]))/pi*180
 atan(abs(lm.cp2.E.proj.inner$coefficients[2]))/pi*180
-#~3.3 degrees, which is identical to the appositional angle measured by Uno 2012
+#~3.33 degrees, which is identical to the appositional angle measured by Uno 2012 (3.3 +- 0.5)
 
 #use mean of the two angles in the forward model
 fwd.appo.sl <- mean(c(lm.cp1.E.proj.inner$coefficients[2],lm.cp2.E.proj.inner$coefficients[2]))

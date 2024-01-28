@@ -127,14 +127,15 @@ data.process <- function(df, log, type = "e"){
   return(na.omit(corr.df))
 }
 
-###########fn 4 moving average, n points########
+###########fn 4 moving average and sd, n points########
 moving.avg <- function(df, n){
   require(zoo)
   rm.dat <- rollmean(df$corr.87Sr.86Sr, n)
+  rsd.dat <- rollapply(df$corr.87Sr.86Sr, n, sd)
   n.remove <- floor(n/2)
   n.x <- df$x[(n.remove + 1): (nrow(df)-n.remove)]
   n.y <- df$y[(n.remove + 1): (nrow(df)-n.remove)]
-  tibble(avg = rm.dat, x = n.x, y = n.y)
+  tibble(avg = rm.dat, sd = rsd.dat, x = n.x, y = n.y)
 }
 
 
