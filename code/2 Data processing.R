@@ -45,6 +45,20 @@ pl.Enamel9 <- read.csv("./data/pl_Enamel9.csv")
 pl.Enamel9ext2 <- read.csv("./data/pl_Enamel9ext2.csv")
 pl.Enamel10 <- read.csv("./data/pl_Enamel10.csv")
 
+#load Rm3.5 hand drill data
+Drill <- read.csv("./data/Rm3.5 hand drill.csv")
+
+Drill.no <- na.omit(Drill)
+
+#load Rm3.5 micromill data
+Rm3.5b.mill <- read.csv("./data/Rm3.5b micromill.csv")
+Rm3.5b.mill.no <- na.omit(Rm3.5b.mill)
+
+# load Misha tusk dentine micromill data (Yang et al. 2023)
+misha.micromill <- read.csv("data/Misha dentin micromill.csv")
+
+misha.micromill<-na.omit(misha.micromill)
+
 ############data processing using custom function###########
 
 #dentine at EDJ
