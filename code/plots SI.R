@@ -26,6 +26,77 @@ points(cp2.E.rm.x[9:10], cp2.E.rm.y[9:10], col = "red2", pch = 16) #mark the one
 
 ############# end of change point comparisons ###########
 
+############# Figure modeling growth rate along the length of the crown #############
+# visualize the model fit
+plot(Rm3.5.angle$dist, Rm3.5.angle$tan, ylim = c(0.04,0.09), xlim = c(0,100),
+     ylab = "Tangent(alpha)", xlab ="Distance from cervix (mm)")
+lines(ref.length.v, Pred.tan.Rm3.5)
+
+############# Time line reconstructions with individual data series in Fig 3D #############
+# Fig SI after converting to time, 
+# add +- sd in growth rates to create 67% confidence intervals around the reconstructed timeline
+# okay, there is no easy way of doing this...
+# compare laser, hand drill and micromill transects using the molar plate geometry
+
+par(mfrow=c(1,4))
+# Panel 1 molar dentine vs micromill tusk dentine 
+plot(-1000, -1, col= "gray24",
+     xlim=c(-400,700),ylim=c(0.705,0.7115),
+     xlab="Days from moves",
+     main = "Tusk micromill vs molar D LA-ICP-MS",
+     ylab = "87Sr/86Sr") 
+abline(h = CA.Sr)
+abline(h = UT.Sr)
+
+polygon(c(days.cumm.den.al, rev(days.cumm.den.al)), 
+        c(dent.rm.f2$avg + dent.rm.f2$sd, 
+          rev(dent.rm.f2$avg - dent.rm.f2$sd)), 
+        col = "gray60", border = NA)
+lines(days.cumm.den.al,dent.rm.f2$avg,col= "gray24", lwd=2)
+points(misha.tusk.micromill.tl.al, misha.tusk.micromill$corr..87Sr.86Sr,
+       pch=18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
+
+# Panel 2 molar enamel1 vs micromill tusk dentine 
+plot(-1000, -1, col= "gray24",
+     xlim=c(-400,700),ylim=c(0.705,0.7115),
+     xlab="Days from moves",
+     main = "Tusk micromill vs molar E1 LA-ICP-MS",
+     ylab = "87Sr/86Sr") 
+abline(h = CA.Sr)
+abline(h = UT.Sr)
+
+polygon(c(days.cumm.en1.al, rev(days.cumm.en1.al)), 
+        c(proc.Enamel1.rm.f$avg + proc.Enamel1.rm.f$sd, 
+          rev(proc.Enamel1.rm.f$avg - proc.Enamel1.rm.f$sd)), 
+        col = alpha("orange", 0.3), border = NA)
+lines(days.cumm.en1.al, proc.Enamel1.rm.f$avg,col = alpha("orange", 0.9), lwd=2)
+points(misha.tusk.micromill.tl.al, misha.tusk.micromill$corr..87Sr.86Sr,
+       pch=18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
+
+# Panel 3 molar enamel vs micromill tusk dentine 
+plot(days.cumm.drill.al, rev(Drill.no$corr..87Sr.86Sr), col= "red4",
+     pch=16, cex = 2,
+     xlim=c(-400,700),ylim=c(0.705,0.7115),
+     xlab="Days from moves",
+     main = "Tusk micromill vs molar E drill",
+     ylab = "87Sr/86Sr") 
+abline(h = CA.Sr)
+abline(h = UT.Sr)
+points(misha.tusk.micromill.tl.al, misha.tusk.micromill$corr..87Sr.86Sr,
+       pch=18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
+
+# Panel 4 molar enamel vs micromill molar enamel 
+plot(Rm3.5b.mill.tl.al, rev(Rm3.5b.mill.no$corr..87Sr.86Sr), col= "cyan4",
+     pch=16, cex = 2,
+     xlim=c(-400,700),ylim=c(0.705,0.7115),
+     xlab="Days from moves",
+     main = "Tusk micromill vs molar E micromill",
+     ylab = "87Sr/86Sr") 
+abline(h = CA.Sr)
+abline(h = UT.Sr)
+points(misha.tusk.micromill.tl.al, misha.tusk.micromill$corr..87Sr.86Sr,
+       pch=18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
+
 
 ################# contour map of the enamel block#######################
 #method 1 for each transet, create a precited data series

@@ -22,24 +22,12 @@ time.total <- function(df){
   return(df.s.total)
 }
 
-# InterpFunc <- function(df, ref){
-#   FUN.x <- approxfun(x = ref$tt, y = ref$x)
-#   FUN.y <- approxfun(x = ref$tt, y = ref$y)
-#   
-#   x.li.int <- FUN.x(df$tt)
-#   y.li.int <- FUN.y(df$tt)
-#   
-#   return(tibble(df, x = x.li.int, y = y.li.int))
-# }
-
 ##fn 2: linear interpolate x and y from time stamp after conversion####
 li.interp <- function (df, ref){
   #initiate vectors
   x.li.int <- rep(0, nrow(df))
   y.li.int <- rep(0, nrow(df))
   
-  # require(signal)
-  # library(signal)
   for(i in 1:nrow(df)){
     
     x.li.int[i] <- approx(x = ref$tt, y = ref$x, xout = df$tt[i])$y
@@ -78,11 +66,6 @@ data.process <- function(df, log, type = "e"){
   df.ef <- filter(.data = df, df$X88Sr > 0.2)
   
   df.ef <- na.omit(df.ef)
-  # df.ef.na <- filter(.data = df.ef, is.numeric(df.ef$X87Sr.86Sr..5.))
-
-  # df.ef <- select(df.ef, -Column1) #remove last column
-  
-
   
   #correction by Sr 88 voltage
   if(type == "d"){#dentine
@@ -112,14 +95,8 @@ data.process <- function(df, log, type = "e"){
   log.ef.tt <- tibble(log.ef, tt = tt.log.ef)
   
   #linear interpolate
-  # df.ef.tt.li <- li.interp(df = df.ef.tt, ref = log.ef.tt)
   
   df.ef.tt.li <- li.interp(df = df.ef.tt, ref = log.ef.tt)
-  
-  
-  #these are the x and y positions of the generated Sr 87/86 data
-  # df.ef.tt.li$x.li.int
-  # df.ef.tt.li$y.li.int
   
   #create a new data frame to store the corrected and interpolated data:
   corr.df <- tibble(corr.87Sr.86Sr = X87Sr.86Sr.corr, x =df.ef.tt.li$x, y = df.ef.tt.li$y)
@@ -207,3 +184,32 @@ proj.transect <- function(trans, ref){
   return(data.frame(new.x, new.y))
  
 }
+
+###########fn 7 calculate 50 point average to reduce data amount for LA-ICP-MS data ########
+x.pt.avg <- function(df.Sr, df.tl, n.avg){
+  # three objects
+  # one is the Sr ratio
+  
+  n <- floor(length(df.Sr)/n.avg) #discard some data towards the end of the df
+  
+  #initiate vectors
+
+  n.avg.sr <- rep(0, n)
+  n.sd.sr <- rep(0, n)
+  
+  n.avg.tl <- rep(0, n)
+  
+  for(i in 1:n){
+    x <- ((i-1)*n.avg + 1):(i*n.avg)
+    
+    n.avg.sr[i] <- mean(df.Sr[x])
+    
+    n.sd.sr[i] <- sd(df.Sr[x])
+    
+    n.avg.tl[i] <- mean(df.tl[x])
+  }
+  return(data.frame(avg.sr = n.avg.sr, sd.sr = n.sd.sr, avg.tl = n.avg.tl))
+  
+}
+
+

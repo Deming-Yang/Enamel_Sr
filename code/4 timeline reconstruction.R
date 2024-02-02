@@ -16,6 +16,7 @@ dent.rm.f2 <- rbind(dent.rm.fa, dent.rm.fb)
 dent.rm.new.x <- 88 - dent.rm.f2$new.x/1e3
 proc.Enamel1.rm.new.x <- 88 - proc.Enamel1.rm.f$new.x/1e3
 proc.Enamel5.rm.new.x <- 88 - proc.Enamel5.rm.f$new.x/1e3
+proc.Enamel9.rm.new.x <- 88 - proc.Enamel9.rm.f$new.x/1e3
 proc.Enamel10.rm.new.x <- 88 - proc.Enamel10.rm.f$new.x/1e3
 
 # adding CA and UT Sr posterior from Yang et al. 2023
@@ -128,3 +129,24 @@ misha.tusk.micromill.tl <- misha.tusk.micromill.dist/14.7 #mm/day
 
 # align with the switch
 misha.tusk.micromill.tl.al <- misha.tusk.micromill.tl - 335
+
+# additional timeline reconstructions for En9 and En10
+
+# calculate rates
+rate.en9x <- approx(x = ref.length.v, y = Ref.growth.v, xout = proc.Enamel9.rm.new.x) 
+rate.en10x <- approx(x = ref.length.v, y = Ref.growth.v, xout = proc.Enamel10.rm.new.x) 
+
+# calculate sample intervals 
+interv.en9x <- c(base::diff(-1*proc.Enamel9.rm.new.x)[1], base::diff(-1*proc.Enamel9.rm.new.x))
+interv.en10x <- c(base::diff(-1*proc.Enamel10.rm.new.x)[1], base::diff(-1*proc.Enamel10.rm.new.x))
+
+# calculate time intervals
+time.interv.en9 <- interv.en9x / rate.en9x$y
+time.interv.en10 <- interv.en10x / rate.en10x$y
+
+# calculate cumulative days
+days.cumm.en9 <- base::cumsum(time.interv.en9)
+days.cumm.en10 <- base::cumsum(time.interv.en10)
+
+days.cumm.en9.al <- days.cumm.en9 - 175 
+days.cumm.en10.al <- days.cumm.en10 - 175 
