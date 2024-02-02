@@ -12,75 +12,6 @@ library(gstat)
 library(stars)
 library(segmented)
 
-
-#####use the sf package to plot these values
-all.dat.rm <- rbind(dent.rm.f, proc.Enamel1.rm.f, proc.Enamel2.rm.f, proc.Enamel3.rm.f, proc.Enamel4.rm.f, 
-                    proc.Enamel5.rm.f, proc.Enamel6.rm.f, proc.Enamel7.rm.f, proc.Enamel8.rm.f,
-                    proc.Enamel9.rm.f, proc.Enamel10.rm.f)
-
-all.dat.rm.proj <- rbind(dent.rm.f, proc.Enamel1.rm.f, proc.Enamel2.rm.f, proc.Enamel3.rm.f, proc.Enamel4.rm.f, 
-                    proc.Enamel5.rm.f, proc.Enamel6.rm.f, proc.Enamel7.rm.f, proc.Enamel8.rm.f,
-                    proc.Enamel9.rm.f, proc.Enamel10.rm.f)
-
-all.enamel.rm <- rbind(proc.Enamel1.rm.f, proc.Enamel2.rm.f, proc.Enamel3.rm.f, proc.Enamel4.rm.f, 
-                       proc.Enamel5.rm.f, proc.Enamel6.rm.f, proc.Enamel7.rm.f, proc.Enamel8.rm.f,
-                       proc.Enamel9.rm.f, proc.Enamel10.rm.f)
-
-all.enamel.rm.proj <- rbind(proc.Enamel1.rm.f, proc.Enamel2.rm.f, proc.Enamel3.rm.f, proc.Enamel4.rm.f, 
-                         proc.Enamel5.rm.f, proc.Enamel6.rm.f, proc.Enamel7.rm.f, proc.Enamel8.rm.f,
-                         proc.Enamel9.rm.f, proc.Enamel10.rm.f)
-
-require(sf)
-###########real world tooth geometry###########
-sf.all.dat.rm <- st_as_sf(all.dat.rm,  agr = NA_agr_,
-                          coords = c("y","x"),
-                          dim = "XYZ",
-                          remove = TRUE,
-                          na.fail = TRUE,
-                          sf_column_name = NULL)
-
-###########EDJ flattened geometry########### in supplementary
-sf.all.dat.rm.proj <- st_as_sf(all.dat.rm.proj,  agr = NA_agr_,
-                          coords = c("new.x","new.y"),
-                          dim = "XY",
-                          remove = TRUE,
-                          na.fail = TRUE,
-                          sf_column_name = NULL)
-
-sf.all.enamel.rm <- st_as_sf(all.enamel.rm,  agr = NA_agr_,
-                             coords = c("y","x"),
-                             dim = "XY",
-                             remove = TRUE,
-                             na.fail = TRUE,
-                             sf_column_name = NULL)
-
-sf.all.enamel.rm.proj <- st_as_sf(all.enamel.rm.proj,  agr = NA_agr_,
-                             coords = c("new.x","new.y"),
-                             dim = "XY",
-                             remove = TRUE,
-                             na.fail = TRUE,
-                             sf_column_name = NULL)
-
-
-
-
-#plot change positions within enamel:
-cp1.loc <- data.frame(avg = rep(0.7,length(cp1.E.rm.x)), x = cp1.E.rm.x, y = cp1.E.rm.y)
-sf.cp1.loc <- st_as_sf(cp1.loc,  agr = NA_agr_,
-                      coords = c("x","y"),
-                      dim = "XYZ",
-                      remove = TRUE,
-                      na.fail = TRUE,
-                      sf_column_name = NULL)
-
-cp2.loc <- data.frame(avg = rep(0.7,length(cp2.E.rm.x)), x = cp2.E.rm.x, y = cp2.E.rm.y)
-sf.cp2.loc <- st_as_sf(cp2.loc,  agr = NA_agr_,
-                      coords = c("x","y"),
-                      dim = "XYZ",
-                      remove = TRUE,
-                      na.fail = TRUE,
-                      sf_column_name = NULL)
-
 ###########real world tooth geometry###########
 #############plot 1 all dentine and enamel data with transition points#######
 par(mfrow=c(1,1))
@@ -101,12 +32,6 @@ ggplot()+
 
 ################# LA-ICP-MS enamel-dentine comparison #################
 ################# overlay with shifted x values in change points ###############
-#filter out 
-dent.rm.fa <- filter(dent.rm.f, dent.rm.f$new.x < cp2.D.rm & dent.rm.f$avg < 0.7085)
-dent.rm.fb <- filter(dent.rm.f, dent.rm.f$new.x > cp2.D.rm & dent.rm.f$avg > 0.7085)
-
-dent.rm.f2 <- rbind(dent.rm.fa, dent.rm.fb)
-
 par(mfrow=c(2,5))
 #enamel 1, no x- shift is needed
 plot(dent.rm.f2$new.x, dent.rm.f2$avg, main = "Enamel 1",col= "gray24",
@@ -326,3 +251,120 @@ abline(h = segmented.D.Sr[2], lty = 2, lwd = 1.5)
 plot(fit_segmented.E10.rm, add = T)
 lines.segmented(fit_segmented.E10.rm)
 points.segmented(fit_segmented.E10.rm)
+
+################# Multi-substrate comparison with x axis transformed to time axis###############
+
+# Fig 3 A compare laser, hand drill and micromill transects using the molar plate geometry
+par(mfrow=c(1,1))
+plot(-10, -10, col= alpha("lightcyan4", 0),
+     pch=16, cex=1, xlim=c(100,0),ylim=c(0.704,0.712),
+     xlab="Distance from cervix (mm)",
+     main = "Conventional vs LAICP-MS",
+     ylab = "87Sr/86Sr")
+
+#CA and UT Sr measurements from Yang et al. 2023
+abline(h = CA.Sr)
+
+abline(h = UT.Sr)
+# dentine transect
+# polygon(c(dent.rm.new.x, rev(dent.rm.new.x)), 
+#         c(dent.rm.f2$avg + dent.rm.f2$sd, rev(dent.rm.f2$avg - dent.rm.f2$sd)), 
+#         col = "gray60", border = NA)
+# lines(dent.rm.new.x, dent.rm.f2$avg,col= "gray24", lwd=2)
+
+# Enamel transect 1
+polygon(c(proc.Enamel1.rm.new.x, rev(proc.Enamel1.rm.new.x)), 
+        c(proc.Enamel1.rm.f$avg + proc.Enamel1.rm.f$sd, 
+          rev(proc.Enamel1.rm.f$avg - proc.Enamel1.rm.f$sd)), 
+        col = alpha("orange", 0.3), border = NA)
+lines(proc.Enamel1.rm.new.x, proc.Enamel1.rm.f$avg, col= alpha("orange", 0.9),lwd=2)
+
+# Enamel transect 5
+polygon(c(proc.Enamel5.rm.new.x, rev(proc.Enamel5.rm.new.x)), 
+        c(proc.Enamel5.rm.f$avg + proc.Enamel5.rm.f$sd, 
+          rev(proc.Enamel5.rm.f$avg - proc.Enamel5.rm.f$sd)), 
+        col = alpha("orange3", 0.3), border = NA)
+lines(proc.Enamel5.rm.new.x, proc.Enamel5.rm.f$avg, col= alpha("orange3", 0.9),lwd=2)
+
+# Enamel transect 10
+polygon(c(proc.Enamel10.rm.new.x, rev(proc.Enamel10.rm.new.x)), 
+        c(proc.Enamel10.rm.f$avg + proc.Enamel10.rm.f$sd, 
+          rev(proc.Enamel10.rm.f$avg - proc.Enamel10.rm.f$sd)), 
+        col = alpha("orange4", 0.3), border = NA)
+lines(proc.Enamel10.rm.new.x, proc.Enamel10.rm.f$avg, col= alpha("orange4", 0.9),lwd=2)
+
+points(Drill.no$Dist..From.cervix, Drill.no$corr..87Sr.86Sr, pch=16, cex = 1.2, col ="red4")
+
+# Fig 3 B
+# micromill enamel on its own 
+par(mfrow=c(1,1))
+plot(Rm3.5b.mill.no$Dist..From.EDJ, Rm3.5b.mill.no$corr..87Sr.86Sr, col= "cyan4",
+     pch=16, cex = 1.2,
+     xlim=c(0,2200),ylim=c(0.704,0.712),
+     xlab="Distance from EDJ (microns)",
+     main = "Enamel micromill data of Rm3.5",
+     ylab = "87Sr/86Sr") 
+abline(h = CA.Sr)
+abline(h = UT.Sr)
+
+# Fig 3 C after converting to time, 
+# compare laser, hand drill and micromill transects using the molar plate geometry
+
+par(mfrow=c(1,4))
+# Panel 1 molar dentine vs micromill tusk dentine 
+plot(-1000, -1, col= "gray24",
+     xlim=c(-400,700),ylim=c(0.705,0.7115),
+     xlab="Days from moves",
+     main = "Tusk micromill vs molar D LA-ICP-MS",
+     ylab = "87Sr/86Sr") 
+abline(h = CA.Sr)
+abline(h = UT.Sr)
+
+polygon(c(days.cumm.den.al, rev(days.cumm.den.al)), 
+        c(dent.rm.f2$avg + dent.rm.f2$sd, 
+          rev(dent.rm.f2$avg - dent.rm.f2$sd)), 
+        col = "gray60", border = NA)
+lines(days.cumm.den.al,dent.rm.f2$avg,col= "gray24", lwd=2)
+points(misha.tusk.micromill.tl.al, misha.tusk.micromill$corr..87Sr.86Sr,
+       pch=18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
+
+# Panel 2 molar enamel1 vs micromill tusk dentine 
+plot(-1000, -1, col= "gray24",
+     xlim=c(-400,700),ylim=c(0.705,0.7115),
+     xlab="Days from moves",
+     main = "Tusk micromill vs molar E1 LA-ICP-MS",
+     ylab = "87Sr/86Sr") 
+abline(h = CA.Sr)
+abline(h = UT.Sr)
+
+polygon(c(days.cumm.en1.al, rev(days.cumm.en1.al)), 
+        c(proc.Enamel1.rm.f$avg + proc.Enamel1.rm.f$sd, 
+          rev(proc.Enamel1.rm.f$avg - proc.Enamel1.rm.f$sd)), 
+        col = alpha("orange", 0.3), border = NA)
+lines(days.cumm.en1.al, proc.Enamel1.rm.f$avg,col = alpha("orange", 0.9), lwd=2)
+points(misha.tusk.micromill.tl.al, misha.tusk.micromill$corr..87Sr.86Sr,
+       pch=18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
+
+# Panel 3 molar enamel vs micromill tusk dentine 
+plot(days.cumm.drill.al, rev(Drill.no$corr..87Sr.86Sr), col= "red4",
+     pch=16, cex = 2,
+     xlim=c(-400,700),ylim=c(0.705,0.7115),
+     xlab="Days from moves",
+     main = "Tusk micromill vs molar E drill",
+     ylab = "87Sr/86Sr") 
+abline(h = CA.Sr)
+abline(h = UT.Sr)
+points(misha.tusk.micromill.tl.al, misha.tusk.micromill$corr..87Sr.86Sr,
+       pch=18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
+
+# Panel 4 molar enamel vs micromill molar enamel 
+plot(Rm3.5b.mill.tl.al, rev(Rm3.5b.mill.no$corr..87Sr.86Sr), col= "cyan4",
+     pch=16, cex = 2,
+     xlim=c(-400,700),ylim=c(0.705,0.7115),
+     xlab="Days from moves",
+     main = "Tusk micromill vs molar E micromill",
+     ylab = "87Sr/86Sr") 
+abline(h = CA.Sr)
+abline(h = UT.Sr)
+points(misha.tusk.micromill.tl.al, misha.tusk.micromill$corr..87Sr.86Sr,
+       pch=18, cex = 2.2, col = alpha("#00b4ffff", 0.8))

@@ -53,11 +53,15 @@ Drill.no <- na.omit(Drill)
 #load Rm3.5 micromill data
 Rm3.5b.mill <- read.csv("./data/Rm3.5b micromill.csv")
 Rm3.5b.mill.no <- na.omit(Rm3.5b.mill)
+# sort from largest dist to smallest
+desc(Rm3.5b.mill.no)
 
 # load Misha tusk dentine micromill data (Yang et al. 2023)
-misha.micromill <- read.csv("data/Misha dentin micromill.csv")
+misha.tusk.micromill <- read.csv("data/Misha dentin micromill.csv")
 
-misha.micromill<-na.omit(misha.micromill)
+misha.tusk.micromill<-na.omit(misha.tusk.micromill)
+
+Rm3.5.angle <- read.csv("data/Rm3.5 appo angle.csv")
 
 ############data processing using custom function###########
 
@@ -197,6 +201,7 @@ dent.rm.new.y <- rep(-150, length(dent.rm.new.x)) #dentine is -150 microns away 
 
 dent.rm.proj <- tibble(dent.rm, data.frame(new.x = dent.rm.new.x, new.y = dent.rm.new.y))
 
+# dent.rm.proj <- tibble(dent.rm, data.frame(new.x = dent.rm.new.x, new.y = dent.rm.new.y))
 #######Enamel 1######
 proc.Enamel1.rm.s <- proc.Enamel1.rm[order(proc.Enamel1.rm$y),]
 

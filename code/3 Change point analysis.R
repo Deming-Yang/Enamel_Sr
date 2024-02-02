@@ -363,64 +363,134 @@ summary(lm.cp2.E.proj.inner)
 #calculate appositional angle
 atan(abs(lm.cp1.E.proj.inner$coefficients[2]))/pi*180
 atan(abs(lm.cp2.E.proj.inner$coefficients[2]))/pi*180
-#~3.33 degrees, which is identical to the appositional angle measured by Uno 2012 (3.3 +- 0.5)
+#~3.37 degrees, which is identical to the appositional angle measured by Uno 2012 (3.3 +- 0.5)
 
 #use mean of the two angles in the forward model
 fwd.appo.sl <- mean(c(lm.cp1.E.proj.inner$coefficients[2],lm.cp2.E.proj.inner$coefficients[2]))
 
+# compile change points for plots
+#####use the sf package to plot these values
+all.dat.rm <- rbind(dent.rm.f, proc.Enamel1.rm.f, proc.Enamel2.rm.f, proc.Enamel3.rm.f, proc.Enamel4.rm.f, 
+                    proc.Enamel5.rm.f, proc.Enamel6.rm.f, proc.Enamel7.rm.f, proc.Enamel8.rm.f,
+                    proc.Enamel9.rm.f, proc.Enamel10.rm.f)
+
+all.dat.rm.proj <- rbind(dent.rm.f, proc.Enamel1.rm.f, proc.Enamel2.rm.f, proc.Enamel3.rm.f, proc.Enamel4.rm.f, 
+                         proc.Enamel5.rm.f, proc.Enamel6.rm.f, proc.Enamel7.rm.f, proc.Enamel8.rm.f,
+                         proc.Enamel9.rm.f, proc.Enamel10.rm.f)
+
+all.enamel.rm <- rbind(proc.Enamel1.rm.f, proc.Enamel2.rm.f, proc.Enamel3.rm.f, proc.Enamel4.rm.f, 
+                       proc.Enamel5.rm.f, proc.Enamel6.rm.f, proc.Enamel7.rm.f, proc.Enamel8.rm.f,
+                       proc.Enamel9.rm.f, proc.Enamel10.rm.f)
+
+all.enamel.rm.proj <- rbind(proc.Enamel1.rm.f, proc.Enamel2.rm.f, proc.Enamel3.rm.f, proc.Enamel4.rm.f, 
+                            proc.Enamel5.rm.f, proc.Enamel6.rm.f, proc.Enamel7.rm.f, proc.Enamel8.rm.f,
+                            proc.Enamel9.rm.f, proc.Enamel10.rm.f)
+
+require(sf)
+###########real world tooth geometry###########
+sf.all.dat.rm <- st_as_sf(all.dat.rm,  agr = NA_agr_,
+                          coords = c("y","x"),
+                          dim = "XYZ",
+                          remove = TRUE,
+                          na.fail = TRUE,
+                          sf_column_name = NULL)
+
+###########EDJ flattened geometry########### in supplementary
+sf.all.dat.rm.proj <- st_as_sf(all.dat.rm.proj,  agr = NA_agr_,
+                               coords = c("new.x","new.y"),
+                               dim = "XY",
+                               remove = TRUE,
+                               na.fail = TRUE,
+                               sf_column_name = NULL)
+
+sf.all.enamel.rm <- st_as_sf(all.enamel.rm,  agr = NA_agr_,
+                             coords = c("y","x"),
+                             dim = "XY",
+                             remove = TRUE,
+                             na.fail = TRUE,
+                             sf_column_name = NULL)
+
+sf.all.enamel.rm.proj <- st_as_sf(all.enamel.rm.proj,  agr = NA_agr_,
+                                  coords = c("new.x","new.y"),
+                                  dim = "XY",
+                                  remove = TRUE,
+                                  na.fail = TRUE,
+                                  sf_column_name = NULL)
+
+
+
+
+#record change positions within enamel:
+cp1.loc <- data.frame(avg = rep(0.7,length(cp1.E.rm.x)), x = cp1.E.rm.x, y = cp1.E.rm.y)
+sf.cp1.loc <- st_as_sf(cp1.loc,  agr = NA_agr_,
+                       coords = c("x","y"),
+                       dim = "XYZ",
+                       remove = TRUE,
+                       na.fail = TRUE,
+                       sf_column_name = NULL)
+
+cp2.loc <- data.frame(avg = rep(0.7,length(cp2.E.rm.x)), x = cp2.E.rm.x, y = cp2.E.rm.y)
+sf.cp2.loc <- st_as_sf(cp2.loc,  agr = NA_agr_,
+                       coords = c("x","y"),
+                       dim = "XYZ",
+                       remove = TRUE,
+                       na.fail = TRUE,
+                       sf_column_name = NULL)
+
+
 #####################plot slopes of the first segment#####
-data.frame(slope1 = Sr.trans.sl1, slope2 = Sr.trans.sl2)
+# data.frame(slope1 = Sr.trans.sl1, slope2 = Sr.trans.sl2)
+# 
+# plot(1:11,Sr.trans.sl1) #no significant difference in the first slope
+# plot(1:11,Sr.trans.sl2) #lower slopes for the outer two transects
+# 
+# newdataD <- data.frame(new.x = c(cp1.D.rm, cp2.D.rm))
+# segmented.D.Sr <- predict.segmented(fit_segmented.D.rm, newdata = newdataD)
+# Tr1.D <- segmented.D.Sr[2] - segmented.D.Sr[1]
+# 
+# Tr1.E <- rep(0,10)
+# 
+# newdataE1 <- data.frame(new.x = c(cp1.E1.rm, cp2.E1.rm))
+# segmented.E1.Sr <- predict.segmented(fit_segmented.E1.rm, newdata = newdataE1)
+# Tr1.E[1] <- segmented.E1.Sr[2] - segmented.E1.Sr[1]
+# 
+# newdataE2 <- data.frame(new.x = c(cp1.E2.rm, cp2.E2.rm))
+# segmented.E2.Sr <- predict.segmented(fit_segmented.E2.rm, newdata = newdataE2)
+# Tr1.E[2] <- segmented.E2.Sr[2] - segmented.E2.Sr[1]
+# 
+# newdataE3 <- data.frame(new.x = c(cp1.E3.rm, cp2.E3.rm))
+# segmented.E3.Sr <- predict.segmented(fit_segmented.E3.rm, newdata = newdataE3)
+# Tr1.E[3] <- segmented.E3.Sr[2] - segmented.E3.Sr[1]
+# 
+# newdataE4 <- data.frame(new.x = c(cp1.E4.rm, cp2.E4.rm))
+# segmented.E4.Sr <- predict.segmented(fit_segmented.E4.rm, newdata = newdataE4)
+# Tr1.E[4] <- segmented.E4.Sr[2] - segmented.E4.Sr[1]
+# 
+# newdataE5 <- data.frame(new.x = c(cp1.E5.rm, cp2.E5.rm))
+# segmented.E5.Sr <- predict.segmented(fit_segmented.E5.rm, newdata = newdataE5)
+# Tr1.E[5] <- segmented.E5.Sr[2] - segmented.E5.Sr[1]
+# 
+# newdataE6 <- data.frame(new.x = c(cp1.E6.rm, cp2.E6.rm))
+# segmented.E6.Sr <- predict.segmented(fit_segmented.E6.rm, newdata = newdataE6)
+# Tr1.E[6] <- segmented.E6.Sr[2] - segmented.E6.Sr[1]
+# 
+# newdataE7 <- data.frame(new.x = c(cp1.E7.rm, cp2.E7.rm))
+# segmented.E7.Sr <- predict.segmented(fit_segmented.E7.rm, newdata = newdataE7)
+# Tr1.E[7] <- segmented.E7.Sr[2] - segmented.E7.Sr[1]
+# 
+# newdataE8 <- data.frame(new.x = c(cp1.E8.rm, cp2.E8.rm))
+# segmented.E8.Sr <- predict.segmented(fit_segmented.E8.rm, newdata = newdataE8)
+# Tr1.E[8] <- segmented.E8.Sr[2] - segmented.E8.Sr[1]
+# 
+# newdataE9 <- data.frame(new.x = c(cp1.E9.rm, cp2.E9.rm))
+# segmented.E9.Sr <- predict.segmented(fit_segmented.E9.rm, newdata = newdataE9)
+# Tr1.E[9] <- segmented.E9.Sr[2] - segmented.E9.Sr[1]
+# 
+# 
+# newdataE10 <- data.frame(new.x = c(cp1.E10.rm, cp2.E10.rm))
+# segmented.E10.Sr <- predict.segmented(fit_segmented.E10.rm, newdata = newdataE10)
+# Tr1.E[10] <- segmented.E10.Sr[2] - segmented.E10.Sr[1]
+# 
+# Tr1.E
 
-plot(1:11,Sr.trans.sl1) #no significant difference in the first slope
-plot(1:11,Sr.trans.sl2) #lower slopes for the outer two transects
-
-newdataD <- data.frame(new.x = c(cp1.D.rm, cp2.D.rm))
-segmented.D.Sr <- predict.segmented(fit_segmented.D.rm, newdata = newdataD)
-Tr1.D <- segmented.D.Sr[2] - segmented.D.Sr[1]
-
-Tr1.E <- rep(0,10)
-
-newdataE1 <- data.frame(new.x = c(cp1.E1.rm, cp2.E1.rm))
-segmented.E1.Sr <- predict.segmented(fit_segmented.E1.rm, newdata = newdataE1)
-Tr1.E[1] <- segmented.E1.Sr[2] - segmented.E1.Sr[1]
-
-newdataE2 <- data.frame(new.x = c(cp1.E2.rm, cp2.E2.rm))
-segmented.E2.Sr <- predict.segmented(fit_segmented.E2.rm, newdata = newdataE2)
-Tr1.E[2] <- segmented.E2.Sr[2] - segmented.E2.Sr[1]
-
-newdataE3 <- data.frame(new.x = c(cp1.E3.rm, cp2.E3.rm))
-segmented.E3.Sr <- predict.segmented(fit_segmented.E3.rm, newdata = newdataE3)
-Tr1.E[3] <- segmented.E3.Sr[2] - segmented.E3.Sr[1]
-
-newdataE4 <- data.frame(new.x = c(cp1.E4.rm, cp2.E4.rm))
-segmented.E4.Sr <- predict.segmented(fit_segmented.E4.rm, newdata = newdataE4)
-Tr1.E[4] <- segmented.E4.Sr[2] - segmented.E4.Sr[1]
-
-newdataE5 <- data.frame(new.x = c(cp1.E5.rm, cp2.E5.rm))
-segmented.E5.Sr <- predict.segmented(fit_segmented.E5.rm, newdata = newdataE5)
-Tr1.E[5] <- segmented.E5.Sr[2] - segmented.E5.Sr[1]
-
-newdataE6 <- data.frame(new.x = c(cp1.E6.rm, cp2.E6.rm))
-segmented.E6.Sr <- predict.segmented(fit_segmented.E6.rm, newdata = newdataE6)
-Tr1.E[6] <- segmented.E6.Sr[2] - segmented.E6.Sr[1]
-
-newdataE7 <- data.frame(new.x = c(cp1.E7.rm, cp2.E7.rm))
-segmented.E7.Sr <- predict.segmented(fit_segmented.E7.rm, newdata = newdataE7)
-Tr1.E[7] <- segmented.E7.Sr[2] - segmented.E7.Sr[1]
-
-newdataE8 <- data.frame(new.x = c(cp1.E8.rm, cp2.E8.rm))
-segmented.E8.Sr <- predict.segmented(fit_segmented.E8.rm, newdata = newdataE8)
-Tr1.E[8] <- segmented.E8.Sr[2] - segmented.E8.Sr[1]
-
-newdataE9 <- data.frame(new.x = c(cp1.E9.rm, cp2.E9.rm))
-segmented.E9.Sr <- predict.segmented(fit_segmented.E9.rm, newdata = newdataE9)
-Tr1.E[9] <- segmented.E9.Sr[2] - segmented.E9.Sr[1]
-
-
-newdataE10 <- data.frame(new.x = c(cp1.E10.rm, cp2.E10.rm))
-segmented.E10.Sr <- predict.segmented(fit_segmented.E10.rm, newdata = newdataE10)
-Tr1.E[10] <- segmented.E10.Sr[2] - segmented.E10.Sr[1]
-
-Tr1.E
-
-#there is a higher fraction of UT Sr in E10 than in E9. Negligable in E8 
+# there is a higher fraction of UT Sr in E10 than in E9. Negligable in E8 
