@@ -61,7 +61,8 @@ lines(ref.length.v, Pred.tan.Rm3.5)
 # referenced enamel length at 52.7 mm
 ref.en.length <- 85.7 # in mm
 
-ref.tan <- approx(x = ref.length.v, y = Pred.tan.Rm3.5, xout = ref.en.length)$y
+ref.tan <- approx(x = ref.length.v, y = Pred.tan.Rm3.5, 
+                  xout = ref.en.length)$y
 
 # average enamel growth rate 55.3e-3 # mm/day, which is true for most of the crown
 ref.en.growth <- 55.3e-3 # mm/day
@@ -73,22 +74,27 @@ Ref.growth.v <- ref.en.growth * ref.tan / Pred.tan.Rm3.5 # mm/day
 # for selected data based on the molar measurements
 
 # 1. for the dentine trasect
-rate.denx <- approx(x = ref.length.v, y = Ref.growth.v, xout = dent.rm.new.x) # mm per day
+rate.denx <- approx(x = ref.length.v, y = Ref.growth.v, 
+                    xout = dent.rm.new.x) # mm per day
 
 # 2. for selected enamel LA trasect 1
-rate.en1x <- approx(x = ref.length.v, y = Ref.growth.v, xout = proc.Enamel1.rm.new.x) 
+rate.en1x <- approx(x = ref.length.v, y = Ref.growth.v, 
+                    xout = proc.Enamel1.rm.new.x) 
 
 # for the hand drill samples, x need to be reversed
 Drill.newx <- rev(Drill.no$Dist..From.cervix + 0.05) # to avoid 0 in log calculations
 
-rate.Drill <- approx(x = ref.length.v, y = Ref.growth.v, xout = Drill.newx) # mm per day
+rate.Drill <- approx(x = ref.length.v, y = Ref.growth.v, 
+                     xout = Drill.newx) # mm per day
 
 # calculate the differential of the sample lengths
 # for the dentine trasect
-interv.denx <- c(base::diff(-1*dent.rm.new.x)[1], base::diff(-1*dent.rm.new.x))
+interv.denx <- c(base::diff(-1*dent.rm.new.x)[1], 
+                 base::diff(-1*dent.rm.new.x))
 
 # for selected enamel LA trasects: 1, 5, and 10
-interv.en1x <- c(base::diff(-1*proc.Enamel1.rm.new.x)[1], base::diff(-1*proc.Enamel1.rm.new.x))
+interv.en1x <- c(base::diff(-1*proc.Enamel1.rm.new.x)[1], 
+                 base::diff(-1*proc.Enamel1.rm.new.x))
 
 # for the hand drill samples, the order has to be reversed
 interv.Drillx <- c(-1*base::diff(Drill.newx)[1], -1*base::diff(Drill.newx))
@@ -133,12 +139,16 @@ misha.tusk.micromill.tl.al <- misha.tusk.micromill.tl - 335
 # additional timeline reconstructions for En9 and En10
 
 # calculate rates
-rate.en9x <- approx(x = ref.length.v, y = Ref.growth.v, xout = proc.Enamel9.rm.new.x) 
-rate.en10x <- approx(x = ref.length.v, y = Ref.growth.v, xout = proc.Enamel10.rm.new.x) 
+rate.en9x <- approx(x = ref.length.v, y = Ref.growth.v, 
+                    xout = proc.Enamel9.rm.new.x) 
+rate.en10x <- approx(x = ref.length.v, y = Ref.growth.v, 
+                     xout = proc.Enamel10.rm.new.x) 
 
 # calculate sample intervals 
-interv.en9x <- c(base::diff(-1*proc.Enamel9.rm.new.x)[1], base::diff(-1*proc.Enamel9.rm.new.x))
-interv.en10x <- c(base::diff(-1*proc.Enamel10.rm.new.x)[1], base::diff(-1*proc.Enamel10.rm.new.x))
+interv.en9x <- c(base::diff(-1*proc.Enamel9.rm.new.x)[1], 
+                 base::diff(-1*proc.Enamel9.rm.new.x))
+interv.en10x <- c(base::diff(-1*proc.Enamel10.rm.new.x)[1], 
+                  base::diff(-1*proc.Enamel10.rm.new.x))
 
 # calculate time intervals
 time.interv.en9 <- interv.en9x / rate.en9x$y
@@ -150,3 +160,24 @@ days.cumm.en10 <- base::cumsum(time.interv.en10)
 
 days.cumm.en9.al <- days.cumm.en9 - 175 
 days.cumm.en10.al <- days.cumm.en10 - 175 
+
+## compile data frames
+dent.tl <- tibble(tl = days.cumm.den.al, Sr = dent.rm.f2$avg, 
+                  sd = dent.rm.f2$sd)
+en1.tl <- tibble(tl = days.cumm.en1.al, Sr = proc.Enamel1.rm.f$avg, 
+                 sd = proc.Enamel1.rm.f$sd)
+en9.tl <- tibble(tl = days.cumm.en9.al, Sr = proc.Enamel9.rm.f$avg, 
+                 sd = proc.Enamel9.rm.f$sd)
+en10.tl <- tibble(tl = days.cumm.en10.al, Sr = proc.Enamel10.rm.f$avg, 
+                  sd = proc.Enamel10.rm.f$sd)
+
+drill.tl <- tibble(tl = days.cumm.drill.al, 
+                   Sr = rev(Drill.no$corr..87Sr.86Sr),
+                   sd = rev(Drill.no$comb..Err))
+
+Rm3.5b.mill.tl <- tibble(tl = Rm3.5b.mill.tl.al, Sr = rev(Rm3.5b.mill.no$corr..87Sr.86Sr),
+                         sd = rev(Rm3.5b.mill.no$comb..Err))
+
+tusk.mill.tl <- tibble(tl = rev(misha.tusk.micromill.tl.al), 
+                       Sr = rev(misha.tusk.micromill$corr..87Sr.86Sr),
+                       sd = rev(misha.tusk.micromill$comb..Err))

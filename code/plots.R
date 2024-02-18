@@ -320,12 +320,12 @@ plot(-1000, -1, col= "gray24",
 abline(h = CA.Sr)
 abline(h = UT.Sr)
 
-polygon(c(days.cumm.den.al, rev(days.cumm.den.al)), 
-        c(dent.rm.f2$avg + dent.rm.f2$sd, 
-          rev(dent.rm.f2$avg - dent.rm.f2$sd)), 
+polygon(c(dent.tl$tl, rev(dent.tl$tl)), 
+        c(dent.tl$Sr + dent.tl$sd, 
+          rev(dent.tl$Sr - dent.tl$sd)), 
         col = "gray60", border = NA)
-lines(days.cumm.den.al,dent.rm.f2$avg,col= "gray24", lwd=2)
-points(misha.tusk.micromill.tl.al, misha.tusk.micromill$corr..87Sr.86Sr,
+lines(dent.tl$tl, dent.tl$Sr, col= "gray24", lwd=2)
+points(tusk.mill.tl$tl, tusk.mill.tl$Sr,
        pch=18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
 
 # Panel 2 molar enamel1 vs micromill tusk dentine 
@@ -337,16 +337,16 @@ plot(-1000, -1, col= "gray24",
 abline(h = CA.Sr)
 abline(h = UT.Sr)
 
-polygon(c(days.cumm.en1.al, rev(days.cumm.en1.al)), 
-        c(proc.Enamel1.rm.f$avg + proc.Enamel1.rm.f$sd, 
-          rev(proc.Enamel1.rm.f$avg - proc.Enamel1.rm.f$sd)), 
+polygon(c(en1.tl$tl, rev(en1.tl$tl)), 
+        c(en1.tl$Sr + en1.tl$sd, 
+          rev(en1.tl$Sr - en1.tl$sd)), 
         col = alpha("orange", 0.3), border = NA)
 lines(days.cumm.en1.al, proc.Enamel1.rm.f$avg,col = alpha("orange", 0.9), lwd=2)
-points(misha.tusk.micromill.tl.al, misha.tusk.micromill$corr..87Sr.86Sr,
+points(tusk.mill.tl$tl, tusk.mill.tl$Sr,
        pch=18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
 
 # Panel 3 molar enamel vs micromill tusk dentine 
-plot(days.cumm.drill.al, rev(Drill.no$corr..87Sr.86Sr), col= "red4",
+plot(drill.tl$tl, drill.tl$Sr, col= "red4",
      pch=16, cex = 2,
      xlim=c(-400,700),ylim=c(0.705,0.7115),
      xlab="Days from moves",
@@ -354,11 +354,11 @@ plot(days.cumm.drill.al, rev(Drill.no$corr..87Sr.86Sr), col= "red4",
      ylab = "87Sr/86Sr") 
 abline(h = CA.Sr)
 abline(h = UT.Sr)
-points(misha.tusk.micromill.tl.al, misha.tusk.micromill$corr..87Sr.86Sr,
+points(tusk.mill.tl$tl, tusk.mill.tl$Sr,
        pch=18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
 
 # Panel 4 molar enamel vs micromill molar enamel 
-plot(Rm3.5b.mill.tl.al, rev(Rm3.5b.mill.no$corr..87Sr.86Sr), col= "cyan4",
+plot(Rm3.5b.mill.tl$tl, Rm3.5b.mill.tl$Sr, col= "cyan4",
      pch=16, cex = 2,
      xlim=c(-400,700),ylim=c(0.705,0.7115),
      xlab="Days from moves",
@@ -366,5 +366,79 @@ plot(Rm3.5b.mill.tl.al, rev(Rm3.5b.mill.no$corr..87Sr.86Sr), col= "cyan4",
      ylab = "87Sr/86Sr") 
 abline(h = CA.Sr)
 abline(h = UT.Sr)
-points(misha.tusk.micromill.tl.al, misha.tusk.micromill$corr..87Sr.86Sr,
+points(tusk.mill.tl$tl, tusk.mill.tl$Sr,
        pch=18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
+
+
+# Fig 4 compare estimated proportion of post-movement overprint,
+# in each of the following selected data series
+# part I: model-data comparison
+par(mfrow=c(3,2))
+# 1 LA-ICP MS and modeled serum, assumes no overprint
+plot(bin.thin*1:t - 400, post.comb.R1m.89[[1]], type = "l",
+     xlim = c(-400, 1100), ylim = c(0.705, 0.712),
+     lwd = 2 )
+lines(bin.thin*1:t - 400, post.comb.R1m.89[[2]], lty = 2)
+lines(bin.thin*1:t - 400, post.comb.R1m.89[[3]], lty = 2)
+abline(h = CA.Sr)
+abline(h = UT.Sr)
+lines(En1.50avg.tl.f$avg.tl, En1.50avg.tl.f$avg.sr,
+      col = "orange", lwd = 2)
+
+# 2 micromill tusk dentine and modeled serum, assumes no overprint
+plot(bin.thin*1:t - 400, post.comb.R1m.89[[1]], type = "l",
+     xlim = c(-400, 1100), ylim = c(0.705, 0.712),
+     lwd = 2 )
+lines(bin.thin*1:t - 400, post.comb.R1m.89[[2]], lty = 2)
+lines(bin.thin*1:t - 400, post.comb.R1m.89[[3]], lty = 2)
+abline(h = CA.Sr)
+abline(h = UT.Sr)
+points(tusk.mill.tl$tl, tusk.mill.tl$Sr,
+       pch = 18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
+
+# 3 LA-ICP MS EN 9 and mixed R
+plot(bin.thin*1:t - 400, post.comb.R1.En9.89[[1]], type = "l",
+     xlim = c(-400, 1100), ylim = c(0.705, 0.712),
+     lwd = 2)
+lines(bin.thin*1:t - 400, post.comb.R1.En9.89[[2]], lty = 2)
+lines(bin.thin*1:t - 400, post.comb.R1.En9.89[[3]], lty = 2)
+abline(h = CA.Sr)
+abline(h = UT.Sr)
+lines(En9.tl, R.En9,
+      col = "orange3", lwd = 2)
+
+# 4 LA-ICP MS EN 10 and mixed R
+plot(bin.thin*1:t - 400, post.comb.R1.En10.89[[1]], type = "l",
+     xlim = c(-400, 1100), ylim = c(0.705, 0.712),
+     lwd = 2)
+lines(bin.thin*1:t - 400, post.comb.R1.En10.89[[2]], lty = 2)
+lines(bin.thin*1:t - 400, post.comb.R1.En10.89[[3]], lty = 2)
+abline(h = CA.Sr)
+abline(h = UT.Sr)
+lines(En10.tl, R.En10,
+      col = "orange4", lwd = 2)
+
+# 5 hand drill and mixed R
+plot(bin.thin*1:t - 400, post.comb.R1.drill.89[[1]], type = "l",
+     xlim = c(-400, 1100), ylim = c(0.705, 0.712),
+     lwd = 2)
+lines(bin.thin*1:t - 400, post.comb.R1.drill.89[[2]], lty = 2)
+lines(bin.thin*1:t - 400, post.comb.R1.drill.89[[3]], lty = 2)
+abline(h = CA.Sr)
+abline(h = UT.Sr)
+points(drill.tl.f$tl, drill.tl.f$Sr, 
+       pch = 16, cex = 2, col = "red4")
+
+# 6 Rm3.5b micromill and mixed R
+plot(bin.thin*1:t - 400, post.comb.R1.Rm3.5b.89[[1]],type = "l",
+     xlim = c(-400, 1100), ylim = c(0.705, 0.712),
+     lwd = 2)
+lines(bin.thin*1:t - 400, post.comb.R1.Rm3.5b.89[[2]], lty = 2)
+lines(bin.thin*1:t - 400, post.comb.R1.Rm3.5b.89[[3]], lty = 2)
+abline(h = CA.Sr)
+abline(h = UT.Sr)
+points(Rm3.5b.mill.tl$tl, Rm3.5b.mill.tl$Sr, 
+       pch = 16, cex = 2, col = "cyan4")
+
+# Part II: estimated proportion of post-movement overprint
+par(mfrow=c(3,2))
