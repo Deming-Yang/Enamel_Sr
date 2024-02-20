@@ -19,15 +19,6 @@ proc.Enamel5.rm.new.x <- 88 - proc.Enamel5.rm.f$new.x/1e3
 proc.Enamel9.rm.new.x <- 88 - proc.Enamel9.rm.f$new.x/1e3
 proc.Enamel10.rm.new.x <- 88 - proc.Enamel10.rm.f$new.x/1e3
 
-# adding CA and UT Sr posterior from Yang et al. 2023
-CA.Sr <- 0.70597
-UT.Sr <- 0.71115
-
-# posterior CA Sr CI 
-CA.Sr.sd <- (0.706243 - CA.Sr)/2
-
-UT.Sr.sd <- (0.7120174 - UT.Sr)/2
-
 ########## use growth rates to match tusk series and enamel LA-ICP-MS series
 # to estimate time line, linear interpolations have to be made based on the growth curve
 # assume that the top of the crown is at 100 mm to the cervix
@@ -41,6 +32,12 @@ ref.length.v <- seq(101,0, by = -0.1) # 0.1mm interval
 # Uno et al. 2020 used a logarithmic relationship
 # chech regression of the logarithmic model
 Rm3.5.angle$log.dist <- log(Rm3.5.angle$dist) # create log term
+
+logM.ang <- lm(angle ~ log.dist , data = Rm3.5.angle)
+summary(logM.ang)
+
+Pred.ang.Rm3.5 <- predict(logM.ang, list(log.dist = log(ref.length.v)))
+
 
 logM.tan <- lm(tan ~ log.dist , data = Rm3.5.angle)
 summary(logM.tan)
@@ -173,7 +170,8 @@ en10.tl <- tibble(tl = days.cumm.en10.al, Sr = proc.Enamel10.rm.f$avg,
 
 drill.tl <- tibble(tl = days.cumm.drill.al, 
                    Sr = rev(Drill.no$corr..87Sr.86Sr),
-                   sd = rev(Drill.no$comb..Err))
+                   sd = rev(Drill.no$comb..Err),
+                   depth = rev(Drill.no$Sample.depth)) # sample depth is useful later
 
 Rm3.5b.mill.tl <- tibble(tl = Rm3.5b.mill.tl.al, Sr = rev(Rm3.5b.mill.no$corr..87Sr.86Sr),
                          sd = rev(Rm3.5b.mill.no$comb..Err))

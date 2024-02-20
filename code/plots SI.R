@@ -1,5 +1,6 @@
 library(scales)
 
+#################  Fig S2 #################  
 ############# compare position of the change points to appositional angle ###########
 par(mfrow=c(1, 2))
 plot(cp1.E.rm.x, cp1.E.rm.y, main = "Change point 1", xlim = c(50000,10000),
@@ -26,11 +27,65 @@ points(cp2.E.rm.x[9:10], cp2.E.rm.y[9:10], col = "red2", pch = 16) #mark the one
 
 ############# end of change point comparisons ###########
 
+#################  Fig S3 #################  
 ############# Figure modeling growth rate along the length of the crown #############
 # visualize the model fit
+par(mfrow=c(1, 2))
+plot(Rm3.5.angle$dist, Rm3.5.angle$angle, ylim = c(2,5), xlim = c(0,100),
+     ylab = "Alpha (degrees)", xlab ="Distance from cervix (mm)",
+     main = "Angle of enamel apposition", pch =16)
+lines(ref.length.v, Pred.ang.Rm3.5)
+
 plot(Rm3.5.angle$dist, Rm3.5.angle$tan, ylim = c(0.04,0.09), xlim = c(0,100),
-     ylab = "Tangent(alpha)", xlab ="Distance from cervix (mm)")
+     ylab = "Tangent(alpha)", xlab ="Distance from cervix (mm)", pch =16)
 lines(ref.length.v, Pred.tan.Rm3.5)
+############# end of growth rate plot ###########
+
+
+#################  Fig S4 ################# 
+# linear regression showing the posivie relationship between
+# model resitual and sampling depth
+# supporting the notion that sampling depth affects sample 87Sr/86Sr
+# by incorporating heterogeneous 87Sr/86Sr within the thickness of enamel 
+par(mfrow=c(1, 1))
+plot(data = res.tib, y ~ x, ylim = c(-2e-4,5e-4),
+     xlab = "Drill depth (mm)", ylab = "Residual: model - data",
+     main = "Sampling depth vs 87Sr/86Sr residuals",
+     pch = 16, col = "red4")
+
+abline(lm.res, lwd = 2, col="blue3")
+lines(newx, conf_interval[,2], col="blue3", lty=2)
+lines(newx, conf_interval[,3], col="blue3", lty=2)
+# draw reference lines
+abline(h = 0)
+# this is the mean depth of the sampling groove
+abline(v = mean(drill.tl.f2$depth)) 
+
+# most of the data between timeline days 0 and 600 have lower 87Sr/86Sr,
+# because they are drilled deeper
+
+# no apparent correlation between sample depth and residual of 87Sr/86Sr
+
+#################  Fig S7 ################# 
+# examine modeled serum ratios
+post.sens.R1m.89 <- MCMC.CI.bound(post.sens$BUGSoutput$sims.list$R1.m, 0.89)
+
+# preliminary plot
+# 2 micromill tusk dentine and modeled serum, assumes no overprint
+plot(bin.thin*1:t - 400, post.sens.R1m.89[[1]], type = "l",
+     xlim = c(-400, 1100), ylim = c(0.705, 0.712),
+     lwd = 2, main = "")
+lines(bin.thin*1:t - 400, post.sens.R1m.89[[2]], lty = 2)
+lines(bin.thin*1:t - 400, post.sens.R1m.89[[3]], lty = 2)
+abline(h = CA.Sr)
+abline(h = UT.Sr)
+points(tusk.mill.tl$tl, tusk.mill.tl$Sr,
+       pch = 18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
+#################  end Fig S7 #################
+
+# preliminary plots shows substantial over-fitting of the data (solution method),
+# which is expected due to the small sds. 
+# this suggests that sds should be adjusted to reflect real-world data and model uncertainties
 
 ############# Time line reconstructions with individual data series in Fig 3D #############
 # Fig SI after converting to time, 
@@ -96,6 +151,16 @@ abline(h = CA.Sr)
 abline(h = UT.Sr)
 points(misha.tusk.micromill.tl.al, misha.tusk.micromill$corr..87Sr.86Sr,
        pch=18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
+
+
+
+
+
+
+
+
+
+
 
 
 ################# contour map of the enamel block#######################

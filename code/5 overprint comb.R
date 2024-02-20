@@ -13,13 +13,19 @@ source("./code/1 Helper functions.R")
 # this was done on four data series: LA-ICP-MS Enamel 9, Enamel 10, Drill, and micromill series
 # the tusk dentine micromill data (solution method) was used to generate a reference timeline
 
-CA.Sr <- 0.706
-UT.Sr <- 0.712
+# adding CA and UT Sr posterior from Yang et al. 2023
+CA.Sr <- 0.70597
+UT.Sr <- 0.71115
 
-# posterior CA Sr CI 
-CA.Sr.sd <- 0.00025
+# uncertainty CA & UT Sr 
+CA.Sr.sd <- (0.706243 - CA.Sr)/2
 
-UT.Sr.sd <- 0.0005
+UT.Sr.sd <- (0.7120174 - UT.Sr)/2
+
+# uncertainty CA & UT Sr 
+# CA.Sr.sd <- 0.0005
+# 
+# UT.Sr.sd <- 0.001
 
 # data reduction for LA-ICP-MS
 
@@ -103,6 +109,13 @@ bin.thin <- min(drill.tl.sd, Rm3.5b.tl.sd, En1.tl.sd, En9.tl.sd, En10.tl.sd)
 
 t <- round(1500/bin.thin) # set a higher number of days to accommodate 
 
+# use a universal uncertainty among the substrates
+# use a large combined error to ensure parameter convergence on the tusk data,
+# also estimate the common behavior between the data series, without
+# overfitting the data
+
+r.sd <- 0.0005
+
 # 1 reference data set 1: dentine micromill
 n.r1 <- length(tusk.mill.tl$Sr)
 
@@ -111,21 +124,13 @@ R.r1 <- tusk.mill.tl$Sr
 
 r1.tl <- tusk.mill.tl$tl
 
-# use a large combined error to ensure parameter convergence on the tusk data,
-# also estimate the common behavior between the data series, without
-# overfitting the data
-# R.sd.r1 <- tusk.mill.tl$sd  * 25
-
-R.sd.r1 <- rep(0.00025, n.r1)
-
+R.sd.r1 <- rep(r.sd, n.r1)
 
 # 2 reference data set 2: Enamel 9 transect
 n.En1 <- length(En1.50avg.tl.f$avg.sr)
 
 # measurement data, timeline, Sr, and sd
 R.En1 <- En1.50avg.tl.f$avg.sr
-
-# R.sd.En1 <- En1.50avg.tl.f$sd.sr * 5
 
 En1.tl <- En1.50avg.tl.f$avg.tl
 
@@ -135,10 +140,7 @@ n.drill <- length(drill.tl.f$Sr)
 # measurement data, timeline, Sr, and sd
 R.drill <- drill.tl.f$Sr
 
-#use a combined error that is 10 times higher than the measurement error
-# R.sd.drill <- drill.tl.f$sd * 25
-
-R.sd.drill <-rep(0.00025, n.drill)
+R.sd.drill <-rep(r.sd, n.drill)
 
 drill.tl <- drill.tl.f$tl
 
@@ -148,9 +150,7 @@ n.Rm3.5b <- length(Rm3.5b.mill.tl$Sr)
 # measurement data, timeline, Sr, and sd
 R.Rm3.5b <- Rm3.5b.mill.tl$Sr
 
-# R.sd.Rm3.5b <- Rm3.5b.mill.tl$sd * 25
-
-R.sd.Rm3.5b <-rep(0.00025, n.Rm3.5b)
+R.sd.Rm3.5b <-rep(r.sd, n.Rm3.5b)
 
 Rm3.5b.tl<- Rm3.5b.mill.tl$tl
 
@@ -160,9 +160,7 @@ n.En9 <- length(En9.50avg.tl$avg.sr)
 # measurement data, timeline, Sr, and sd
 R.En9 <- En9.50avg.tl$avg.sr
 
-# R.sd.En9 <- En9.50avg.tl$sd.sr * 5
-
-R.sd.En9 <-rep(0.00025, n.En9)
+R.sd.En9 <-rep(r.sd, n.En9)
 
 En9.tl <- En9.50avg.tl$avg.tl
 
@@ -174,7 +172,7 @@ R.En10 <- En10.50avg.tl$avg.sr
 
 # R.sd.En10 <- En10.50avg.tl$sd.sr * 5
 
-R.sd.En10 <-rep(0.00025, n.En10)
+R.sd.En10 <-rep(r.sd, n.En10)
 
 En10.tl <- En10.50avg.tl$avg.tl
 
@@ -188,12 +186,12 @@ parameters <- c("switch", "Rin", "R1.m", "R2.m", "a","b","c",
 
 dat = list( params.mu = turnover.params.mu, params.vcov = turnover.params.vcov, 
             tl.sd = tl.sd, bin.thin = bin.thin, t = t,
-            n.r1 = n.r1, R.r1 = R.r1, R.sd.r1 = R.sd.r1, r1.tl = r1.tl,
-            n.r2 = n.En1, R.r2 = R.En1, R.sd.r2 = R.sd.En1, r2.tl = En1.tl,
-            n.drill = n.drill, R.drill = R.drill, R.sd.drill = R.sd.drill, drill.tl = drill.tl,
-            n.Rm3.5b = n.Rm3.5b, R.Rm3.5b = R.Rm3.5b, R.sd.Rm3.5b = R.sd.Rm3.5b, Rm3.5b.tl = Rm3.5b.tl,
-            n.En9 = n.En9, R.En9 = R.En9, R.sd.En9 = R.sd.En9, En9.tl = En9.tl,
-            n.En10 = n.En10, R.En10 = R.En10, R.sd.En10 = R.sd.En10, En10.tl = En10.tl,
+            n.r1 = n.r1, R.r1 = R.r1, R.sd.r1 = rep(r.sd, n.r1), r1.tl = r1.tl,
+            n.r2 = n.En1, R.r2 = R.En1, R.sd.r2 = rep(r.sd, n.r2), r2.tl = En1.tl,
+            n.drill = n.drill, R.drill = R.drill, R.sd.drill = rep(r.sd, n.drill), drill.tl = drill.tl,
+            n.Rm3.5b = n.Rm3.5b, R.Rm3.5b = R.Rm3.5b, R.sd.Rm3.5b = rep(r.sd, n.Rm3.5b), Rm3.5b.tl = Rm3.5b.tl,
+            n.En9 = n.En9, R.En9 = R.En9, R.sd.En9 = rep(r.sd, n.En9), En9.tl = En9.tl,
+            n.En10 = n.En10, R.En10 = R.En10, R.sd.En10 = rep(r.sd, n.En10), En10.tl = En10.tl,
             UT.Sr = UT.Sr, CA.Sr = CA.Sr)
 
 #Start time
@@ -233,37 +231,43 @@ post.comb.R1.En10.89 <- MCMC.CI.bound(post.comb$BUGSoutput$sims.list$R1.En10, 0.
 
 # record MAP and CI of estimated proportion
 pr.drill.map <- map_estimate(post.comb$BUGSoutput$sims.list$pr.drill)[[1]]
-# 0.1878214
+# 0.2296887
 pr.drill.ci1 <- hdi(post.comb$BUGSoutput$sims.list$pr.drill, .89)[[2]]
-# 0.1844787
+# 0.1776457
 pr.drill.ci2 <- hdi(post.comb$BUGSoutput$sims.list$pr.drill, .89)[[3]]
-# 0.1908497
+# 0.2868468
 
 pr.Rm3.5b.map <- map_estimate(post.comb$BUGSoutput$sims.list$pr.Rm3.5b)[[1]]
-# 0.1878214
+# 0.07984524
 pr.Rm3.5b.ci1 <- hdi(post.comb$BUGSoutput$sims.list$pr.Rm3.5b, .89)[[2]]
-# 0.1844787
-pr.Rm3.5b.ci1 <- hdi(post.comb$BUGSoutput$sims.list$pr.Rm3.5b, .89)[[3]]
-# 0.1908497
+# 0.03396436
+pr.Rm3.5b.ci2 <- hdi(post.comb$BUGSoutput$sims.list$pr.Rm3.5b, .89)[[3]]
+# 0.1290464
 
 pr.En9.map <- map_estimate(post.comb$BUGSoutput$sims.list$pr.En9)[[1]]
-# 0.1878214
+# 0.06070172
 pr.En9.ci1 <- hdi(post.comb$BUGSoutput$sims.list$pr.En9, .89)[[2]]
-# 0.1844787
-pr.En9.ci1 <- hdi(post.comb$BUGSoutput$sims.list$pr.En9, .89)[[3]]
-# 0.1908497
+# 0.02131612
+pr.En9.ci2 <- hdi(post.comb$BUGSoutput$sims.list$pr.En9, .89)[[3]]
+# 0.09912549
 
 pr.En10.map <- map_estimate(post.comb$BUGSoutput$sims.list$pr.En10)[[1]]
-# 0.1878214
+# 0.1313421
 pr.En10.ci1 <- hdi(post.comb$BUGSoutput$sims.list$pr.En10, .89)[[2]]
-# 0.1844787
-pr.En10.ci1 <- hdi(post.comb$BUGSoutput$sims.list$pr.En10, .89)[[3]]
+# 0.09397739
+pr.En10.ci2 <- hdi(post.comb$BUGSoutput$sims.list$pr.En10, .89)[[3]]
+# 0.1748904
+
+# record Sr ratios prior to and after the movement
+Sr.pri.map <- map_estimate(post.comb$BUGSoutput$sims.list$Rpri.mod)[[1]]
+
+Sr.aft.map <- map_estimate(post.comb$BUGSoutput$sims.list$Raft.mod)[[1]]
 
 ####### end of model run #######
 
+
+###################################
 ####### Sensitivity test #######
-
-
 ####### Preparing the model run #######
 ####### start compiling parameters #######
 
@@ -329,24 +333,5 @@ denplot(as.mcmc(post.sens), parms = c("a","b","c",
 
 # results show issues with convergence (denplot), and
 # distorted posterior distributions in a, b and c parameters 
-
-# examine modeled serum ratios
-post.sens.R1m.89 <- MCMC.CI.bound(post.sens$BUGSoutput$sims.list$R1.m, 0.89)
-
-# preliminary plot
-# 2 micromill tusk dentine and modeled serum, assumes no overprint
-plot(bin.thin*1:t - 400, post.sens.R1m.89[[1]], type = "l",
-     xlim = c(-400, 1100), ylim = c(0.705, 0.712),
-     lwd = 2 )
-lines(bin.thin*1:t - 400, post.sens.R1m.89[[2]], lty = 2)
-lines(bin.thin*1:t - 400, post.sens.R1m.89[[3]], lty = 2)
-abline(h = CA.Sr)
-abline(h = UT.Sr)
-points(tusk.mill.tl$tl, tusk.mill.tl$Sr,
-       pch = 18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
-
-# preliminary plots shows substantial over-fitting of the data (solution method),
-# which is expected due to the small sds. 
-# this suggests that sds should be adjusted to reflect real-world data and model uncertainties
 
 ####### end of sensitivity test #######

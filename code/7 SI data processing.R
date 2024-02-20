@@ -72,3 +72,32 @@ misha.tusk.micromill.tl <- misha.tusk.micromill.dist/14.7 #mm/day
 
 # align with the switch
 misha.tusk.micromill.tl.al <- misha.tusk.micromill.tl - 335
+
+#################################################
+# prep for Fig S4
+# examine the relationships between the resituals between 
+# hand drill 87Sr/86Sr and the mixed serum as enamel input
+
+# filter the data and focus on the timeline between 0 and 600
+
+drill.tl.f2 <- filter(drill.tl, drill.tl$tl > 0 & drill.tl$tl < 600)
+
+pred.drill <- approx(x = bin.thin*1:t - 400, y = post.comb.R1.drill.89[[1]]
+                     , xout = drill.tl.f2$tl)$y
+# prediction: larger depths, lower 87Sr/86Sr, more deviation from predicted value
+res.drill <- pred.drill - drill.tl.f2$Sr
+
+res.tib <- tibble(x = drill.tl.f2$depth, y = res.drill)
+
+lm.res <- lm(data = res.tib, y ~ x)
+summary(lm.res) # results are significant
+
+# Coefficients:
+#               Estimate  Std. Error t value  Pr(>|t|)    
+# (Intercept) -0.0007788  0.0002157  -3.611   0.002838 ** 
+# x            0.0012311  0.0002577   4.777   0.000295 ***
+
+# calculate 95% confidence intervals for plotting 
+newx = seq(min(res.tib$x), max(res.tib$x), by = 0.01)
+conf_interval <- predict(lm.res, newdata=data.frame(x=newx), interval="confidence",
+                         level = 0.95)

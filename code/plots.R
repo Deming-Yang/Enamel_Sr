@@ -373,72 +373,196 @@ points(tusk.mill.tl$tl, tusk.mill.tl$Sr,
 # Fig 4 compare estimated proportion of post-movement overprint,
 # in each of the following selected data series
 # part I: model-data comparison
-par(mfrow=c(3,2))
+par(mfrow=c(3,2)) # 600 * 800
 # 1 LA-ICP MS and modeled serum, assumes no overprint
 plot(bin.thin*1:t - 400, post.comb.R1m.89[[1]], type = "l",
-     xlim = c(-400, 1100), ylim = c(0.705, 0.712),
-     lwd = 2 )
+     xlim = c(-400, 1100), ylim = c(0.706, 0.712),
+     lwd = 2 , 
+     xlab = "Timeline (days)", ylab = "87Sr/86Sr",
+     main = "Ref. data 1: LA-ICP-MS En 1")
 lines(bin.thin*1:t - 400, post.comb.R1m.89[[2]], lty = 2)
 lines(bin.thin*1:t - 400, post.comb.R1m.89[[3]], lty = 2)
-abline(h = CA.Sr)
-abline(h = UT.Sr)
+abline(h = Sr.pri.map)
+abline(h = Sr.aft.map)
 lines(En1.50avg.tl.f$avg.tl, En1.50avg.tl.f$avg.sr,
       col = "orange", lwd = 2)
 
 # 2 micromill tusk dentine and modeled serum, assumes no overprint
 plot(bin.thin*1:t - 400, post.comb.R1m.89[[1]], type = "l",
-     xlim = c(-400, 1100), ylim = c(0.705, 0.712),
-     lwd = 2 )
+     xlim = c(-400, 1100), ylim = c(0.706, 0.712),
+     lwd = 2,  
+     xlab = "Timeline (days)", ylab = "87Sr/86Sr",
+     main = "Ref. data 2: micromill tusk dentine")
 lines(bin.thin*1:t - 400, post.comb.R1m.89[[2]], lty = 2)
 lines(bin.thin*1:t - 400, post.comb.R1m.89[[3]], lty = 2)
-abline(h = CA.Sr)
-abline(h = UT.Sr)
+abline(h = Sr.pri.map)
+abline(h = Sr.aft.map)
 points(tusk.mill.tl$tl, tusk.mill.tl$Sr,
        pch = 18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
 
 # 3 LA-ICP MS EN 9 and mixed R
-plot(bin.thin*1:t - 400, post.comb.R1.En9.89[[1]], type = "l",
-     xlim = c(-400, 1100), ylim = c(0.705, 0.712),
-     lwd = 2)
-lines(bin.thin*1:t - 400, post.comb.R1.En9.89[[2]], lty = 2)
-lines(bin.thin*1:t - 400, post.comb.R1.En9.89[[3]], lty = 2)
-abline(h = CA.Sr)
-abline(h = UT.Sr)
+plot(bin.thin*1:t - 400, post.comb.R1m.89[[1]], type = "l",
+     xlim = c(-400, 1100), ylim = c(0.706, 0.712),
+     lwd = 2, col = "gray56", 
+     xlab = "Timeline (days)", ylab = "87Sr/86Sr",
+     main = "Est. proportion: LA-ICP-MS En 9")
+# lines(bin.thin*1:t - 400, post.comb.R1m.89[[2]], lty = 2, col = "gray48")
+# lines(bin.thin*1:t - 400, post.comb.R1m.89[[3]], lty = 2, col = "gray48")
+lines(bin.thin*1:t - 400, post.comb.R1.En9.89[[1]],lwd = 2, lty = 2)
+abline(h = Sr.pri.map)
+abline(h = Sr.aft.map)
 lines(En9.tl, R.En9,
       col = "orange3", lwd = 2)
 
 # 4 LA-ICP MS EN 10 and mixed R
-plot(bin.thin*1:t - 400, post.comb.R1.En10.89[[1]], type = "l",
-     xlim = c(-400, 1100), ylim = c(0.705, 0.712),
-     lwd = 2)
-lines(bin.thin*1:t - 400, post.comb.R1.En10.89[[2]], lty = 2)
-lines(bin.thin*1:t - 400, post.comb.R1.En10.89[[3]], lty = 2)
-abline(h = CA.Sr)
-abline(h = UT.Sr)
+plot(bin.thin*1:t - 400, post.comb.R1m.89[[1]], type = "l",
+     xlim = c(-400, 1100), ylim = c(0.706, 0.712),
+     lwd = 2, col = "gray56", 
+     xlab = "Timeline (days)", ylab = "87Sr/86Sr",
+     main = "Est. proportion: LA-ICP-MS En 10")
+# lines(bin.thin*1:t - 400, post.comb.R1m.89[[2]], lty = 2, col = "gray48")
+# lines(bin.thin*1:t - 400, post.comb.R1m.89[[3]], lty = 2, col = "gray48")
+lines(bin.thin*1:t - 400, post.comb.R1.En10.89[[1]],lwd = 2, lty = 2)
+abline(h = Sr.pri.map)
+abline(h = Sr.aft.map)
 lines(En10.tl, R.En10,
       col = "orange4", lwd = 2)
 
 # 5 hand drill and mixed R
-plot(bin.thin*1:t - 400, post.comb.R1.drill.89[[1]], type = "l",
-     xlim = c(-400, 1100), ylim = c(0.705, 0.712),
-     lwd = 2)
-lines(bin.thin*1:t - 400, post.comb.R1.drill.89[[2]], lty = 2)
-lines(bin.thin*1:t - 400, post.comb.R1.drill.89[[3]], lty = 2)
-abline(h = CA.Sr)
-abline(h = UT.Sr)
+plot(bin.thin*1:t - 400, post.comb.R1m.89[[1]], type = "l",
+     xlim = c(-400, 1100), ylim = c(0.706, 0.712),
+     lwd = 2, col = "gray56", 
+     xlab = "Timeline (days)", ylab = "87Sr/86Sr",
+     main = "Est. proportion: enamel hand drill")
+# lines(bin.thin*1:t - 400, post.comb.R1m.89[[2]], lty = 2, col = "gray48")
+# lines(bin.thin*1:t - 400, post.comb.R1m.89[[3]], lty = 2, col = "gray48")
+lines(bin.thin*1:t - 400, post.comb.R1.drill.89[[1]],lwd = 2, lty = 2)
+abline(h = Sr.pri.map)
+abline(h = Sr.aft.map)
 points(drill.tl.f$tl, drill.tl.f$Sr, 
-       pch = 16, cex = 2, col = "red4")
+       pch = 16, cex = 2, col = alpha("red4", 0.7))
 
 # 6 Rm3.5b micromill and mixed R
-plot(bin.thin*1:t - 400, post.comb.R1.Rm3.5b.89[[1]],type = "l",
-     xlim = c(-400, 1100), ylim = c(0.705, 0.712),
-     lwd = 2)
-lines(bin.thin*1:t - 400, post.comb.R1.Rm3.5b.89[[2]], lty = 2)
-lines(bin.thin*1:t - 400, post.comb.R1.Rm3.5b.89[[3]], lty = 2)
-abline(h = CA.Sr)
-abline(h = UT.Sr)
+plot(bin.thin*1:t - 400, post.comb.R1m.89[[1]], type = "l",
+     xlim = c(-400, 1100), ylim = c(0.706, 0.712),
+     lwd = 2, col = "gray56", 
+     xlab = "Timeline (days)", ylab = "87Sr/86Sr",
+     main = "Est. proportion: enamel micromill")
+# lines(bin.thin*1:t - 400, post.comb.R1m.89[[2]], lty = 2, col = "gray48",)
+# lines(bin.thin*1:t - 400, post.comb.R1m.89[[3]], lty = 2, col = "gray48",)
+lines(bin.thin*1:t - 400, post.comb.R1.Rm3.5b.89[[1]],lwd = 2, lty = 2)
+abline(h = Sr.pri.map)
+abline(h = Sr.aft.map)
 points(Rm3.5b.mill.tl$tl, Rm3.5b.mill.tl$Sr, 
-       pch = 16, cex = 2, col = "cyan4")
+       pch = 16, cex = 2, col = alpha("cyan4", 0.5))
 
 # Part II: estimated proportion of post-movement overprint
-par(mfrow=c(3,2))
+# record densities
+d.pr.En9 <- density(post.comb$BUGSoutput$sims.list$pr.En9)
+d.pr.En10 <- density(post.comb$BUGSoutput$sims.list$pr.En10)
+d.pr.drill <- density(post.comb$BUGSoutput$sims.list$pr.drill)
+d.pr.Rm3.5b <- density(post.comb$BUGSoutput$sims.list$pr.Rm3.5b)
+
+par(mfrow=c(2,2)) # 400 * 400
+
+plot(d.pr.En9$y, d.pr.En9$x, type = "l",
+     ylim = c(0,0.35), col = "orange3", lwd = 2,
+     xlab = "Density", ylab = "Proportion",
+     main = "En9")
+abline(h = pr.En9.map, lwd = 2)
+abline(h = pr.En9.ci1, lty = 2)
+abline(h = pr.En9.ci2, lty = 2)
+
+plot(d.pr.En10$y, d.pr.En10$x, type = "l",
+     ylim = c(0,0.35), col = "orange4", lwd = 2,
+     xlab = "Density", ylab = "Proportion",
+     main = "En10")
+abline(h = pr.En10.map, lwd = 2)
+abline(h = pr.En10.ci1, lty = 2)
+abline(h = pr.En10.ci2, lty = 2)
+
+plot(d.pr.drill$y, d.pr.drill$x, type = "l",
+     ylim = c(0,0.35), col = "red4", lwd = 2,
+     xlab = "Density", ylab = "Proportion",
+     main = "Drill")
+abline(h = pr.drill.map, lwd = 2)
+abline(h = pr.drill.ci1, lty = 2)
+abline(h = pr.drill.ci2, lty = 2)
+
+plot(d.pr.Rm3.5b$y, d.pr.Rm3.5b$x, type = "l",
+     ylim = c(0,0.35), col = "cyan4", lwd = 2,
+     xlab = "Density", ylab = "Proportion",
+     main = "Micromill")
+abline(h = pr.Rm3.5b.map, lwd = 2)
+abline(h = pr.Rm3.5b.ci1, lty = 2)
+abline(h = pr.Rm3.5b.ci2, lty = 2)
+
+# # Fig 4 compare estimated proportion of post-movement overprint,
+# # in each of the following selected data series
+# # part I: model-data comparison
+# par(mfrow=c(3,2)) # 600 * 800
+# # 1 LA-ICP MS and modeled serum, assumes no overprint
+# plot(bin.thin*1:t - 400, post.comb.R1m.89[[1]], type = "l",
+#      xlim = c(-400, 1100), ylim = c(0.705, 0.712),
+#      lwd = 2 , xlab = "Timeline (days)", ylab = "87Sr/86Sr")
+# lines(bin.thin*1:t - 400, post.comb.R1m.89[[2]], lty = 2)
+# lines(bin.thin*1:t - 400, post.comb.R1m.89[[3]], lty = 2)
+# abline(h = CA.Sr)
+# abline(h = UT.Sr)
+# lines(En1.50avg.tl.f$avg.tl, En1.50avg.tl.f$avg.sr,
+#       col = "orange", lwd = 2)
+# 
+# # 2 micromill tusk dentine and modeled serum, assumes no overprint
+# plot(bin.thin*1:t - 400, post.comb.R1m.89[[1]], type = "l",
+#      xlim = c(-400, 1100), ylim = c(0.705, 0.712),
+#      lwd = 2, xlab = "Timeline (days)", ylab = "87Sr/86Sr")
+# lines(bin.thin*1:t - 400, post.comb.R1m.89[[2]], lty = 2)
+# lines(bin.thin*1:t - 400, post.comb.R1m.89[[3]], lty = 2)
+# abline(h = CA.Sr)
+# abline(h = UT.Sr)
+# points(tusk.mill.tl$tl, tusk.mill.tl$Sr,
+#        pch = 18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
+# 
+# # 3 LA-ICP MS EN 9 and mixed R
+# plot(bin.thin*1:t - 400, post.comb.R1.En9.89[[1]], type = "l",
+#      xlim = c(-400, 1100), ylim = c(0.705, 0.712),
+#      lwd = 2, xlab = "Timeline (days)", ylab = "87Sr/86Sr")
+# lines(bin.thin*1:t - 400, post.comb.R1.En9.89[[2]], lty = 2)
+# lines(bin.thin*1:t - 400, post.comb.R1.En9.89[[3]], lty = 2)
+# abline(h = CA.Sr)
+# abline(h = UT.Sr)
+# lines(En9.tl, R.En9,
+#       col = "orange3", lwd = 2)
+# 
+# # 4 LA-ICP MS EN 10 and mixed R
+# plot(bin.thin*1:t - 400, post.comb.R1.En10.89[[1]], type = "l",
+#      xlim = c(-400, 1100), ylim = c(0.705, 0.712),
+#      lwd = 2, xlab = "Timeline (days)", ylab = "87Sr/86Sr")
+# lines(bin.thin*1:t - 400, post.comb.R1.En10.89[[2]], lty = 2)
+# lines(bin.thin*1:t - 400, post.comb.R1.En10.89[[3]], lty = 2)
+# abline(h = CA.Sr)
+# abline(h = UT.Sr)
+# lines(En10.tl, R.En10,
+#       col = "orange4", lwd = 2)
+# 
+# # 5 hand drill and mixed R
+# plot(bin.thin*1:t - 400, post.comb.R1.drill.89[[1]], type = "l",
+#      xlim = c(-400, 1100), ylim = c(0.705, 0.712),
+#      lwd = 2, xlab = "Timeline (days)", ylab = "87Sr/86Sr")
+# lines(bin.thin*1:t - 400, post.comb.R1.drill.89[[2]], lty = 2)
+# lines(bin.thin*1:t - 400, post.comb.R1.drill.89[[3]], lty = 2)
+# abline(h = CA.Sr)
+# abline(h = UT.Sr)
+# points(drill.tl.f$tl, drill.tl.f$Sr, 
+#        pch = 16, cex = 2, col = alpha("red4", 0.7))
+# 
+# # 6 Rm3.5b micromill and mixed R
+# plot(bin.thin*1:t - 400, post.comb.R1.Rm3.5b.89[[1]],type = "l",
+#      xlim = c(-400, 1100), ylim = c(0.705, 0.712),
+#      lwd = 2, xlab = "Timeline (days)", ylab = "87Sr/86Sr")
+# lines(bin.thin*1:t - 400, post.comb.R1.Rm3.5b.89[[2]], lty = 2)
+# lines(bin.thin*1:t - 400, post.comb.R1.Rm3.5b.89[[3]], lty = 2)
+# abline(h = CA.Sr)
+# abline(h = UT.Sr)
+# points(Rm3.5b.mill.tl$tl, Rm3.5b.mill.tl$Sr, 
+#        pch = 16, cex = 2, col = alpha("cyan4", 0.7))
