@@ -16,6 +16,7 @@ dent.rm.f2 <- rbind(dent.rm.fa, dent.rm.fb)
 dent.rm.new.x <- 88 - dent.rm.f2$new.x/1e3
 proc.Enamel1.rm.new.x <- 88 - proc.Enamel1.rm.f$new.x/1e3
 proc.Enamel5.rm.new.x <- 88 - proc.Enamel5.rm.f$new.x/1e3
+proc.Enamel7.rm.new.x <- 88 - proc.Enamel7.rm.f$new.x/1e3
 proc.Enamel9.rm.new.x <- 88 - proc.Enamel9.rm.f$new.x/1e3
 proc.Enamel10.rm.new.x <- 88 - proc.Enamel10.rm.f$new.x/1e3
 
@@ -50,12 +51,7 @@ Pred.tan.Rm3.5 <- predict(logM.tan, list(log.dist = log(ref.length.v)))
 logM.tan$coefficients[[1]]
 logM.tan$coefficients[[2]]
 
-# visualize the model fit
-plot(Rm3.5.angle$dist, Rm3.5.angle$tan, ylim = c(0.04,0.09), xlim = c(0,100),
-     ylab = "Tangent(alpha)", xlab ="Distance from cervix (mm)")
-lines(ref.length.v, Pred.tan.Rm3.5)
-
-# referenced enamel length at 52.7 mm
+# referenced enamel length at 85.7 mm
 ref.en.length <- 85.7 # in mm
 
 ref.tan <- approx(x = ref.length.v, y = Pred.tan.Rm3.5, 
@@ -107,9 +103,9 @@ days.cumm.en1 <- base::cumsum(time.interv.en1)
 days.cumm.drill <- base::cumsum(time.interv.drill)
 
 # align with the switch, this step was done manually
-days.cumm.den.al <- days.cumm.den - 910
+days.cumm.den.al <- days.cumm.den - 890
 days.cumm.en1.al <- days.cumm.en1 - 410 
-days.cumm.drill.al <- days.cumm.drill - 530
+days.cumm.drill.al <- days.cumm.drill - 535
 
 ### 3 enamel micromill translation ###
 # transform this into time, not vertical distance, use trigonometry
@@ -124,14 +120,17 @@ Rm3.5b.mill.tl.al <- Rm3.5b.mill.tl - 120
 # from the pulp cavity, which is the newest dentine
 maxl.tusk <- max(misha.tusk.micromill$Position)
 
-#this is the total length of dentine milled, 500 micron interval
-misha.tusk.micromill.dist <- (maxl.tusk - misha.tusk.micromill$Position) * 500 
+# this is the total length of dentine milled, originally 500 micron interval
+# following Yang et al 2023, because of a geometric correction,
+# the equivalent sampling interval is 547 microns per day
 
-# assuming a constant tusk growth rate at 14.7 microns/day (Uno et al., 2020)
+misha.tusk.micromill.dist <- (maxl.tusk - misha.tusk.micromill$Position) * 547 
+
+# assuming a constant tusk radial growth rate at 14.7 microns/day (Uno et al., 2020)
 misha.tusk.micromill.tl <- misha.tusk.micromill.dist/14.7 #mm/day
 
 # align with the switch
-misha.tusk.micromill.tl.al <- misha.tusk.micromill.tl - 335
+misha.tusk.micromill.tl.al <- misha.tusk.micromill.tl - 365
 
 # additional timeline reconstructions for En9 and En10
 

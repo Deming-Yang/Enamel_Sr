@@ -43,13 +43,13 @@ lines(ref.length.v, Pred.tan.Rm3.5)
 
 
 #################  Fig S4 ################# 
-# linear regression showing the posivie relationship between
-# model resitual and sampling depth
+# linear regression showing the negative relationship between
+# model residual and sampling depth
 # supporting the notion that sampling depth affects sample 87Sr/86Sr
 # by incorporating heterogeneous 87Sr/86Sr within the thickness of enamel 
 par(mfrow=c(1, 1))
-plot(data = res.tib, y ~ x, ylim = c(-2e-4,5e-4),
-     xlab = "Drill depth (mm)", ylab = "Residual: model - data",
+plot(data = res.tib, y ~ x, ylim = c(-5e-4,2e-4),
+     xlab = "Drill depth (mm)", ylab = "Residual: data - model",
      main = "Sampling depth vs 87Sr/86Sr residuals",
      pch = 16, col = "red4")
 
@@ -74,13 +74,14 @@ post.sens.R1m.89 <- MCMC.CI.bound(post.sens$BUGSoutput$sims.list$R1.m, 0.89)
 # 2 micromill tusk dentine and modeled serum, assumes no overprint
 plot(bin.thin*1:t - 400, post.sens.R1m.89[[1]], type = "l",
      xlim = c(-400, 1100), ylim = c(0.705, 0.712),
-     lwd = 2, main = "")
+     xlab = "Timeline (days)", ylab = "87Sr/86Sr",
+     lwd = 2, main = "Modeled serum 87Sr/86Sr")
 lines(bin.thin*1:t - 400, post.sens.R1m.89[[2]], lty = 2)
 lines(bin.thin*1:t - 400, post.sens.R1m.89[[3]], lty = 2)
-abline(h = CA.Sr)
-abline(h = UT.Sr)
-points(tusk.mill.tl$tl, tusk.mill.tl$Sr,
-       pch = 18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
+abline(h = Sr.pri.map)
+abline(h = Sr.aft.map)
+# points(tusk.mill.tl$tl, tusk.mill.tl$Sr,
+#        pch = 18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
 #################  end Fig S7 #################
 
 # preliminary plots shows substantial over-fitting of the data (solution method),

@@ -82,18 +82,19 @@ drill.tl.sd <- min(base::diff(drill.tl.f$tl))/2
 Rm3.5b.mill.tl.sd <- min(base::diff(Rm3.5b.mill.tl$tl))/2 
 
 # parameter estimates from Misha's turnover model, generated from Yang et al., 2023
-turnover.params <- read.csv("./data/turnover_param_posterior")
+# all parameters have been log-transformed
+turnover.params <- read.csv("./data/turnover_param_posterior.csv")
 
-log.a <- log(turnover.params$a)
-log.b <- log(turnover.params$b)
-log.c <- log(turnover.params$c)
+log.a <- turnover.params$log.a
+log.b <- turnover.params$log.b
+log.c <- turnover.params$log.c
 
 # use a multi-normal distribution as a prior
 # prior parameter estimates using means and a variance-covariance matrix
 # means
 turnover.params.mu <- c(mean(log.a), mean(log.b), mean(log.c))
 
-turnover.params<- data.frame(log.a, log.b, log.c)
+turnover.params <- data.frame(log.a, log.b, log.c)
 
 # calculate v.cov matrix
 turnover.params.vcov <- var(turnover.params)
@@ -107,7 +108,7 @@ Rm3.5b.tl.sd <- Rm3.5b.mill.tl.sd #uncertainty in the timeline
 
 bin.thin <- min(drill.tl.sd, Rm3.5b.tl.sd, En1.tl.sd, En9.tl.sd, En10.tl.sd)
 
-t <- round(1500/bin.thin) # set a higher number of days to accommodate 
+t <- round(1600/bin.thin) # set a higher number of days to accommodate 
 
 # use a universal uncertainty among the substrates
 # use a large combined error to ensure parameter convergence on the tusk data,

@@ -85,7 +85,7 @@ drill.tl.f2 <- filter(drill.tl, drill.tl$tl > 0 & drill.tl$tl < 600)
 pred.drill <- approx(x = bin.thin*1:t - 400, y = post.comb.R1.drill.89[[1]]
                      , xout = drill.tl.f2$tl)$y
 # prediction: larger depths, lower 87Sr/86Sr, more deviation from predicted value
-res.drill <- pred.drill - drill.tl.f2$Sr
+res.drill <- drill.tl.f2$Sr - pred.drill
 
 res.tib <- tibble(x = drill.tl.f2$depth, y = res.drill)
 
