@@ -264,6 +264,12 @@ Sr.pri.map <- map_estimate(post.comb$BUGSoutput$sims.list$Rpri.mod)[[1]]
 
 Sr.aft.map <- map_estimate(post.comb$BUGSoutput$sims.list$Raft.mod)[[1]]
 
+# record reaction rate parameters for the forward model
+# they need to be scaled back with bin.thin for the forward model
+MAP.a <- map_estimate(post.comb$BUGSoutput$sims.list$a)[[1]]/bin.thin
+MAP.b <- map_estimate(post.comb$BUGSoutput$sims.list$b)[[1]]/bin.thin
+MAP.c <- map_estimate(post.comb$BUGSoutput$sims.list$c)[[1]]/bin.thin
+
 ####### end of model run #######
 
 

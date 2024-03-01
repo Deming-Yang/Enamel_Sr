@@ -212,22 +212,7 @@ x.pt.avg <- function(df.Sr, df.tl, n.avg){
   
 }
 
-MCMC.tl.plot <- function(MCMC.res, t){#t is the number of days in the model
-  require(scales)
-  
-  #typically, the first element is # of iterations
-  #the second element is the time series
-  #t is the number of days in the model
-  
-  dim.MCMC <- dim(MCMC.res)
-  n <- dim.MCMC[1] #number of iterations
-  
-  for(i in 1:n){
-    lines(1:t, MCMC.res[i,], col = alpha("black", 0.02))
-  }
-  
-}
-
+########### fn 8 MCMC credible interval calculations ###########
 MCMC.CI.bound <- function (MCMC.res, CI){
   require(KernSmooth)
   require(bayestestR)
@@ -246,4 +231,97 @@ MCMC.CI.bound <- function (MCMC.res, CI){
   }
   
   return (list(map.res, hdi.low, hdi.high, CI))
+}
+
+########### fn 9 initiate switches ###########
+initiate.switch <- function(t, n.switch, day.switch, a, gap, duration){
+  
+  #initial vector
+  v.init <- rep(a, (day.switch -1))
+  v.switch <- rep(a+gap, duration)
+  v.back <- rep(a, duration)
+  sw.d <- n.switch*duration
+  
+  v.switches <- c(v.switch, v.back)
+  
+  rep.switches <- rep(v.switches,ceiling(n.switch/2))
+  
+  if((day.switch -1 + sw.d) < t){#switch is completed before the total number of days
+    t.end <- t-(day.switch -1 + sw.d)
+    
+    if((n.switch %% 2) == 0){#even number of switches
+      r.end <- a
+    }
+    else{#odd number of switches
+      r.end <- a + gap
+    }
+    v.end <- rep(r.end, t.end)
+    all.input <- c(v.init, rep.switches[1:sw.d], v.end)
+  }
+  else{#switch is not completed before the total number of days
+    #no need to worry about end values
+    all.input <- c(v.init, rep.switches[1:sw.d])#take advantage of the vector recycling feature
+  }
+  Sr.input <- all.input[1:t]
+  return(Sr.input)
+}
+
+########### fn 10 model P1 and P2 values ###########
+forw.m <- function(t, input, a, b, c, R1.int, R2.int){
+  if(length(input != t)){
+    #warning("Length of input has to be same as t. Vector input is being recycled")
+    Rin <- rep(0,t) #Initiate Rin
+    Rin <- Rin + input #recycle input vector
+  }
+  else{
+    Rin <- input
+  }
+  R2 <- rep(0,t) #initiate 
+  R1 <- rep(0,t) #initiate 
+  if(is.null(R1.int)){
+    R1[1] <- input[1]
+  }
+  if(is.null(R2.int)){
+    R2[1] <- input[1]
+  }
+  else{
+    R2[1] <- R2.int
+    R1[1] <- R1.int
+  }
+  for (i in 2:t){ #generate serum and bone series
+    R1[i] <- R1[i - 1] + b * (R2[i - 1] - R1[i - 1]) + a * (Rin[i - 1] - R1[i - 1])
+    
+    R2[i] <- R2[i - 1] + c * (R1[i - 1] - R2[i - 1])
+  }
+  return(list(R1, R2))
+}
+
+########### fn 11 simulate sampling grid using width, depth and grid resolution ###########
+# all nubers in microns
+sim.samp.grid <- function(sample.wd, sample.dp, res){
+  # initiate the sampling matrix
+  nrow <- round(sample.dp/res)
+  
+  ncol <- round(sample.wd/res)
+  
+  sample.grid <- matrix(1, ncol = ncol, nrow = nrow)
+  
+  ncol.bot <- round(sample.wd/res/2)
+  
+  # set cutoffs for diagonals
+  cutoff <- round(ncol.bot * 0.2)
+  
+  for(i in nrow : (nrow - ncol.bot)){
+    for(j in 1 : ncol){
+      x <- nrow - i
+      y <- ncol.bot - (cutoff + x)
+      
+      if(j < y | j > ncol - y){
+        sample.grid[i,j] <- 0 
+      }
+    }
+    
+  }
+  
+  return(sample.grid)
 }
