@@ -325,3 +325,105 @@ sim.samp.grid <- function(sample.wd, sample.dp, res){
   
   return(sample.grid)
 }
+
+########### fn 12 simulate enamel block with given parameters###########
+# leng = length of enamel block
+# thick = thickness of enamel block
+# angle = appositional angle
+# rate = enamel extension rate
+# history = simulated serum Sr ratio history
+# sample.wd = width of the sampling groove
+# sample.dp = depth of the sampling groove
+# sample.dist = dist measurement from the TOP of the crown
+
+sampling.sim <- function(leng, thick, angle, rate,
+                         history, sample.wd, sample.dp,
+                         sample.dist, res = 10){
+  
+  total.leng <- leng*2e3 #micron 
+  
+  total.thick <- (thick/2) * 1e3 #micron
+  
+  tan.angle <- tan(pi/180*angle)
+  
+  
+  n.days <- length(history)
+  
+  local.ref <- 0:n.days * rate/res
+  # this is at daily resolution
+  # so horizontal pixel resolution is higher than daily Sr history
+  
+  Serum.ref <- c(history[1], history)
+  
+  #for each row of cells, the reference data set will be the serum value at 1:length
+  
+  cell.loc <- 1:(total.leng/res)
+  
+  Sr.ref <- approx(x = local.ref, y = Serum.ref, xout = cell.loc)$y
+  
+  #simulate appositional angle
+  n.shift <- 1/tan.angle #so every vertical cell, shift x towards the back
+  
+  n.h.en <- total.leng/res
+  
+  n.v.en <- total.thick/res
+  
+  Sr.grid <- matrix(0, ncol = n.h.en, nrow = n.v.en)
+  
+  Sr.grid[n.v.en,] <- Sr.ref
+  
+  for(i in (n.v.en-1):1){
+    x.shift <- round((n.v.en - i) * n.shift)
+    
+    Sr.aft.temp <- rep(NA, x.shift)
+    
+    Sr.int.temp <- Sr.ref[(x.shift + 1):n.h.en]
+    
+    Sr.grid[i,] <- c(Sr.int.temp, Sr.aft.temp)
+    
+  }
+  
+  # subset the first half of the matrix for sampling simulations
+  en.subset <- 1:(total.leng/res/2)
+  
+  En.grid <- Sr.grid[,en.subset]
+  
+  r.Sr <- raster(ncol = ncol(En.grid), nrow = nrow(En.grid),
+                 xmn=0, xmx=ncol(En.grid), ymn=0, ymx=nrow(En.grid))
+  
+  values(r.Sr) <- En.grid
+  
+  ############ Step 3: build the sampling matrix ######
+  #####simulate sample averaging######
+  
+  # see custom function 11
+  sample.grid <- sim.samp.grid(sample.wd*1e3, sample.dp*1e3, res)
+  
+  #simulate sampling, with gaps between sampling grooves
+  
+  # mm between sampling grooves
+  
+  n.samp <- length(sample.dist)
+  
+  sample.loc <- round(sample.dist * 1e3 / res)
+  
+  avg.Sr.samp <- rep(0, n.samp) #initiate vector
+  
+  ############ Step 4: aggregate samples ######
+  
+  for(i in 1:n.samp){
+    
+    temp <- En.grid[1:nrow(sample.grid),
+                    round(sample.loc[i] - ncol(sample.grid)/2 ):
+                      round(sample.loc[i] + ncol(sample.grid)/2 - 1)]
+    temp <- replace(temp, is.na(temp), 0)
+    temp.prod <- temp * sample.grid 
+    avg.Sr.samp[i]<- sum(temp.prod)/sum(as.integer(temp.prod>0))
+    
+  }
+  
+  sim.EDJ <- data.frame(x = en.subset*res/1e3, Sr = Sr.ref[en.subset])
+  
+  return(list(sim.Sr = avg.Sr.samp,  sim.EDJ = sim.EDJ, sim.En = r.Sr))
+  
+}
