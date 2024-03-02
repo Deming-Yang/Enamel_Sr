@@ -293,7 +293,7 @@ forw.m <- function(t, input, a, b, c, R1.int, R2.int){
     
     R2[i] <- R2[i - 1] + c * (R1[i - 1] - R2[i - 1])
   }
-  return(list(R1, R2))
+  return(list(R1, R2, input))
 }
 
 ########### fn 11 simulate sampling grid using width, depth and grid resolution ###########
@@ -346,20 +346,27 @@ sampling.sim <- function(leng, thick, angle, rate,
   
   tan.angle <- tan(pi/180*angle)
   
+  serum <- history[[1]]
   
-  n.days <- length(history)
+  intake <- history[[3]]
+  
+  n.days <- length(serum)
   
   local.ref <- 0:n.days * rate/res
   # this is at daily resolution
   # so horizontal pixel resolution is higher than daily Sr history
   
-  Serum.ref <- c(history[1], history)
+  Serum.ref <- c(serum[1], serum)
+  
+  intake.ref <- c(intake[1], intake)
   
   #for each row of cells, the reference data set will be the serum value at 1:length
   
   cell.loc <- 1:(total.leng/res)
   
   Sr.ref <- approx(x = local.ref, y = Serum.ref, xout = cell.loc)$y
+  
+  intake.ref <- approx(x = local.ref, y = intake.ref, xout = cell.loc)$y
   
   #simulate appositional angle
   n.shift <- 1/tan.angle #so every vertical cell, shift x towards the back
@@ -422,7 +429,8 @@ sampling.sim <- function(leng, thick, angle, rate,
     
   }
   
-  sim.EDJ <- data.frame(x = en.subset*res/1e3, Sr = Sr.ref[en.subset])
+  sim.EDJ <- data.frame(x = en.subset*res/1e3,
+                        Sr = Sr.ref[en.subset], Intake = intake.ref[en.subset])
   
   return(list(sim.Sr = avg.Sr.samp,  sim.EDJ = sim.EDJ, sim.En = r.Sr))
   

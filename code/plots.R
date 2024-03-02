@@ -484,6 +484,65 @@ abline(h = pr.Rm3.5b.map, lwd = 2)
 abline(h = pr.Rm3.5b.ci1, lty = 2)
 abline(h = pr.Rm3.5b.ci2, lty = 2)
 
+
+########## Fig 5 Comparing three isotope tracers in tusk and molar enamel##########
+# adding c13C and d18O to the curve
+par(mfrow=c(3,2))
+# tusk dentine micromill Sr
+plot(tusk.mill.tl$tl, tusk.mill.tl$Sr,
+     xlim=c(-400,700), ylim=c(0.706,0.712),
+     pch = 18, cex = 2.2, col ="#00b4ffff",
+     xlab="Days from moves",
+     main = "Tusk micromill 87Sr/86Sr",
+     ylab = "87Sr/86Sr")
+abline(v = 0, lty = 2)
+
+plot(drill.tl$tl, drill.tl$Sr, col= "red4",
+     pch=16, cex = 2,
+     xlim=c(-400,700), ylim=c(0.706,0.712),
+     xlab="Days from moves",
+     main = "Molar drill 87Sr/86Sr",
+     ylab = "87Sr/86Sr") 
+abline(v = 0, lty = 2)
+
+plot(M640.micromill.tl.al, rev(M640.micromill$d13C), 
+     xlim=c(-400,700),ylim=c(-15,-4),
+     col = "orange",
+     pch=18, cex = 2,
+     xlab="Days from moves",
+     main = "Tusk micromill d13C",
+     ylab = "d13C")
+abline(v = 0, lty = 2)
+
+
+plot(drill.tl$tl, rev(Drill.no$d13C), 
+     xlim=c(-400,700),ylim=c(-15,-4),
+     col = "orange",
+     pch=16, cex = 2,
+     xlab="Days from moves",
+     main = "Molar drill d13C",
+     ylab = "d13C")
+abline(v = 0, lty = 2)
+
+plot(M640.micromill.tl.al, rev(M640.micromill$d18O), 
+     xlim=c(-400,700), ylim=c(-15,-7),
+     col = "lightblue3",
+     pch=18, cex = 2,
+     xlab="Days from moves",
+     main = "Tusk micromill d18O",
+     ylab = "d18O")
+abline(v = 0, lty = 2)
+
+plot(drill.tl$tl, rev(Drill.no$d18O), 
+     xlim=c(-400,700), ylim=c(-15,-7),
+     col = "lightblue3",
+     pch=16, cex = 2,
+     xlab="Days from moves",
+     main = "Molar drill d18O",
+     ylab = "d18O")
+abline(v = 0, lty = 2)
+
+
 # # Fig 4 compare estimated fraction of post-movement overprint,
 # # in each of the following selected data series
 # # part I: model-data comparison

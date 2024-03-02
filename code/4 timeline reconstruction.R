@@ -132,6 +132,19 @@ misha.tusk.micromill.tl <- misha.tusk.micromill.dist/14.7 #mm/day
 # align with the switch
 misha.tusk.micromill.tl.al <- misha.tusk.micromill.tl - 365
 
+# similarly, use the tusk C and O record to reconstruct timeline
+M640.tusk <- max(M640.micromill$dist)
+
+# this is the total length of dentine milled, originally measured in microns
+
+M640.micromill.dist <- rev(M640.tusk - M640.micromill$dist) * 1.0934
+
+# assuming a constant tusk radial growth rate at 14.7 microns/day (Uno et al., 2020)
+M640.micromill.tl <- M640.micromill.dist/19 #mm/day, Uno 2012
+
+# align with the switch
+M640.micromill.tl.al <- M640.micromill.tl - 680
+
 # additional timeline reconstructions for En9 and En10
 
 # calculate rates

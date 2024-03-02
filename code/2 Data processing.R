@@ -63,6 +63,9 @@ misha.tusk.micromill<-na.omit(misha.tusk.micromill)
 
 Rm3.5.angle <- read.csv("data/Rm3.5 appo angle.csv")
 
+#load M640 tusk dentine micromill C and O isotope data (Uno 2012)
+M640.micromill <- read.csv("data/M640 tusk C and O.csv")
+
 ############data processing using custom function###########
 
 #dentine at EDJ

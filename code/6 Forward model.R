@@ -59,7 +59,7 @@ rate <- 55.3 #100 microns per day
 pix.res <- 10 #micron
 #each vertical 10 microns averages 3 days worth of serum history
 
-history <- res150.7[[1]] #simulated serum 87Sr/86Sr history
+history <- res150.7 #simulated serum 87Sr/86Sr history
 
 sample.wd <- 0.8 #0.8 mm wide sampling groove
 sample.dp <- 0.8 #0.8 mm sampling depth
@@ -79,12 +79,17 @@ Misha.sim <- sampling.sim(leng = leng, thick = thick,
 
 # visualization
 # simulated enamel samples: sheep.sim[[1]]
-plot(sample.dist, Misha.sim[[1]],
-     ylim = c(syn.low, syn.high))
+plot(sample.dist, Misha.sim[[1]], pch = 16, col ="red4",
+     ylim = c(syn.low, syn.high), main = "Elephant annual migration",
+     xlab ="Crown length (mm)", ylab = "87Sr/86Sr")
 # simulated EDJ: sheep.sim[[2]]
-lines(Misha.sim[[2]]$x, Misha.sim[[2]]$Sr)
-abline(h = syn.low, lty = 2)
-abline(h = syn.high, lty = 2)
+lines(Misha.sim[[2]]$x, Misha.sim[[2]]$Sr, lwd=2, col = "#00b4ffff")
+lines(Misha.sim[[2]]$x, Misha.sim[[2]]$Intake)
+
+# calculate the fraction of intake recovered using conventional drilling
+
+(max(Misha.sim[[1]]) - min(Misha.sim[[1]]))/(syn.high - syn.low)
+# 31% of the variation from an annual variation 5-month winter place, 5-months summer place 
 
 # # simulated enamel block
 # plot(Misha.sim[[3]]) 
@@ -105,17 +110,17 @@ c.m <- 0.0041 * ((Body.mass.sheep/Body.mass.misha)^exp.scl)
 
 ####begin forward model with a winter-summer migration pattern####
 
-syn.input.120 <- c(rep(syn.mid,60), rep(syn.high,120),rep(syn.mid,60),rep(syn.low,120)  )
-syn.input.120.3y <- rep(syn.input.120,3)
+syn.input.150 <- c(rep(syn.mid,30), rep(syn.high,150),rep(syn.mid,30),rep(syn.low,150)  )
+syn.input.150.3y <- rep(syn.input.150,3)
 #4 generate serum and bone series based on input series and turnover parameters#
-res120.3 <- forw.m(t = length(syn.input.120.3y), input = syn.input.120.3y, 
+res150.3 <- forw.m(t = length(syn.input.150.3y), input = syn.input.150.3y, 
                    a = a.m, b = b.m, c = c.m, R1.int = NULL, R2.int = NULL)
 
 # plot input and serum turnover history
 plot(0,0, xlim = c(1,length(syn.input.120.3y)), ylim = c(syn.low, syn.high), xlab = "days", ylab ="87Sr/86Sr",
      main="150-day ends & 30-day intermediate switches")
-lines(1:length(syn.input.120.3y), syn.input.120.3y)
-lines(1:length(syn.input.120.3y), res120.3[[1]],lwd=2, col = "#00b4ffff")
+lines(1:length(syn.input.150.3y), syn.input.150.3y)
+lines(1:length(syn.input.150.3y), res150.3[[1]],lwd=2, col = "#00b4ffff")
 legend(200,0.711,c("Intake","serum"),lwd = c(1,2), col=c("black","#00b4ffff"))
 
 ###### Step 2: build simulated enamel block using assumptions of enamel maturation#######
@@ -136,7 +141,7 @@ rate <- 35e3/ 350 #100 microns per day
 pix.res <- 10 #micron
 #each vertical 10 microns averages 3 days worth of serum history
 
-history <- res120.3[[1]] #simulated serum 87Sr/86Sr history
+history <- res150.3 #simulated serum 87Sr/86Sr history
 
 sample.wd <- 0.8 #0.8 mm wide sampling groove
 sample.dp <- 0.4 #0.4 mm sampling depth
@@ -158,12 +163,16 @@ sheep.sim <- sampling.sim(leng = leng, thick = thick,
 # visualization
 
 # simulated enamel samples: sheep.sim[[1]]
-plot(sample.dist, sheep.sim[[1]],
-     ylim = c(syn.low, syn.high))
+
+plot(sample.dist, sheep.sim[[1]], pch = 16, col ="red4",
+     ylim = c(syn.low, syn.high), main = "Sheep annual migration",
+     xlab ="Crown length (mm)", ylab = "87Sr/86Sr")
 # simulated EDJ: sheep.sim[[2]]
-lines(sheep.sim[[2]]$x, sheep.sim[[2]]$Sr)
-abline(h = syn.low, lty = 2)
-abline(h = syn.high, lty = 2)
+lines(sheep.sim[[2]]$x, sheep.sim[[2]]$Sr, lwd=2, col = "#00b4ffff")
+lines(sheep.sim[[2]]$x, sheep.sim[[2]]$Intake)
+
+(max(sheep.sim[[1]]) - min(sheep.sim[[1]]))/(syn.high - syn.low)
+# 70% of the variation from an annual variation 5-month winter place, 5-months summer place 
 
 ############ end of experiment 2############
 
@@ -202,7 +211,7 @@ rate <- 35e3/ 350 #100 microns per day
 pix.res <- 10 #micron
 #each vertical 10 microns averages 3 days worth of serum history
 
-history <- res60.3[[1]] #simulated serum 87Sr/86Sr history
+history <- res60.3 #simulated serum 87Sr/86Sr history
 
 sample.wd <- 0.8 #0.8 mm wide sampling groove
 sample.dp <- 0.4 #0.4 mm sampling depth
@@ -224,78 +233,80 @@ sheep.sim2 <- sampling.sim(leng = leng, thick = thick,
 # visualization
 
 # simulated enamel samples: sheep.sim[[1]]
-plot(sample.dist, sheep.sim2[[1]],
-     ylim = c(syn.low, syn.high))
+plot(sample.dist, sheep.sim2[[1]], pch = 16, col ="red4",
+     ylim = c(syn.low, syn.high), main = "Sheep migration: twice a year",
+     xlab ="Crown length (mm)", ylab = "87Sr/86Sr")
 # simulated EDJ: sheep.sim[[2]]
-lines(sheep.sim2[[2]]$x, sheep.sim2[[2]]$Sr)
-abline(h = syn.low, lty = 2)
-abline(h = syn.high, lty = 2)
+lines(sheep.sim2[[2]]$x, sheep.sim2[[2]]$Sr, lwd=2, col = "#00b4ffff")
+lines(sheep.sim2[[2]]$x, sheep.sim2[[2]]$Intake)
+
+(max(sheep.sim2[[1]]) - min(sheep.sim2[[1]]))/(syn.high - syn.low)
+# 46% of the variation from a seasonal migration 2-month one place, 2-months the other place
 
 ############ end of experiment 3############
 
-############ experiment 4 Simulate turnover and sampling within sheep enamel ############
-
-####begin forward model with more frequent migration pattern####
-# one movement every 1 months, with two months at ends, and one month intermediate
-syn.input.30 <- c(rep(syn.mid,30), rep(syn.high,30),rep(syn.mid, 30),rep(syn.low,30) )
-syn.input.30.3y <- rep(syn.input.30,9)
-#4 generate serum and bone series based on input series and turnover parameters#
-res30.3 <- forw.m(t = length(syn.input.30.3y), input = syn.input.30.3y, 
-                  a = a.m, b = b.m, c = c.m, R1.int = NULL, R2.int = NULL)
-
-# plot input and serum turnover history
-plot(0,0, xlim = c(1,length(syn.input.30.3y)), ylim = c(syn.low, syn.high), xlab = "days", ylab ="87Sr/86Sr",
-     main="60-day ends & 30-day intermediate switches")
-lines(1:length(syn.input.30.3y), syn.input.30.3y)
-lines(1:length(syn.input.30.3y), res30.3[[1]],lwd=2, col = "#00b4ffff")
-legend(200,0.711,c("Intake","serum"),lwd = c(1,2), col=c("black","#00b4ffff"))
-
-###### Step 2: build simulated enamel block using assumptions of enamel maturation#######
-
-#build an enamel length at 80 mm with redundancy
-leng <- 40 #mm
-
-# sheep enamel is ~0.7 mm thick, Zazzo et al. 2012
-# build an enamel at 0.4 mm thickness
-thick <- 0.8 #mm
-
-ap.angle <- 3 #Zazzo et al. 2012
-
-# assume that growth rate is constant, at 55.3 microns/day
-# growth rate at 35e3 microns in 350 days, Zazzo et al. 2012
-rate <- 35e3/ 350 #100 microns per day
-
-pix.res <- 10 #micron
-#each vertical 10 microns averages 3 days worth of serum history
-
-history <- res30.3[[1]] #simulated serum 87Sr/86Sr history
-
-sample.wd <- 0.8 #0.8 mm wide sampling groove
-sample.dp <- 0.4 #0.4 mm sampling depth
-
-sampling.intv <- 2
-
-n.samp <- leng/sampling.intv
-
-sample.dist <-  sampling.intv * 1:n.samp - sampling.intv/2
-
-sheep.sim3 <- sampling.sim(leng = leng, thick = thick, 
-                           angle = ap.angle, rate = rate,
-                           history = history, 
-                           sample.wd = sample.wd, sample.dp = sample.dp,
-                           sample.dist = sample.dist,
-                           res = pix.res)
-
-
-# visualization
-
-# simulated enamel samples: sheep.sim[[1]]
-plot(sample.dist, sheep.sim3[[1]],
-     ylim = c(syn.low, syn.high))
-# simulated EDJ: sheep.sim[[2]]
-lines(sheep.sim3[[2]]$x, sheep.sim3[[2]]$Sr)
-abline(h = syn.low, lty = 2)
-abline(h = syn.high, lty = 2)
+# ############ experiment 4 Simulate turnover and sampling within sheep enamel ############
+# 
+# ####begin forward model with more frequent migration pattern####
+# # one movement every 1 months, with two months at ends, and one month intermediate
+# syn.input.30 <- c(rep(syn.mid,30), rep(syn.high,30),rep(syn.mid, 30),rep(syn.low,30) )
+# syn.input.30.3y <- rep(syn.input.30,9)
+# #4 generate serum and bone series based on input series and turnover parameters#
+# res30.3 <- forw.m(t = length(syn.input.30.3y), input = syn.input.30.3y, 
+#                   a = a.m, b = b.m, c = c.m, R1.int = NULL, R2.int = NULL)
+# 
+# # plot input and serum turnover history
+# plot(0,0, xlim = c(1,length(syn.input.30.3y)), ylim = c(syn.low, syn.high), xlab = "days", ylab ="87Sr/86Sr",
+#      main="60-day ends & 30-day intermediate switches")
+# lines(1:length(syn.input.30.3y), syn.input.30.3y)
+# lines(1:length(syn.input.30.3y), res30.3[[1]],lwd=2, col = "#00b4ffff")
+# legend(200,0.711,c("Intake","serum"),lwd = c(1,2), col=c("black","#00b4ffff"))
+# 
+# ###### Step 2: build simulated enamel block using assumptions of enamel maturation#######
+# 
+# #build an enamel length at 80 mm with redundancy
+# leng <- 40 #mm
+# 
+# # sheep enamel is ~0.7 mm thick, Zazzo et al. 2012
+# # build an enamel at 0.4 mm thickness
+# thick <- 0.8 #mm
+# 
+# ap.angle <- 3 #Zazzo et al. 2012
+# 
+# # assume that growth rate is constant, at 55.3 microns/day
+# # growth rate at 35e3 microns in 350 days, Zazzo et al. 2012
+# rate <- 35e3/ 350 #100 microns per day
+# 
+# pix.res <- 10 #micron
+# #each vertical 10 microns averages 3 days worth of serum history
+# 
+# history <- res30.3 #simulated serum 87Sr/86Sr history
+# 
+# sample.wd <- 0.8 #0.8 mm wide sampling groove
+# sample.dp <- 0.4 #0.4 mm sampling depth
+# 
+# sampling.intv <- 2
+# 
+# n.samp <- leng/sampling.intv
+# 
+# sample.dist <-  sampling.intv * 1:n.samp - sampling.intv/2
+# 
+# sheep.sim3 <- sampling.sim(leng = leng, thick = thick, 
+#                            angle = ap.angle, rate = rate,
+#                            history = history, 
+#                            sample.wd = sample.wd, sample.dp = sample.dp,
+#                            sample.dist = sample.dist,
+#                            res = pix.res)
+# 
+# 
+# # visualization
+# 
+# # simulated enamel samples: sheep.sim[[1]]
+# plot(sample.dist, sheep.sim3[[1]],
+#      ylim = c(syn.low, syn.high))
+# # simulated EDJ: sheep.sim[[2]]
+# lines(sheep.sim3[[2]]$x, sheep.sim3[[2]]$Sr, lwd=2, col = "#00b4ffff")
+# lines(sheep.sim3[[2]]$x, sheep.sim3[[2]]$Intake)
 
 
 # ggplot() + 
