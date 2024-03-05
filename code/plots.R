@@ -314,7 +314,7 @@ par(mfrow=c(1,4)) #1200 * 400
 # Panel 1 molar dentine vs micromill tusk dentine 
 plot(-1000, -1, col= "gray24",
      xlim=c(-400,700),ylim=c(0.705,0.7115),
-     xlab="Days from moves",
+     xlab="Days from Misha's move",
      main = "Tusk micromill vs molar D LA-ICP-MS",
      ylab = "87Sr/86Sr") 
 abline(h = CA.Sr)
@@ -331,7 +331,7 @@ points(tusk.mill.tl$tl, tusk.mill.tl$Sr,
 # Panel 2 molar enamel1 vs micromill tusk dentine 
 plot(-1000, -1, col= "gray24",
      xlim=c(-400,700),ylim=c(0.705,0.7115),
-     xlab="Days from moves",
+     xlab="Days from Misha's move",
      main = "Tusk micromill vs molar E1 LA-ICP-MS",
      ylab = "87Sr/86Sr") 
 abline(h = CA.Sr)
@@ -349,7 +349,7 @@ points(tusk.mill.tl$tl, tusk.mill.tl$Sr,
 plot(drill.tl$tl, drill.tl$Sr, col= "red4",
      pch=16, cex = 2,
      xlim=c(-400,700),ylim=c(0.705,0.7115),
-     xlab="Days from moves",
+     xlab="Days from Misha's move",
      main = "Tusk micromill vs molar E drill",
      ylab = "87Sr/86Sr") 
 abline(h = CA.Sr)
@@ -361,7 +361,7 @@ points(tusk.mill.tl$tl, tusk.mill.tl$Sr,
 plot(Rm3.5b.mill.tl$tl, Rm3.5b.mill.tl$Sr, col= "cyan4",
      pch=16, cex = 2,
      xlim=c(-400,700),ylim=c(0.705,0.7115),
-     xlab="Days from moves",
+     xlab="Days from Misha's move",
      main = "Tusk micromill vs molar E micromill",
      ylab = "87Sr/86Sr") 
 abline(h = CA.Sr)
@@ -492,7 +492,7 @@ par(mfrow=c(3,2))
 plot(tusk.mill.tl$tl, tusk.mill.tl$Sr,
      xlim=c(-400,700), ylim=c(0.706,0.712),
      pch = 18, cex = 2.2, col ="#00b4ffff",
-     xlab="Days from moves",
+     xlab="Days from Misha's move",
      main = "Tusk micromill 87Sr/86Sr",
      ylab = "87Sr/86Sr")
 abline(v = 0, lty = 2)
@@ -500,8 +500,8 @@ abline(v = 0, lty = 2)
 plot(drill.tl$tl, drill.tl$Sr, col= "red4",
      pch=16, cex = 2,
      xlim=c(-400,700), ylim=c(0.706,0.712),
-     xlab="Days from moves",
-     main = "Molar drill 87Sr/86Sr",
+     xlab="Days from Misha's move",
+     main = "Molar conventional drill 87Sr/86Sr",
      ylab = "87Sr/86Sr") 
 abline(v = 0, lty = 2)
 
@@ -509,7 +509,7 @@ plot(M640.micromill.tl.al, rev(M640.micromill$d13C),
      xlim=c(-400,700),ylim=c(-15,-4),
      col = "orange",
      pch=18, cex = 2,
-     xlab="Days from moves",
+     xlab="Days from Misha's move",
      main = "Tusk micromill d13C",
      ylab = "d13C")
 abline(v = 0, lty = 2)
@@ -519,96 +519,25 @@ plot(drill.tl$tl, rev(Drill.no$d13C),
      xlim=c(-400,700),ylim=c(-15,-4),
      col = "orange",
      pch=16, cex = 2,
-     xlab="Days from moves",
-     main = "Molar drill d13C",
+     xlab="Days from Misha's move",
+     main = "Molar conventional drill d13C",
      ylab = "d13C")
 abline(v = 0, lty = 2)
 
 plot(M640.micromill.tl.al, rev(M640.micromill$d18O), 
      xlim=c(-400,700), ylim=c(-15,-7),
-     col = "lightblue3",
+     col = "lightblue4",
      pch=18, cex = 2,
-     xlab="Days from moves",
+     xlab="Days from Misha's move",
      main = "Tusk micromill d18O",
      ylab = "d18O")
 abline(v = 0, lty = 2)
 
 plot(drill.tl$tl, rev(Drill.no$d18O), 
      xlim=c(-400,700), ylim=c(-15,-7),
-     col = "lightblue3",
+     col = "lightblue4",
      pch=16, cex = 2,
-     xlab="Days from moves",
-     main = "Molar drill d18O",
+     xlab="Days from Misha's move",
+     main = "Molar conventional drill d18O",
      ylab = "d18O")
 abline(v = 0, lty = 2)
-
-
-# # Fig 4 compare estimated fraction of post-movement overprint,
-# # in each of the following selected data series
-# # part I: model-data comparison
-# par(mfrow=c(3,2)) # 600 * 800
-# # 1 LA-ICP MS and modeled serum, assumes no overprint
-# plot(bin.thin*1:t - 400, post.comb.R1m.89[[1]], type = "l",
-#      xlim = c(-400, 1100), ylim = c(0.705, 0.712),
-#      lwd = 2 , xlab = "Timeline (days)", ylab = "87Sr/86Sr")
-# lines(bin.thin*1:t - 400, post.comb.R1m.89[[2]], lty = 2)
-# lines(bin.thin*1:t - 400, post.comb.R1m.89[[3]], lty = 2)
-# abline(h = CA.Sr)
-# abline(h = UT.Sr)
-# lines(En1.50avg.tl.f$avg.tl, En1.50avg.tl.f$avg.sr,
-#       col = "orange", lwd = 2)
-# 
-# # 2 micromill tusk dentine and modeled serum, assumes no overprint
-# plot(bin.thin*1:t - 400, post.comb.R1m.89[[1]], type = "l",
-#      xlim = c(-400, 1100), ylim = c(0.705, 0.712),
-#      lwd = 2, xlab = "Timeline (days)", ylab = "87Sr/86Sr")
-# lines(bin.thin*1:t - 400, post.comb.R1m.89[[2]], lty = 2)
-# lines(bin.thin*1:t - 400, post.comb.R1m.89[[3]], lty = 2)
-# abline(h = CA.Sr)
-# abline(h = UT.Sr)
-# points(tusk.mill.tl$tl, tusk.mill.tl$Sr,
-#        pch = 18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
-# 
-# # 3 LA-ICP MS EN 9 and mixed R
-# plot(bin.thin*1:t - 400, post.comb.R1.En9.89[[1]], type = "l",
-#      xlim = c(-400, 1100), ylim = c(0.705, 0.712),
-#      lwd = 2, xlab = "Timeline (days)", ylab = "87Sr/86Sr")
-# lines(bin.thin*1:t - 400, post.comb.R1.En9.89[[2]], lty = 2)
-# lines(bin.thin*1:t - 400, post.comb.R1.En9.89[[3]], lty = 2)
-# abline(h = CA.Sr)
-# abline(h = UT.Sr)
-# lines(En9.tl, R.En9,
-#       col = "orange3", lwd = 2)
-# 
-# # 4 LA-ICP MS EN 10 and mixed R
-# plot(bin.thin*1:t - 400, post.comb.R1.En10.89[[1]], type = "l",
-#      xlim = c(-400, 1100), ylim = c(0.705, 0.712),
-#      lwd = 2, xlab = "Timeline (days)", ylab = "87Sr/86Sr")
-# lines(bin.thin*1:t - 400, post.comb.R1.En10.89[[2]], lty = 2)
-# lines(bin.thin*1:t - 400, post.comb.R1.En10.89[[3]], lty = 2)
-# abline(h = CA.Sr)
-# abline(h = UT.Sr)
-# lines(En10.tl, R.En10,
-#       col = "orange4", lwd = 2)
-# 
-# # 5 hand drill and mixed R
-# plot(bin.thin*1:t - 400, post.comb.R1.drill.89[[1]], type = "l",
-#      xlim = c(-400, 1100), ylim = c(0.705, 0.712),
-#      lwd = 2, xlab = "Timeline (days)", ylab = "87Sr/86Sr")
-# lines(bin.thin*1:t - 400, post.comb.R1.drill.89[[2]], lty = 2)
-# lines(bin.thin*1:t - 400, post.comb.R1.drill.89[[3]], lty = 2)
-# abline(h = CA.Sr)
-# abline(h = UT.Sr)
-# points(drill.tl.f$tl, drill.tl.f$Sr, 
-#        pch = 16, cex = 2, col = alpha("red4", 0.7))
-# 
-# # 6 Rm3.5b micromill and mixed R
-# plot(bin.thin*1:t - 400, post.comb.R1.Rm3.5b.89[[1]],type = "l",
-#      xlim = c(-400, 1100), ylim = c(0.705, 0.712),
-#      lwd = 2, xlab = "Timeline (days)", ylab = "87Sr/86Sr")
-# lines(bin.thin*1:t - 400, post.comb.R1.Rm3.5b.89[[2]], lty = 2)
-# lines(bin.thin*1:t - 400, post.comb.R1.Rm3.5b.89[[3]], lty = 2)
-# abline(h = CA.Sr)
-# abline(h = UT.Sr)
-# points(Rm3.5b.mill.tl$tl, Rm3.5b.mill.tl$Sr, 
-#        pch = 16, cex = 2, col = alpha("cyan4", 0.7))

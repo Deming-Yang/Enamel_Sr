@@ -233,205 +233,37 @@ MCMC.CI.bound <- function (MCMC.res, CI){
   return (list(map.res, hdi.low, hdi.high, CI))
 }
 
-########### fn 9 initiate switches ###########
-initiate.switch <- function(t, n.switch, day.switch, a, gap, duration){
-  
-  #initial vector
-  v.init <- rep(a, (day.switch -1))
-  v.switch <- rep(a+gap, duration)
-  v.back <- rep(a, duration)
-  sw.d <- n.switch*duration
-  
-  v.switches <- c(v.switch, v.back)
-  
-  rep.switches <- rep(v.switches,ceiling(n.switch/2))
-  
-  if((day.switch -1 + sw.d) < t){#switch is completed before the total number of days
-    t.end <- t-(day.switch -1 + sw.d)
-    
-    if((n.switch %% 2) == 0){#even number of switches
-      r.end <- a
-    }
-    else{#odd number of switches
-      r.end <- a + gap
-    }
-    v.end <- rep(r.end, t.end)
-    all.input <- c(v.init, rep.switches[1:sw.d], v.end)
-  }
-  else{#switch is not completed before the total number of days
-    #no need to worry about end values
-    all.input <- c(v.init, rep.switches[1:sw.d])#take advantage of the vector recycling feature
-  }
-  Sr.input <- all.input[1:t]
-  return(Sr.input)
-}
+# ########### fn 9 initiate switches ###########
+# initiate.switch <- function(t, n.switch, day.switch, a, gap, duration){
+#   
+#   #initial vector
+#   v.init <- rep(a, (day.switch -1))
+#   v.switch <- rep(a+gap, duration)
+#   v.back <- rep(a, duration)
+#   sw.d <- n.switch*duration
+#   
+#   v.switches <- c(v.switch, v.back)
+#   
+#   rep.switches <- rep(v.switches,ceiling(n.switch/2))
+#   
+#   if((day.switch -1 + sw.d) < t){#switch is completed before the total number of days
+#     t.end <- t-(day.switch -1 + sw.d)
+#     
+#     if((n.switch %% 2) == 0){#even number of switches
+#       r.end <- a
+#     }
+#     else{#odd number of switches
+#       r.end <- a + gap
+#     }
+#     v.end <- rep(r.end, t.end)
+#     all.input <- c(v.init, rep.switches[1:sw.d], v.end)
+#   }
+#   else{#switch is not completed before the total number of days
+#     #no need to worry about end values
+#     all.input <- c(v.init, rep.switches[1:sw.d])#take advantage of the vector recycling feature
+#   }
+#   Sr.input <- all.input[1:t]
+#   return(Sr.input)
+# }
 
-########### fn 10 model P1 and P2 values ###########
-forw.m <- function(t, input, a, b, c, R1.int, R2.int){
-  if(length(input != t)){
-    #warning("Length of input has to be same as t. Vector input is being recycled")
-    Rin <- rep(0,t) #Initiate Rin
-    Rin <- Rin + input #recycle input vector
-  }
-  else{
-    Rin <- input
-  }
-  R2 <- rep(0,t) #initiate 
-  R1 <- rep(0,t) #initiate 
-  if(is.null(R1.int)){
-    R1[1] <- input[1]
-  }
-  if(is.null(R2.int)){
-    R2[1] <- input[1]
-  }
-  else{
-    R2[1] <- R2.int
-    R1[1] <- R1.int
-  }
-  for (i in 2:t){ #generate serum and bone series
-    R1[i] <- R1[i - 1] + b * (R2[i - 1] - R1[i - 1]) + a * (Rin[i - 1] - R1[i - 1])
-    
-    R2[i] <- R2[i - 1] + c * (R1[i - 1] - R2[i - 1])
-  }
-  return(list(R1, R2, input))
-}
 
-########### fn 11 simulate sampling grid using width, depth and grid resolution ###########
-# all nubers in microns
-sim.samp.grid <- function(sample.wd, sample.dp, res){
-  # initiate the sampling matrix
-  nrow <- round(sample.dp/res)
-  
-  ncol <- round(sample.wd/res)
-  
-  sample.grid <- matrix(1, ncol = ncol, nrow = nrow)
-  
-  ncol.bot <- round(sample.wd/res/2)
-  
-  # set cutoffs for diagonals
-  cutoff <- round(ncol.bot * 0.2)
-  
-  for(i in nrow : (nrow - ncol.bot)){
-    for(j in 1 : ncol){
-      x <- nrow - i
-      y <- ncol.bot - (cutoff + x)
-      
-      if(j < y | j > ncol - y){
-        sample.grid[i,j] <- 0 
-      }
-    }
-    
-  }
-  
-  return(sample.grid)
-}
-
-########### fn 12 simulate enamel block with given parameters###########
-# leng = length of enamel block
-# thick = thickness of enamel block
-# angle = appositional angle
-# rate = enamel extension rate
-# history = simulated serum Sr ratio history
-# sample.wd = width of the sampling groove
-# sample.dp = depth of the sampling groove
-# sample.dist = dist measurement from the TOP of the crown
-
-sampling.sim <- function(leng, thick, angle, rate,
-                         history, sample.wd, sample.dp,
-                         sample.dist, res = 10){
-  
-  total.leng <- leng*2e3 #micron 
-  
-  total.thick <- (thick/2) * 1e3 #micron
-  
-  tan.angle <- tan(pi/180*angle)
-  
-  serum <- history[[1]]
-  
-  intake <- history[[3]]
-  
-  n.days <- length(serum)
-  
-  local.ref <- 0:n.days * rate/res
-  # this is at daily resolution
-  # so horizontal pixel resolution is higher than daily Sr history
-  
-  Serum.ref <- c(serum[1], serum)
-  
-  intake.ref <- c(intake[1], intake)
-  
-  #for each row of cells, the reference data set will be the serum value at 1:length
-  
-  cell.loc <- 1:(total.leng/res)
-  
-  Sr.ref <- approx(x = local.ref, y = Serum.ref, xout = cell.loc)$y
-  
-  intake.ref <- approx(x = local.ref, y = intake.ref, xout = cell.loc)$y
-  
-  #simulate appositional angle
-  n.shift <- 1/tan.angle #so every vertical cell, shift x towards the back
-  
-  n.h.en <- total.leng/res
-  
-  n.v.en <- total.thick/res
-  
-  Sr.grid <- matrix(0, ncol = n.h.en, nrow = n.v.en)
-  
-  Sr.grid[n.v.en,] <- Sr.ref
-  
-  for(i in (n.v.en-1):1){
-    x.shift <- round((n.v.en - i) * n.shift)
-    
-    Sr.aft.temp <- rep(NA, x.shift)
-    
-    Sr.int.temp <- Sr.ref[(x.shift + 1):n.h.en]
-    
-    Sr.grid[i,] <- c(Sr.int.temp, Sr.aft.temp)
-    
-  }
-  
-  # subset the first half of the matrix for sampling simulations
-  en.subset <- 1:(total.leng/res/2)
-  
-  En.grid <- Sr.grid[,en.subset]
-  
-  r.Sr <- raster(ncol = ncol(En.grid), nrow = nrow(En.grid),
-                 xmn=0, xmx=ncol(En.grid), ymn=0, ymx=nrow(En.grid))
-  
-  values(r.Sr) <- En.grid
-  
-  ############ Step 3: build the sampling matrix ######
-  #####simulate sample averaging######
-  
-  # see custom function 11
-  sample.grid <- sim.samp.grid(sample.wd*1e3, sample.dp*1e3, res)
-  
-  #simulate sampling, with gaps between sampling grooves
-  
-  # mm between sampling grooves
-  
-  n.samp <- length(sample.dist)
-  
-  sample.loc <- round(sample.dist * 1e3 / res)
-  
-  avg.Sr.samp <- rep(0, n.samp) #initiate vector
-  
-  ############ Step 4: aggregate samples ######
-  
-  for(i in 1:n.samp){
-    
-    temp <- En.grid[1:nrow(sample.grid),
-                    round(sample.loc[i] - ncol(sample.grid)/2 ):
-                      round(sample.loc[i] + ncol(sample.grid)/2 - 1)]
-    temp <- replace(temp, is.na(temp), 0)
-    temp.prod <- temp * sample.grid 
-    avg.Sr.samp[i]<- sum(temp.prod)/sum(as.integer(temp.prod>0))
-    
-  }
-  
-  sim.EDJ <- data.frame(x = en.subset*res/1e3,
-                        Sr = Sr.ref[en.subset], Intake = intake.ref[en.subset])
-  
-  return(list(sim.Sr = avg.Sr.samp,  sim.EDJ = sim.EDJ, sim.En = r.Sr))
-  
-}

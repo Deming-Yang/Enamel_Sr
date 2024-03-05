@@ -1,4 +1,5 @@
 library(scales)
+library(lattice)
 
 #################  Fig S2 #################  
 ############# compare position of the change points to appositional angle ###########
@@ -84,86 +85,104 @@ abline(h = Sr.aft.map)
 #        pch = 18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
 #################  end Fig S7 #################
 
-# preliminary plots shows substantial over-fitting of the data (solution method),
-# which is expected due to the small sds. 
-# this suggests that sds should be adjusted to reflect real-world data and model uncertainties
+#################  Fig S8 ################# 
+par(mfrow=c(3, 1))
+par(mar = c(5, 4.5, 4, 2))
+plot(Misha.sim[[3]],
+     col = viridis(100),
+     main="Elephant annual migration, res = 10 microns", 
+     xlab = "Length", 
+     ylab = "Thickness")
 
-############# Time line reconstructions with individual data series in Fig 3D #############
-# Fig SI after converting to time, 
-# add +- sd in growth rates to create 67% confidence intervals around the reconstructed timeline
-# okay, there is no easy way of doing this...
-# compare laser, hand drill and micromill transects using the molar plate geometry
+plot(sheep.sim[[3]],
+     col = viridis(100),
+     main="Sheep annual migration, res = 10 microns", 
+     xlab = "Length", 
+     ylab = "Thickness")
 
-par(mfrow=c(1,4))
-# Panel 1 molar dentine vs micromill tusk dentine 
+plot(sheep.sim2[[3]],
+     col = viridis(100),
+     main="Sheep migration: twice a year, res = 10 microns", 
+     xlab = "Length", 
+     ylab = "Thickness")
+
+
+#################  Fig S9 ################# 
+par(mfrow=c(4, 1))
+par(mar = c(4, 4, 3, 2))
+plot(Misha.sim.dist, Misha.sim[[1]], pch = 16, col ="red4",
+     ylim = c(syn.low, syn.high), main = "Elephant annual migration, sampling depth = 0.8mm",
+     xlab ="Crown length (mm)", ylab = "87Sr/86Sr")
+# simulated EDJ: sheep.sim[[2]]
+lines(Misha.sim[[2]]$x, Misha.sim[[2]]$Sr, lwd=2, col = "#00b4ffff")
+lines(Misha.sim[[2]]$x, Misha.sim[[2]]$Intake)
+legend(91,0.711,c("Intake","Serum"),lwd = c(1,2), col=c("black","#00b4ffff"))
+
+# calculate the fraction of intake recovered using conventional drilling
+
+(max(Misha.sim[[1]]) - min(Misha.sim[[1]]))/(syn.high - syn.low)
+#31%
+
+plot(Misha.sim.dist, Misha.sim2[[1]], pch = 16, col ="red4",
+     ylim = c(syn.low, syn.high), main = "Elephant annual migration, sampling depth = 0.4mm",
+     xlab ="Crown length (mm)", ylab = "87Sr/86Sr")
+# simulated EDJ: sheep.sim[[2]]
+lines(Misha.sim2[[2]]$x, Misha.sim2[[2]]$Sr, lwd=2, col = "#00b4ffff")
+lines(Misha.sim2[[2]]$x, Misha.sim2[[2]]$Intake)
+
+(max(Misha.sim2[[1]]) - min(Misha.sim2[[1]]))/(syn.high - syn.low)
+# much higher amplitude at 48.6%
+
+plot(sheep.sim.dist, sheep.sim[[1]], pch = 16, col ="red4",
+     ylim = c(syn.low, syn.high), main = "Sheep annual migration",
+     xlab ="Crown length (mm)", ylab = "87Sr/86Sr")
+# simulated EDJ: sheep.sim[[2]]
+lines(sheep.sim[[2]]$x, sheep.sim[[2]]$Sr, lwd=2, col = "#00b4ffff")
+lines(sheep.sim[[2]]$x, sheep.sim[[2]]$Intake)
+
+
+(max(sheep.sim[[1]]) - min(sheep.sim[[1]]))/(syn.high - syn.low)
+# 70% of the variation from an annual variation 5-month winter place, 5-months summer place 
+
+plot(sheep.sim.dist, sheep.sim2[[1]], pch = 16, col ="red4",
+     ylim = c(syn.low, syn.high), main = "Sheep migration: twice a year",
+     xlab ="Crown length (mm)", ylab = "87Sr/86Sr")
+# simulated EDJ: sheep.sim[[2]]
+lines(sheep.sim2[[2]]$x, sheep.sim2[[2]]$Sr, lwd=2, col = "#00b4ffff")
+lines(sheep.sim2[[2]]$x, sheep.sim2[[2]]$Intake)
+
+(max(sheep.sim2[[1]]) - min(sheep.sim2[[1]]))/(syn.high - syn.low)
+# 46% of the variation from a seasonal migration 2-month one place, 2-months the other place
+
+#################  Fig S10 #################
+
 plot(-1000, -1, col= "gray24",
      xlim=c(-400,700),ylim=c(0.705,0.7115),
-     xlab="Days from moves",
-     main = "Tusk micromill vs molar D LA-ICP-MS",
+     xlab="Days from Misha's move",
+     main = "Tusk micromill vs LA-ICP-MS molar D and tusk D",
      ylab = "87Sr/86Sr") 
 abline(h = CA.Sr)
 abline(h = UT.Sr)
 
-polygon(c(days.cumm.den.al, rev(days.cumm.den.al)), 
-        c(dent.rm.f2$avg + dent.rm.f2$sd, 
-          rev(dent.rm.f2$avg - dent.rm.f2$sd)), 
+polygon(c(dent.tl$tl, rev(dent.tl$tl)), 
+        c(dent.tl$Sr + dent.tl$sd, 
+          rev(dent.tl$Sr - dent.tl$sd)), 
         col = "gray60", border = NA)
-lines(days.cumm.den.al,dent.rm.f2$avg,col= "gray24", lwd=2)
-points(misha.tusk.micromill.tl.al, misha.tusk.micromill$corr..87Sr.86Sr,
-       pch=18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
+lines(dent.tl$tl, dent.tl$Sr, col= "gray24", lwd=2)
 
-# Panel 2 molar enamel1 vs micromill tusk dentine 
-plot(-1000, -1, col= "gray24",
-     xlim=c(-400,700),ylim=c(0.705,0.7115),
-     xlab="Days from moves",
-     main = "Tusk micromill vs molar E1 LA-ICP-MS",
-     ylab = "87Sr/86Sr") 
-abline(h = CA.Sr)
-abline(h = UT.Sr)
 
-polygon(c(days.cumm.en1.al, rev(days.cumm.en1.al)), 
-        c(proc.Enamel1.rm.f$avg + proc.Enamel1.rm.f$sd, 
-          rev(proc.Enamel1.rm.f$avg - proc.Enamel1.rm.f$sd)), 
+# misha's tusk dentine LA-ICP-MS with the same interference correction
+polygon(c(n.avg.misha.25.tl.al, rev(n.avg.misha.25.tl.al)), 
+        c(n.avg.misha.25.sr + n.sd.misha.25.sr, 
+          rev(n.avg.misha.25.sr - n.sd.misha.25.sr)), 
         col = alpha("orange", 0.3), border = NA)
-lines(days.cumm.en1.al, proc.Enamel1.rm.f$avg,col = alpha("orange", 0.9), lwd=2)
-points(misha.tusk.micromill.tl.al, misha.tusk.micromill$corr..87Sr.86Sr,
-       pch=18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
+lines(n.avg.misha.25.tl.al, n.avg.misha.25.sr, col = alpha("orange", 0.9), lwd=2)
 
-# Panel 3 molar enamel vs micromill tusk dentine 
-plot(days.cumm.drill.al, rev(Drill.no$corr..87Sr.86Sr), col= "red4",
-     pch=16, cex = 2,
-     xlim=c(-400,700),ylim=c(0.705,0.7115),
-     xlab="Days from moves",
-     main = "Tusk micromill vs molar E drill",
-     ylab = "87Sr/86Sr") 
-abline(h = CA.Sr)
-abline(h = UT.Sr)
-points(misha.tusk.micromill.tl.al, misha.tusk.micromill$corr..87Sr.86Sr,
-       pch=18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
-
-# Panel 4 molar enamel vs micromill molar enamel 
-plot(Rm3.5b.mill.tl.al, rev(Rm3.5b.mill.no$corr..87Sr.86Sr), col= "cyan4",
-     pch=16, cex = 2,
-     xlim=c(-400,700),ylim=c(0.705,0.7115),
-     xlab="Days from moves",
-     main = "Tusk micromill vs molar E micromill",
-     ylab = "87Sr/86Sr") 
-abline(h = CA.Sr)
-abline(h = UT.Sr)
-points(misha.tusk.micromill.tl.al, misha.tusk.micromill$corr..87Sr.86Sr,
+points(tusk.mill.tl$tl, tusk.mill.tl$Sr,
        pch=18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
 
 
-
-
-
-
-
-
-
-
-
-
+################# probably not needed #################
 ################# contour map of the enamel block#######################
 #method 1 for each transet, create a precited data series
 

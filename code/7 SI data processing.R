@@ -101,3 +101,35 @@ summary(lm.res) # results are significant
 newx = seq(min(res.tib$x), max(res.tib$x), by = 0.01)
 conf_interval <- predict(lm.res, newdata=data.frame(x=newx), interval="confidence",
                          level = 0.95)
+
+# comparing LA-ICP-MS tusk dentine and molar dentine series
+
+misha.raw <- read.csv("data/Misha M640b raw.csv")
+
+misha.raw.Sr <- misha.raw$Corr..87Sr.86Sr
+misha.raw.dist <- misha.raw$dist
+
+##calculate 25 point average to reduce data amount
+n.avg <- 25 #now many data points to average
+n <- floor(length(misha.raw$Corr..87Sr.86Sr)/n.avg) #99 data points, discard the last <50 data points
+
+#initiate vectors
+n.avg.misha.25.sr <- rep(0, n)
+n.sd.misha.25.sr <- rep(0, n)
+
+n.avg.misha.25.dist <- rep(0, n)
+
+for(i in 1:n){
+  x <- ((i-1)*n.avg + 1):(i*n.avg)
+  n.avg.misha.25.sr[i] <- mean(misha.raw.Sr[x])
+  n.sd.misha.25.sr[i] <- sd(misha.raw.Sr[x])
+  
+  n.avg.misha.25.dist[i] <- mean(misha.raw.dist[x])#mean and median are the same
+}
+
+#timeline reconstruction with simple growth rate
+n.avg.misha.25.tl <- rev(n.avg.misha.25.dist/14.7) #mm/day
+
+#mannually align data
+n.avg.misha.25.tl.al <- n.avg.misha.25.tl - 670
+
