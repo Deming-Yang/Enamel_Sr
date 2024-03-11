@@ -12,36 +12,40 @@ source("code/1 Helper functions.R")
 
 ############################# inversion of Misha's tusk micromill data using parameters #######
 
-n.mea = length(tusk.mill.tl$Sr)
+# have to adjust the sd, If used as is,
+# the model won't converge on the a reasonable set of reaction rate parameters
+# It seems that 20 time the uncertainty would converge on reasonable reaction rates
+R.sd.mea <- tusk.mill.tl$sd * 10
 
-# remove the last 2 data point to avoid 0 dist
+# add 10mm distance to all data to avoid 0 dist towards the end of the sequence
+dist.mea <- misha.tusk.micromill.dist/1e3 +10
 
-R.sd.mea <- tusk.mill.tl$sd[1:(n.mea-2)]
-dist.mea <- misha.tusk.micromill.dist[1:(n.mea-2)]/1e3
-R.mea <- tusk.mill.tl$Sr[1:(n.mea-2)]
+R.mea <- tusk.mill.tl$Sr
 
 n.mea = length(R.mea)
 
-s.intv <- 0.547 # mm micromill interval
+# micromill interval
+s.intv <- - 1 * mean(diff(dist.mea))
 
-max.dist.mea <- max(dist.mea) + 2 * s.intv # create a bit of leading enamel
+max.dist.mea <- max(dist.mea) + 2 * s.intv # create a bit of leading history
 
 # use a growth length to rate relationship for growth simulations
 # the xgrid has to be in ascending order
 # for the tusk, the growth was considered constant at 14.7 microns/day
-length.v <- seq(0, 25, by = 1)
+length.v <- seq(0.1, 50, by = 0.1)
 rate.v <- rep(14.7e-3, length(length.v))
 
-rate.sd <- 0.15 * 14.7e-3 # mm per day
+bin.thin <- 0.2 * s.intv/min(rate.v)
 
-# make sure that bin.thin is larger than 2
-bin.thin <- 0.25 * s.intv/mean(rate.v)
+M640.bt <- bin.thin
 
-# use timeline reconstruction results to estimate t
+d.offset.M640 <- 2* s.intv/mean(rate.v)
 
-t = round(1.2 * (max(tusk.mill.tl$tl) - min(tusk.mill.tl$tl))/bin.thin)
+# rate.sd <- 0.1 * mean(rate.v)  # mm per day
 
-#posterior samples of parameters from Misha's calibration
+t = round(1.35 * max(M640.micromill.tl)/bin.thin)
+
+t.M640b <-t
 
 
 parameters <- c("rate", "dist","Rin.m.pre",
@@ -56,25 +60,26 @@ dat = list( params.mu = turnover.params.mu, params.vcov = turnover.params.vcov,
 t1 = proc.time()
 
 set.seed(t1[3])
-n.iter = 5e3
-n.burnin = 2e3
-n.thin = 1
+n.iter = 5e5
+n.burnin = 2e4
+n.thin = 30
 
 #Run it
-post.misha.M640b = do.call(jags.parallel,list(model.file = "code/Sr inversion JAGS param bt.R", 
+post.misha.M640b = do.call(jags.parallel,list(model.file = "code/Sr inversion JAGS param.R", 
                                                      parameters.to.save = parameters, 
                                                      data = dat, n.chains=5, n.iter = n.iter, 
                                                      n.burnin = n.burnin, n.thin = n.thin))
 
 #Time taken
-proc.time() - t1 #~ 51 hours
+proc.time() - t1 #~ 40 min
 
 save(post.misha.M640b, file = "out/post.misha.M640b.RData")
 
 load("out/post.misha.M640b.RData")
 
-post.misha.M640b$BUGSoutput$summary
+denplot(as.mcmc(post.misha.M640b), parms = c("a","b","c"))
 
-#check posterior density of parameter a:
 
-plot(density(post.misha.M640b$BUGSoutput$sims.list$a),col="red")
+post.misha.M640b.R1.m.89 <- MCMC.CI.bound(post.misha.M640b$BUGSoutput$sims.list$R1.m, 0.89)
+
+post.misha.M640b.Rin.m.89 <- MCMC.CI.bound(post.misha.M640b$BUGSoutput$sims.list$Rin.m, 0.89)

@@ -86,21 +86,53 @@ abline(h = Sr.aft.map)
 #################  end Fig S7 #################
 
 #################  Fig S8 ################# 
-par(mfrow=c(3, 1))
-par(mar = c(5, 4.5, 4, 2))
-plot(Misha.sim[[3]],
+par(mfrow=c(4, 1))
+par(mar = c(15, 4.5, 5, 2))
+plot(Misha.sim[[3]], horizontal = TRUE,
      col = viridis(100),
      main="Elephant annual migration, res = 10 microns", 
      xlab = "Length", 
      ylab = "Thickness")
 
-plot(sheep.sim[[3]],
+plot(Misha.sim2[[3]], horizontal = TRUE,
+     col = viridis(100),
+     main="Elephant annual migration, innermost 0.2mm of enamel, res = 10 microns", 
+     xlab = "Length", 
+     ylab = "Thickness")
+
+plot(sheep.sim[[3]], horizontal = TRUE,
      col = viridis(100),
      main="Sheep annual migration, res = 10 microns", 
      xlab = "Length", 
      ylab = "Thickness")
 
-plot(sheep.sim2[[3]],
+plot(sheep.sim2[[3]], horizontal = TRUE,
+     col = viridis(100),
+     main="Sheep migration: twice a year, res = 10 microns", 
+     xlab = "Length", 
+     ylab = "Thickness")
+
+par(mfrow=c(4, 1))
+par(mar = c(5, 4.5, 3, 2))
+plot(Misha.sim[[3]], 
+     col = viridis(100),
+     main="Elephant annual migration, res = 10 microns", 
+     xlab = "Length", 
+     ylab = "Thickness")
+
+plot(Misha.sim2[[3]], 
+     col = viridis(100),
+     main="Elephant annual migration, innermost 0.2mm of enamel, res = 10 microns", 
+     xlab = "Length", 
+     ylab = "Thickness")
+
+plot(sheep.sim[[3]], 
+     col = viridis(100),
+     main="Sheep annual migration, res = 10 microns", 
+     xlab = "Length", 
+     ylab = "Thickness")
+
+plot(sheep.sim2[[3]], 
      col = viridis(100),
      main="Sheep migration: twice a year, res = 10 microns", 
      xlab = "Length", 
@@ -124,14 +156,14 @@ legend(91,0.711,c("Intake","Serum"),lwd = c(1,2), col=c("black","#00b4ffff"))
 #31%
 
 plot(Misha.sim.dist, Misha.sim2[[1]], pch = 16, col ="red4",
-     ylim = c(syn.low, syn.high), main = "Elephant annual migration, sampling depth = 0.4mm",
+     ylim = c(syn.low, syn.high), main = "Elephant annual migration, innermost 0.2mm of enamel",
      xlab ="Crown length (mm)", ylab = "87Sr/86Sr")
 # simulated EDJ: sheep.sim[[2]]
 lines(Misha.sim2[[2]]$x, Misha.sim2[[2]]$Sr, lwd=2, col = "#00b4ffff")
 lines(Misha.sim2[[2]]$x, Misha.sim2[[2]]$Intake)
 
 (max(Misha.sim2[[1]]) - min(Misha.sim2[[1]]))/(syn.high - syn.low)
-# much higher amplitude at 48.6%
+# much higher amplitude at 55.5%
 
 plot(sheep.sim.dist, sheep.sim[[1]], pch = 16, col ="red4",
      ylim = c(syn.low, syn.high), main = "Sheep annual migration",
@@ -180,6 +212,60 @@ lines(n.avg.misha.25.tl.al, n.avg.misha.25.sr, col = alpha("orange", 0.9), lwd=2
 
 points(tusk.mill.tl$tl, tusk.mill.tl$Sr,
        pch=18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
+
+#################  Fig S11 #################
+par(mfrow=c(1, 2)) #1100 * 450
+# reconstructed Sr input signal from LA-ICP-MS molar enamel
+plot(En1.50avg.tl$avg.tl, En1.50avg.tl$avg.sr, type= "l", col= "#00b4ffff",
+     lwd = 2,
+     xlim=c(-400,1000),ylim=c(0.705,0.713),
+     xlab="Days from Misha's move",
+     main = "Estimated intake based on molar enamel LA-ICP-MS",
+     ylab = "87Sr/86Sr") 
+abline(h = CA.Sr)
+abline(h = UT.Sr)
+
+lines(1:t.En1 * En1.bt - d.offset.En1 -410, post.misha.En1.Rin.m.89[[1]], lwd = 2)
+lines(1:t.En1 * En1.bt - d.offset.En1 -410, post.misha.En1.Rin.m.89[[2]], lty = 2)
+lines(1:t.En1 * En1.bt - d.offset.En1 -410, post.misha.En1.Rin.m.89[[3]], lty = 2)
+legend(400,0.709,c("Est. intake","Measured"),lwd = c(2,2), col=c("black","#00b4ffff"))
+
+
+# reconstructed Sr input signal from micromilled tusk dentine
+plot(tusk.mill.tl$tl, tusk.mill.tl$Sr, pch=18, col= "#00b4ffff",
+     lwd = 2,
+     xlim=c(-400,1000),ylim=c(0.705,0.713),
+     xlab="Days from Misha's move",
+     main = "Estimated intake based on tusk dentine micromill",
+     ylab = "87Sr/86Sr") 
+abline(h = CA.Sr)
+abline(h = UT.Sr)
+
+lines(1:t.M640b * M640.bt -d.offset.M640-365, post.misha.M640b.Rin.m.89[[1]], lwd = 2)
+lines(1:t.M640b * M640.bt -d.offset.M640-365, post.misha.M640b.Rin.m.89[[2]], lty = 2)
+lines(1:t.M640b * M640.bt -d.offset.M640-365, post.misha.M640b.Rin.m.89[[3]], lty = 2)
+
+
+#################  Fig S12 #################
+par(mfrow=c(1, 2)) #900 * 450
+
+plot(density(exp(log.a)), col = "blue", ylim = c(0,110),
+     main="Posteriors of parameter a")
+lines(density(post.misha.En1$BUGSoutput$sims.list$a/En1.bt),col="red")
+legend(0.03,110,c("LA-ICP-MS tusk","LA-ICP-MS enamel"),
+       lwd = c(1,1), col=c("blue","red"))
+
+
+plot(density(exp(log.a)), col = "blue", ylim = c(0,110),
+     main="Posteriors of parameter a")
+lines(density(post.misha.M640b$BUGSoutput$sims.list$a/M640.bt),col="red")
+legend(0.03,110,c("LA-ICP-MS tusk","Micromill tusk"),
+       lwd = c(1,1), col=c("blue","red"))
+
+#check posterior density of parameter a:
+# this tends to produce higher posterior of rate parameter a
+
+
 
 
 ################# probably not needed #################

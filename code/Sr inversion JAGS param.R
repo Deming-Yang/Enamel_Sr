@@ -12,20 +12,15 @@ model {
   # establish a time-length relationship
   for (i in 2:t){
     
-    dist[i] = dist[i - 1] - rate[i - 1] #simulate daily distance increment
+    dist[i] = dist[i - 1] - rate[i - 1] * bin.thin #simulate distance increment ber time step
     
-    rate.m[i] = interp.lin(dist[i], length.v, rate.v)
-
-    rate[i] ~ dnorm(rate.m[i] * bin.thin, 1/rate.sd^2) #growth rate, mm/day
+    rate[i] = interp.lin(dist[i], length.v, rate.v)
     
   }
   
-  rate[1] ~ dnorm(rate.m[1] * bin.thin, 1/rate.sd^2) #growth rate, mm/day
-  
-  rate.m[1] = interp.lin(dist[1], length.v, rate.v)
+  rate[1] = interp.lin(dist[1], length.v, rate.v)
 
   dist[1] = max.dist.mea #maximum distance from the cervix in mm
-  
 
   for (i in 2:t){
     #serum ratio
@@ -60,14 +55,14 @@ model {
   # initiate the series with an reasonable prior
   Rin.m[1] ~ dnorm(Rin.int, Rin.m.pre) #allowed some variation
   
-  Rin.int ~ dnorm(0.710, 1/0.01^2)  #an uninformative initial value
+  Rin.int ~ dnorm(0.706, 1/0.01^2)  #a weakly informative initial value
   
   #initial change per step
   Rin.m.cps[1] ~ dt(0, Rin.m.pre, 1) T(-6e-3, 6e-3)
   
   Rin.m.pre ~ dgamma(Rin.m.pre.shp, Rin.m.pre.rate)
   Rin.m.pre.shp = 100
-  Rin.m.pre.rate = 2.5e-8
+  Rin.m.pre.rate = 2.5e-8 * bin.thin
   
   #sampling from parameter posteriors from the calibration
   a = exp(params[1]) * bin.thin

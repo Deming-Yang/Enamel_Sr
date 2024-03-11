@@ -26,8 +26,8 @@ proc.Enamel10.rm.new.x <- 88 - proc.Enamel10.rm.f$new.x/1e3
 # assume that the enamel growth rate at the top of the crown is 55.3 micron/day
 # note that all the calculations depend on the 55.3 micron/day extension rate estimate
 
-# create reference grid: 101mm to 0 mm 
-ref.length.v <- seq(101,0, by = -0.2) # 0.1mm interval
+# create reference grid: 101mm to 0.2 mm 
+ref.length.v <- seq(101,0.2, by = -0.2) # 0.1mm interval
 
 # use appositional angle to get enamel growth rate
 # Uno et al. 2020 used a logarithmic relationship
