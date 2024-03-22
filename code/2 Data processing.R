@@ -9,6 +9,7 @@ library(changepoint)
 
 source("./code/1 Helper functions.R")
 
+# data intake
 EDJ.dentin1 <- read.csv("./data/EDJ_dentin1.csv")
 EDJ.dentin2 <- read.csv("./data/EDJ_dentin2.csv")
 Enamel1 <- read.csv("./data/Enamel1.csv")
@@ -27,6 +28,7 @@ Enamel9 <- read.csv("./data/Enamel9.csv")
 Enamel9ext2 <- read.csv("./data/Enamel9ext2.csv")
 Enamel10 <- read.csv("./data/Enamel10.csv")
 
+# laser position intake
 pl.EDJ.dentin1 <- read.csv("./data/pl_EDJ_dentin1.csv")
 pl.EDJ.dentin2 <- read.csv("./data/pl_EDJ_dentin2.csv")
 pl.Enamel1 <- read.csv("./data/pl_Enamel1.csv")
@@ -53,20 +55,22 @@ Drill.no <- na.omit(Drill)
 #load Rm3.5 micromill data
 Rm3.5b.mill <- read.csv("./data/Rm3.5b micromill.csv")
 Rm3.5b.mill.no <- na.omit(Rm3.5b.mill)
+
 # sort from largest dist to smallest
 desc(Rm3.5b.mill.no)
 
 # load Misha tusk dentine micromill data (Yang et al. 2023)
 misha.tusk.micromill <- read.csv("data/Misha dentin micromill.csv")
 
-misha.tusk.micromill<-na.omit(misha.tusk.micromill)
+misha.tusk.micromill <- na.omit(misha.tusk.micromill)
 
+# load the appositional angle data
 Rm3.5.angle <- read.csv("data/Rm3.5 appo angle.csv")
 
 #load M640 tusk dentine micromill C and O isotope data (Uno 2012)
 M640.micromill <- read.csv("data/M640 tusk C and O.csv")
 
-############data processing using custom function###########
+############ data processing using custom functions ###########
 
 #dentine at EDJ
 proc.EDJ.dentin1 <- data.process(EDJ.dentin1, pl.EDJ.dentin1, "d")
@@ -118,6 +122,9 @@ proc.Enamel7
 proc.Enamel7.rm <- moving.avg(proc.Enamel7, 25)
 
 ###################################### transform corrdinates ###############
+# the laser was done in two sessions, and the molar thick section was offloaded
+# from the mount, so the position of the coordinates for the second session
+# shifted slightly. Here a coordiate correction was made to the second session
 x.transf <- 100
 y.transf <- -890
 
@@ -195,16 +202,22 @@ dent.rm.s <- dent.rm[order(dent.rm$y),]
 dent.rm.s.diff.x <- diff(dent.rm.s$x)
 dent.rm.s.diff.y <- diff(dent.rm.s$y)
 
-#calculate distance between adjacent points
+# use the dentine transect as the reference
+# becasue it is the longest transect among all transects
+# and it was placed 150 microns from the EDJ
+# the following section transforms the coordinates of the other transects
+# to reference the dentine transect 
+
+# calculate distance between adjacent points
 dent.rm.s.dist <- sqrt(dent.rm.s.diff.x^2 + dent.rm.s.diff.y^2)
 
 dent.rm.new.x <- c(0, cumsum(dent.rm.s.dist))
 
 dent.rm.new.y <- rep(-150, length(dent.rm.new.x)) #dentine is -150 microns away from EDJ
 
+# .proj is the coordinate-transformed data frame
 dent.rm.proj <- tibble(dent.rm, data.frame(new.x = dent.rm.new.x, new.y = dent.rm.new.y))
 
-# dent.rm.proj <- tibble(dent.rm, data.frame(new.x = dent.rm.new.x, new.y = dent.rm.new.y))
 #######Enamel 1######
 proc.Enamel1.rm.s <- proc.Enamel1.rm[order(proc.Enamel1.rm$y),]
 
@@ -282,3 +295,5 @@ proc.Enamel10.rm.s <- proc.Enamel10.rm[order(proc.Enamel10.rm$y),]
 E10.proj <- proj.transect(proc.Enamel10.rm.s, dent.rm.s)
 
 proc.Enamel10.rm.proj <- tibble(proc.Enamel10.rm.s, E10.proj)
+
+##### End of data processing #####

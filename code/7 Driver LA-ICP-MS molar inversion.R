@@ -12,6 +12,10 @@ source("code/1 Helper functions.R")
 
 ####### molar LA-ICP-MS inversion with data reduction and bin thinning#############
 
+####### data set 1, enamel transect 1#############
+
+En1.50avg.tl <- x.pt.avg(proc.Enamel1.rm.f$avg, en1.tl$tl, 50)
+
 Enamel1.Sr <- x.pt.avg(proc.Enamel1.rm.f$avg, 0, 50)
 
 Enamel1.length <- x.pt.avg(proc.Enamel1.rm.new.x, 0, 50)
@@ -78,4 +82,6 @@ denplot(as.mcmc(post.misha.En1), parms = c("a","b","c"))
 post.misha.En1.R1.m.89 <- MCMC.CI.bound(post.misha.En1$BUGSoutput$sims.list$R1.m, 0.89)
 
 post.misha.En1.Rin.m.89 <- MCMC.CI.bound(post.misha.En1$BUGSoutput$sims.list$Rin.m, 0.89)
+
+####### End of data set 1 #############
 

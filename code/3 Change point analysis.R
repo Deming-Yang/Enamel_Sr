@@ -11,8 +11,14 @@ library(segmented)
 source("./code/1 Helper functions.R")
 
 ######################## change point analysis ########################
+# this was done using the lm() function 
+# with the segmented() function in the package "segmented"
 
 ############ Dentine combined ###################
+
+# filter out data points that have very low values
+# there are small cracks along the length of the molar
+# the filtering removes those data points
 
 dent.rm.f <- filter(dent.rm.proj, dent.rm.proj$avg > 0.703)
 
@@ -21,6 +27,10 @@ set.seed(1234)
 fit_segmented.D.rm = segmented(fit_lm.D.rm, seg.Z = ~new.x, npsi = 3)  # Three change points along new.x
 
 summary(fit_segmented.D.rm)
+
+# here the information from the fit was used to extract 
+# slopes and intercepts of the segments, which are used later in 
+# slope comparisons and plotting
 
 cp1.D.rm <- fit_segmented.D.rm$psi[5] #change point estimates, can use this to get x for plotting
 cp1.D.rm.err <- fit_segmented.D.rm$psi[8]
@@ -33,8 +43,6 @@ D.rm.sl1 <- fit_segmented.D.rm$coefficients[2] + fit_segmented.D.rm$coefficients
 D.rm.sl2 <- fit_segmented.D.rm$coefficients[2]+ fit_segmented.D.rm$coefficients[3]+ fit_segmented.D.rm$coefficients[4] + 
   fit_segmented.D.rm$coefficients[5]#third slope
 
-# D.rm.sl3 <- fit_segmented.D.rm$coefficients[2]+ fit_segmented.D.rm$coefficients[3]+ 
-#   fit_segmented.D.rm$coefficients[4] + fit_segmented.D.rm$coefficients[5]#third slope
 ############Enamel 1###################
 proc.Enamel1.rm.f <- filter(proc.Enamel1.rm.proj, proc.Enamel1.rm.proj$avg > 0.703)
 fit_lm.E1.rm = lm(avg ~ 1 + new.x, data = proc.Enamel1.rm.f)  # intercept-only model
@@ -159,13 +167,13 @@ cp2.E6.rm <- fit_segmented.E6.rm$psi[6] #change point estimates, can use this to
 cp2.E6.rm.err <- fit_segmented.E6.rm$psi[9]
 
 #extract slopes and intercepts
-
 E6.rm.sl0 <- fit_segmented.E6.rm$coefficients[2] + fit_segmented.E6.rm$coefficients[3] #second slope
 
 E6.rm.sl1 <- fit_segmented.E6.rm$coefficients[2]+ fit_segmented.E6.rm$coefficients[3]+ fit_segmented.E6.rm$coefficients[4] #third slope
 
 E6.rm.sl2 <- fit_segmented.E6.rm$coefficients[2]+ fit_segmented.E6.rm$coefficients[3]+ fit_segmented.E6.rm$coefficients[4] +
   fit_segmented.E6.rm$coefficients[5]#third slope
+
 ############Enamel 7###################
 proc.Enamel7.rm.f <- filter(proc.Enamel7.rm.proj, proc.Enamel7.rm.proj$avg > 0.703)
 fit_lm.E7.rm = lm(avg ~ 1 + new.x, data = proc.Enamel7.rm.f)  # intercept-only model
@@ -239,8 +247,6 @@ fit_segmented.E10.rm = segmented(fit_lm.E10.rm, seg.Z = ~new.x, npsi = 2)  # one
 
 summary(fit_segmented.E10.rm)
 
-
-
 cp1.E10.rm <- fit_segmented.E10.rm$psi[3] #change point estimates, can use this to get x for plotting
 cp1.E10.rm.err <- fit_segmented.E10.rm$psi[5]
 
@@ -255,16 +261,16 @@ E10.rm.sl1 <- fit_segmented.E10.rm$coefficients[2] + fit_segmented.E10.rm$coeffi
 E10.rm.sl2 <- fit_segmented.E10.rm$coefficients[2]+ fit_segmented.E10.rm$coefficients[3]+ fit_segmented.E10.rm$coefficients[4] #third slope
 
 
-#compile slopes of the first transition
+# compile slopes of the first transition, which is the abrupt change in the turnover curve
 Sr.trans.sl1 <- c(D.rm.sl1, E1.rm.sl1, E2.rm.sl1, E3.rm.sl1, E4.rm.sl1, E5.rm.sl1, E6.rm.sl1, E7.rm.sl1,
                   E8.rm.sl1, E9.rm.sl1, E10.rm.sl1)
 
-#compile slopes of the second transition
+# compile slopes of the second transition, which is the gradual change in the turnover curve
 Sr.trans.sl2 <- c(D.rm.sl2, E1.rm.sl2, E2.rm.sl2, E3.rm.sl2, E4.rm.sl2, E5.rm.sl2, E6.rm.sl2, E7.rm.sl2,
                   E8.rm.sl2, E9.rm.sl2, E10.rm.sl2)
 
 
-#################compiling first change points within enamel#################
+################# compiling the first change points among enamel transects #################
 cp1.E.rm.x <- c(cp1.E1.rm,
       cp1.E2.rm,
       cp1.E3.rm,
@@ -287,7 +293,7 @@ cp1.E.rm.x.err <- c(cp1.E1.rm.err,
              cp1.E9.rm.err,
              cp1.E10.rm.err)
 
-#second change point within enamel
+#second change point within among enamel transects 
 cp2.E.rm.x <- c(cp2.E1.rm,
                 cp2.E2.rm,
                 cp2.E3.rm,
@@ -310,7 +316,11 @@ cp2.E.rm.x.err <- c(cp2.E1.rm.err,
                     cp2.E9.rm.err,
                     cp2.E10.rm.err)
 
-#get y values from enamel transects
+# for plotting the change points on the enamel map
+# the x values are from the segmented regression
+# the y values need to be estimated using linear interpolation
+
+# get y values from enamel transects
 cp.D.rm.x <- approx(x = dent.rm.f$y, y = dent.rm.f$x, xout = cp.D.rm[1])$y
 
 cp1.E.rm.y <- rep(0,10) #initialize vector
@@ -340,19 +350,20 @@ cp2.E.rm.y[10] <- approx(x = proc.Enamel10.rm.f$new.x, y = proc.Enamel10.rm.f$ne
 cp1.E.proj <- data.frame(x = cp1.E.rm.x, y = cp1.E.rm.y)
 cp2.E.proj <- data.frame(x = cp2.E.rm.x, y = cp2.E.rm.y)
 
-#it seems that only the last 2 data points are not conforming to a linear trend
-#remove the points for E8-10
+# preliminary plots show that the last 2 data points are not conforming to a linear trend
+# to compare the slope of it to the known appositional angle,
+# remove the points for E8-10
 cp1.E.proj.inner <- cp1.E.proj[1:7,]
 
 cp2.E.proj.inner <- cp2.E.proj[1:7,]
 
-#calculate slope using lm
-lm.cp1.E.proj.inner <- lm(y~x, data=cp1.E.proj.inner)
+#calculate slope of the first change point using lm
+lm.cp1.E.proj.inner <- lm(y ~ x, data = cp1.E.proj.inner)
 summary(lm.cp1.E.proj.inner)
 #slope = -0.05838
 #Std. Error = 0.003673
 
-#calculate slope using lm
+#calculate slope of the second change point using lm
 lm.cp2.E.proj.inner <- lm(y~x, data=cp2.E.proj.inner)
 summary(lm.cp2.E.proj.inner)
 #slope = -0.05824
@@ -365,7 +376,7 @@ atan(abs(lm.cp1.E.proj.inner$coefficients[2]))/pi*180
 atan(abs(lm.cp2.E.proj.inner$coefficients[2]))/pi*180
 #~3.37 degrees, which is identical to the appositional angle measured by Uno 2012 (3.3 +- 0.5)
 
-#use mean of the two angles in the forward model
+#record the mean of the two angles
 fwd.appo.sl <- mean(c(lm.cp1.E.proj.inner$coefficients[2],lm.cp2.E.proj.inner$coefficients[2]))
 
 # compile change points for plots
@@ -417,10 +428,7 @@ sf.all.enamel.rm.proj <- st_as_sf(all.enamel.rm.proj,  agr = NA_agr_,
                                   na.fail = TRUE,
                                   sf_column_name = NULL)
 
-
-
-
-#record change positions within enamel:
+# record change positions within enamel:
 cp1.loc <- data.frame(avg = rep(0.7,length(cp1.E.rm.x)), x = cp1.E.rm.x, y = cp1.E.rm.y)
 sf.cp1.loc <- st_as_sf(cp1.loc,  agr = NA_agr_,
                        coords = c("x","y"),
@@ -437,60 +445,3 @@ sf.cp2.loc <- st_as_sf(cp2.loc,  agr = NA_agr_,
                        na.fail = TRUE,
                        sf_column_name = NULL)
 
-
-#####################plot slopes of the first segment#####
-# data.frame(slope1 = Sr.trans.sl1, slope2 = Sr.trans.sl2)
-# 
-# plot(1:11,Sr.trans.sl1) #no significant difference in the first slope
-# plot(1:11,Sr.trans.sl2) #lower slopes for the outer two transects
-# 
-# newdataD <- data.frame(new.x = c(cp1.D.rm, cp2.D.rm))
-# segmented.D.Sr <- predict.segmented(fit_segmented.D.rm, newdata = newdataD)
-# Tr1.D <- segmented.D.Sr[2] - segmented.D.Sr[1]
-# 
-# Tr1.E <- rep(0,10)
-# 
-# newdataE1 <- data.frame(new.x = c(cp1.E1.rm, cp2.E1.rm))
-# segmented.E1.Sr <- predict.segmented(fit_segmented.E1.rm, newdata = newdataE1)
-# Tr1.E[1] <- segmented.E1.Sr[2] - segmented.E1.Sr[1]
-# 
-# newdataE2 <- data.frame(new.x = c(cp1.E2.rm, cp2.E2.rm))
-# segmented.E2.Sr <- predict.segmented(fit_segmented.E2.rm, newdata = newdataE2)
-# Tr1.E[2] <- segmented.E2.Sr[2] - segmented.E2.Sr[1]
-# 
-# newdataE3 <- data.frame(new.x = c(cp1.E3.rm, cp2.E3.rm))
-# segmented.E3.Sr <- predict.segmented(fit_segmented.E3.rm, newdata = newdataE3)
-# Tr1.E[3] <- segmented.E3.Sr[2] - segmented.E3.Sr[1]
-# 
-# newdataE4 <- data.frame(new.x = c(cp1.E4.rm, cp2.E4.rm))
-# segmented.E4.Sr <- predict.segmented(fit_segmented.E4.rm, newdata = newdataE4)
-# Tr1.E[4] <- segmented.E4.Sr[2] - segmented.E4.Sr[1]
-# 
-# newdataE5 <- data.frame(new.x = c(cp1.E5.rm, cp2.E5.rm))
-# segmented.E5.Sr <- predict.segmented(fit_segmented.E5.rm, newdata = newdataE5)
-# Tr1.E[5] <- segmented.E5.Sr[2] - segmented.E5.Sr[1]
-# 
-# newdataE6 <- data.frame(new.x = c(cp1.E6.rm, cp2.E6.rm))
-# segmented.E6.Sr <- predict.segmented(fit_segmented.E6.rm, newdata = newdataE6)
-# Tr1.E[6] <- segmented.E6.Sr[2] - segmented.E6.Sr[1]
-# 
-# newdataE7 <- data.frame(new.x = c(cp1.E7.rm, cp2.E7.rm))
-# segmented.E7.Sr <- predict.segmented(fit_segmented.E7.rm, newdata = newdataE7)
-# Tr1.E[7] <- segmented.E7.Sr[2] - segmented.E7.Sr[1]
-# 
-# newdataE8 <- data.frame(new.x = c(cp1.E8.rm, cp2.E8.rm))
-# segmented.E8.Sr <- predict.segmented(fit_segmented.E8.rm, newdata = newdataE8)
-# Tr1.E[8] <- segmented.E8.Sr[2] - segmented.E8.Sr[1]
-# 
-# newdataE9 <- data.frame(new.x = c(cp1.E9.rm, cp2.E9.rm))
-# segmented.E9.Sr <- predict.segmented(fit_segmented.E9.rm, newdata = newdataE9)
-# Tr1.E[9] <- segmented.E9.Sr[2] - segmented.E9.Sr[1]
-# 
-# 
-# newdataE10 <- data.frame(new.x = c(cp1.E10.rm, cp2.E10.rm))
-# segmented.E10.Sr <- predict.segmented(fit_segmented.E10.rm, newdata = newdataE10)
-# Tr1.E[10] <- segmented.E10.Sr[2] - segmented.E10.Sr[1]
-# 
-# Tr1.E
-
-# there is a higher fraction of UT Sr in E10 than in E9. Negligable in E8 
