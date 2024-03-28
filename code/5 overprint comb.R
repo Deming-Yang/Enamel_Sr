@@ -67,17 +67,17 @@ En10.tl.sd <- min(base::diff(En10.50avg.tl$avg.tl))/2
 max(tusk.mill.tl$tl) - min(tusk.mill.tl$tl) #>1378 days
 
 # the drill series is longer than the tusk series
-drill.tl.f <- filter(drill.tl,
-                          drill.tl$tl > min(tusk.mill.tl$tl) &
-                          drill.tl$tl < max(tusk.mill.tl$tl))
+Edrill.tl.f <- dplyr::filter(Edrill.tl,
+                          Edrill.tl$tl > min(tusk.mill.tl$tl) &
+                          Edrill.tl$tl < max(tusk.mill.tl$tl))
 
 # the En1 series is also longer than the tusk series
-En1.50avg.tl.f <- filter(En1.50avg.tl,
+En1.50avg.tl.f <- dplyr::filter(En1.50avg.tl,
                      En1.50avg.tl$avg.tl > min(tusk.mill.tl$tl) &
                        En1.50avg.tl$avg.tl < max(tusk.mill.tl$tl))
 
 
-drill.tl.sd <- min(base::diff(drill.tl.f$tl))/2
+Edrill.tl.sd <- min(base::diff(Edrill.tl.f$tl))/2
 
 Rm3.5b.mill.tl.sd <- min(base::diff(Rm3.5b.mill.tl$tl))/2 
 
@@ -108,7 +108,11 @@ Rm3.5b.tl.sd <- Rm3.5b.mill.tl.sd #uncertainty in the timeline
 
 bin.thin <- min(drill.tl.sd, Rm3.5b.tl.sd, En1.tl.sd, En9.tl.sd, En10.tl.sd)
 
-t <- round(1600/bin.thin) # set a higher number of days to accommodate 
+bin.thin.oc <- bin.thin
+
+t <- round(1600/bin.thin.oc) # set a higher number of days to accommodate 
+
+t.oc <- t
 
 # use a universal uncertainty among the substrates
 # use a large combined error to ensure parameter convergence on the tusk data,
@@ -130,20 +134,26 @@ R.sd.r1 <- rep(r.sd, n.r1)
 # 2 reference data set 2: Enamel 9 transect
 n.En1 <- length(En1.50avg.tl.f$avg.sr)
 
+n.r2 <- n.En1
+
 # measurement data, timeline, Sr, and sd
 R.En1 <- En1.50avg.tl.f$avg.sr
 
+R.r2 <- R.En1
+
 En1.tl <- En1.50avg.tl.f$avg.tl
+
+r2.tl <- En1.tl
 
 # 3 conventional drill data set
 n.drill <- length(drill.tl.f$Sr)
 
 # measurement data, timeline, Sr, and sd
-R.drill <- drill.tl.f$Sr
+R.drill <- Edrill.tl.f$Sr
 
 R.sd.drill <-rep(r.sd, n.drill)
 
-drill.tl <- drill.tl.f$tl
+drill.tl <- Edrill.tl.f$tl
 
 # 4 micromill enamel data set
 n.Rm3.5b <- length(Rm3.5b.mill.tl$Sr)
@@ -186,9 +196,9 @@ parameters <- c("switch", "Rin", "R1.m", "R2.m", "a","b","c",
                 "Rpri.mod", "Raft.mod")
 
 dat = list( params.mu = turnover.params.mu, params.vcov = turnover.params.vcov, 
-            tl.sd = tl.sd, bin.thin = bin.thin, t = t,
+            bin.thin = bin.thin, t = t,
             n.r1 = n.r1, R.r1 = R.r1, R.sd.r1 = rep(r.sd, n.r1), r1.tl = r1.tl,
-            n.r2 = n.En1, R.r2 = R.En1, R.sd.r2 = rep(r.sd, n.r2), r2.tl = En1.tl,
+            n.r2 = n.r2, R.r2 = R.r2, R.sd.r2 = rep(r.sd, n.r2), r2.tl = En1.tl,
             n.drill = n.drill, R.drill = R.drill, R.sd.drill = rep(r.sd, n.drill), drill.tl = drill.tl,
             n.Rm3.5b = n.Rm3.5b, R.Rm3.5b = R.Rm3.5b, R.sd.Rm3.5b = rep(r.sd, n.Rm3.5b), Rm3.5b.tl = Rm3.5b.tl,
             n.En9 = n.En9, R.En9 = R.En9, R.sd.En9 = rep(r.sd, n.En9), En9.tl = En9.tl,
@@ -213,6 +223,8 @@ post.comb = do.call(jags.parallel,list(model.file = "./code/Overprint comb JAGS.
 proc.time() - t1 #~3 hours
 
 save(post.comb, file = "./out/post.comb.RData")
+
+load(file = "./out/post.comb.RData")
 
 #check convergence
 denplot(as.mcmc(post.comb), parms = c("a","b","c",
@@ -305,7 +317,7 @@ parameters <- c("switch", "Rin", "R1.m", "R2.m", "a","b","c",
                 "Rpri.mod", "Raft.mod")
 
 dat = list( params.mu = turnover.params.mu, params.vcov = turnover.params.vcov, 
-            tl.sd = tl.sd, bin.thin = bin.thin, t = t,
+            bin.thin = bin.thin, t = t,
             n.r1 = n.r1, R.r1 = R.r1, R.sd.r1 = R.sd.r1, r1.tl = r1.tl,
             n.r2 = n.En1, R.r2 = R.En1, R.sd.r2 = R.sd.En1, r2.tl = En1.tl,
             n.drill = n.drill, R.drill = R.drill, R.sd.drill = R.sd.drill, drill.tl = drill.tl,
@@ -332,6 +344,8 @@ post.sens = do.call(jags.parallel,list(model.file = "./code/Overprint comb JAGS.
 proc.time() - t1 #~3 hours
 
 save(post.sens, file = "./out/post.sens.RData")
+
+load(file = "./out/post.sens.RData")
 
 #check convergence
 denplot(as.mcmc(post.sens), parms = c("a","b","c",

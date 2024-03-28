@@ -56,9 +56,6 @@ Drill.no <- na.omit(Drill)
 Rm3.5b.mill <- read.csv("./data/Rm3.5b micromill.csv")
 Rm3.5b.mill.no <- na.omit(Rm3.5b.mill)
 
-# sort from largest dist to smallest
-desc(Rm3.5b.mill.no)
-
 # load Misha tusk dentine micromill data (Yang et al. 2023)
 misha.tusk.micromill <- read.csv("data/Misha dentin micromill.csv")
 

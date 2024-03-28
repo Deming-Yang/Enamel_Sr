@@ -43,6 +43,10 @@ D.rm.sl1 <- fit_segmented.D.rm$coefficients[2] + fit_segmented.D.rm$coefficients
 D.rm.sl2 <- fit_segmented.D.rm$coefficients[2]+ fit_segmented.D.rm$coefficients[3]+ fit_segmented.D.rm$coefficients[4] + 
   fit_segmented.D.rm$coefficients[5]#third slope
 
+segmented.D.Sr.1 <- approx(fit_segmented.D.rm$model$new.x, fit_segmented.D.rm$model$avg, xout = cp1.D.rm)
+
+segmented.D.Sr.2 <- approx(fit_segmented.D.rm$model$new.x, fit_segmented.D.rm$model$avg, xout = cp2.D.rm)
+
 ############Enamel 1###################
 proc.Enamel1.rm.f <- filter(proc.Enamel1.rm.proj, proc.Enamel1.rm.proj$avg > 0.703)
 fit_lm.E1.rm = lm(avg ~ 1 + new.x, data = proc.Enamel1.rm.f)  # intercept-only model
@@ -319,9 +323,6 @@ cp2.E.rm.x.err <- c(cp2.E1.rm.err,
 # for plotting the change points on the enamel map
 # the x values are from the segmented regression
 # the y values need to be estimated using linear interpolation
-
-# get y values from enamel transects
-cp.D.rm.x <- approx(x = dent.rm.f$y, y = dent.rm.f$x, xout = cp.D.rm[1])$y
 
 cp1.E.rm.y <- rep(0,10) #initialize vector
 cp1.E.rm.y[1] <- approx(x = proc.Enamel1.rm.f$new.x, y = proc.Enamel1.rm.f$new.y, xout = cp1.E.rm.x[1])$y

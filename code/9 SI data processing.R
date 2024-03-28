@@ -133,6 +133,10 @@ n.avg.misha.25.tl <- rev(n.avg.misha.25.dist/14.7) #mm/day
 #mannually align data
 n.avg.misha.25.tl.al <- n.avg.misha.25.tl - 670
 
+########################################################################################
+############## Code below is not used in the article ################################### 
+########################################################################################
+
 ####### Inversion of more data transects #######
 ####### data set 2, enamel transect 3#############
 

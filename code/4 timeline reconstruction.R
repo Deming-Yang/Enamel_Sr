@@ -241,7 +241,7 @@ en9.tl <- tibble(tl = days.cumm.en9.al, Sr = proc.Enamel9.rm.f$avg,
 en10.tl <- tibble(tl = days.cumm.en10.al, Sr = proc.Enamel10.rm.f$avg, 
                   sd = proc.Enamel10.rm.f$sd)
 
-drill.tl <- tibble(tl = days.cumm.drill.al, 
+Edrill.tl <- tibble(tl = days.cumm.drill.al, 
                    Sr = rev(Drill.no$corr..87Sr.86Sr),
                    sd = rev(Drill.no$comb..Err),
                    depth = rev(Drill.no$Sample.depth)) # sample depth is useful later

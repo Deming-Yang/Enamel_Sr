@@ -42,6 +42,10 @@ plot(Rm3.5.angle$dist, Rm3.5.angle$tan, ylim = c(0.04,0.09), xlim = c(0,100),
 lines(ref.length.v, Pred.tan.Rm3.5)
 ############# end of growth rate plot ###########
 
+#################  Fig S5 ################# 
+denplot(as.mcmc(post.comb), parms = c("a","b","c",
+                                      "pr.drill","pr.Rm3.5b","pr.En9", "pr.En10",
+                                      "Rpri.mod", "Raft.mod"))
 
 #################  Fig S6 ################# 
 # linear regression showing the negative relationship between
@@ -66,6 +70,11 @@ abline(v = mean(drill.tl.f2$depth))
 # because they are drilled deeper
 
 # no apparent correlation between sample depth and residual of 87Sr/86Sr
+
+#################  Fig S7 #################
+denplot(as.mcmc(post.sens), parms = c("a","b","c",
+                                      "pr.drill","pr.Rm3.5b","pr.En9", "pr.En10",
+                                      "Rpri.mod", "Raft.mod"))
 
 #################  Fig S8 ################# 
 # examine modeled serum ratios
@@ -220,7 +229,7 @@ abline(v = 0, lty = 2)
 
 
 #################  Fig S12 #################
-
+par(mfrow=c(1,1))
 plot(-1000, -1, col= "gray24",
      xlim=c(-400,700),ylim=c(0.705,0.7115),
      xlab="Days from Misha's move",
@@ -263,11 +272,11 @@ lines(density(post.misha.M640b$BUGSoutput$sims.list$a/M640.bt),col="red")
 legend(0.03,110,c("LA-ICP-MS tusk","Micromill tusk"),
        lwd = c(1,1), col=c("blue","red"))
 
-plot(density(exp(log.a)), col = "blue", ylim = c(0,110),
-     main="Posteriors of parameter a", xlab = "Parameter a")
-lines(density(post.misha.En3$BUGSoutput$sims.list$a/En3.bt),col="red")
-legend(0.03,110,c("LA-ICP-MS tusk","LA-ICP-MS enamel"),
-       lwd = c(1,1), col=c("blue","red"))
+# plot(density(exp(log.a)), col = "blue", ylim = c(0,110),
+#      main="Posteriors of parameter a", xlab = "Parameter a")
+# lines(density(post.misha.En3$BUGSoutput$sims.list$a/En3.bt),col="red")
+# legend(0.03,110,c("LA-ICP-MS tusk","LA-ICP-MS enamel"),
+#        lwd = c(1,1), col=c("blue","red"))
 
 #check posterior density of parameter a:
 # this tends to produce higher posterior of rate parameter a

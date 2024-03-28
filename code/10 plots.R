@@ -48,8 +48,8 @@ polygon(c(proc.Enamel1.rm.f$new.x, rev(proc.Enamel1.rm.f$new.x)),
         col = alpha("orange", 0.3), border = NA)
 lines(proc.Enamel1.rm.f$new.x, proc.Enamel1.rm.f$avg, col= alpha("orange", 0.8),lwd=2)
 
-abline(h = segmented.D.Sr[1], lty = 2, lwd = 1.5)
-abline(h = segmented.D.Sr[2], lty = 2, lwd = 1.5)
+abline(h = segmented.D.Sr.1, lty = 2, lwd = 1.5)
+abline(h = segmented.D.Sr.2, lty = 2, lwd = 1.5)
 plot(fit_segmented.E1.rm, add = T)
 lines.segmented(fit_segmented.E1.rm)
 points.segmented(fit_segmented.E1.rm)
@@ -70,8 +70,8 @@ polygon(c(proc.Enamel2.rm.f$new.x, rev(proc.Enamel2.rm.f$new.x)),
         col = alpha("orange", 0.3), border = NA)
 lines(proc.Enamel2.rm.f$new.x, proc.Enamel2.rm.f$avg, col= alpha("orange", 0.8),lwd=2)
 
-abline(h = segmented.D.Sr[1], lty = 2, lwd = 1.5)
-abline(h = segmented.D.Sr[2], lty = 2, lwd = 1.5)
+abline(h = segmented.D.Sr.1, lty = 2, lwd = 1.5)
+abline(h = segmented.D.Sr.2, lty = 2, lwd = 1.5)
 plot(fit_segmented.E2.rm, add = T)
 lines.segmented(fit_segmented.E2.rm)
 points.segmented(fit_segmented.E2.rm)
@@ -92,8 +92,8 @@ polygon(c(proc.Enamel3.rm.f$new.x, rev(proc.Enamel3.rm.f$new.x)),
         col = alpha("orange", 0.3), border = NA)
 lines(proc.Enamel3.rm.f$new.x, proc.Enamel3.rm.f$avg, col= alpha("orange", 0.8),lwd=2)
 
-abline(h = segmented.D.Sr[1], lty = 2, lwd = 1.5)
-abline(h = segmented.D.Sr[2], lty = 2, lwd = 1.5)
+abline(h = segmented.D.Sr.1, lty = 2, lwd = 1.5)
+abline(h = segmented.D.Sr.2, lty = 2, lwd = 1.5)
 plot(fit_segmented.E3.rm, add = T)
 lines.segmented(fit_segmented.E3.rm)
 points.segmented(fit_segmented.E3.rm)
@@ -114,8 +114,8 @@ polygon(c(proc.Enamel4.rm.f$new.x, rev(proc.Enamel4.rm.f$new.x)),
         col = alpha("orange", 0.3), border = NA)
 lines(proc.Enamel4.rm.f$new.x, proc.Enamel4.rm.f$avg, col= alpha("orange", 0.8),lwd=2)
 
-abline(h = segmented.D.Sr[1], lty = 2, lwd = 1.5)
-abline(h = segmented.D.Sr[2], lty = 2, lwd = 1.5)
+abline(h = segmented.D.Sr.1, lty = 2, lwd = 1.5)
+abline(h = segmented.D.Sr.2, lty = 2, lwd = 1.5)
 plot(fit_segmented.E4.rm, add = T)
 lines.segmented(fit_segmented.E4.rm)
 points.segmented(fit_segmented.E4.rm)
@@ -136,8 +136,8 @@ polygon(c(proc.Enamel5.rm.f$new.x, rev(proc.Enamel5.rm.f$new.x)),
         col = alpha("orange", 0.3), border = NA)
 lines(proc.Enamel5.rm.f$new.x, proc.Enamel5.rm.f$avg, col= alpha("orange", 0.8),lwd=2)
 
-abline(h = segmented.D.Sr[1], lty = 2, lwd = 1.5)
-abline(h = segmented.D.Sr[2], lty = 2, lwd = 1.5)
+abline(h = segmented.D.Sr.1, lty = 2, lwd = 1.5)
+abline(h = segmented.D.Sr.2, lty = 2, lwd = 1.5)
 plot(fit_segmented.E5.rm, add = T)
 lines.segmented(fit_segmented.E5.rm)
 points.segmented(fit_segmented.E5.rm)
@@ -158,8 +158,8 @@ polygon(c(proc.Enamel6.rm.f$new.x, rev(proc.Enamel6.rm.f$new.x)),
         col = alpha("orange", 0.3), border = NA)
 lines(proc.Enamel6.rm.f$new.x, proc.Enamel6.rm.f$avg, col= alpha("orange", 0.8),lwd=2)
 
-abline(h = segmented.D.Sr[1], lty = 2, lwd = 1.5)
-abline(h = segmented.D.Sr[2], lty = 2, lwd = 1.5)
+abline(h = segmented.D.Sr.1, lty = 2, lwd = 1.5)
+abline(h = segmented.D.Sr.2, lty = 2, lwd = 1.5)
 plot(fit_segmented.E6.rm, add = T)
 lines.segmented(fit_segmented.E6.rm)
 points.segmented(fit_segmented.E6.rm)
@@ -180,8 +180,8 @@ polygon(c(proc.Enamel7.rm.f$new.x, rev(proc.Enamel7.rm.f$new.x)),
         col = alpha("orange", 0.3), border = NA)
 lines(proc.Enamel7.rm.f$new.x, proc.Enamel7.rm.f$avg, col= alpha("orange", 0.8),lwd=2)
 
-abline(h = segmented.D.Sr[1], lty = 2, lwd = 1.5)
-abline(h = segmented.D.Sr[2], lty = 2, lwd = 1.5)
+abline(h = segmented.D.Sr.1, lty = 2, lwd = 1.5)
+abline(h = segmented.D.Sr.2, lty = 2, lwd = 1.5)
 plot(fit_segmented.E7.rm, add = T)
 lines.segmented(fit_segmented.E7.rm)
 points.segmented(fit_segmented.E7.rm)
@@ -202,8 +202,8 @@ polygon(c(proc.Enamel8.rm.f$new.x, rev(proc.Enamel8.rm.f$new.x)),
         col = alpha("orange", 0.3), border = NA)
 lines(proc.Enamel8.rm.f$new.x, proc.Enamel8.rm.f$avg, col= alpha("orange", 0.8),lwd=2)
 
-abline(h = segmented.D.Sr[1], lty = 2, lwd = 1.5)
-abline(h = segmented.D.Sr[2], lty = 2, lwd = 1.5)
+abline(h = segmented.D.Sr.1, lty = 2, lwd = 1.5)
+abline(h = segmented.D.Sr.2, lty = 2, lwd = 1.5)
 plot(fit_segmented.E8.rm, add = T)
 lines.segmented(fit_segmented.E8.rm)
 points.segmented(fit_segmented.E8.rm)
@@ -224,8 +224,8 @@ polygon(c(proc.Enamel9.rm.f$new.x, rev(proc.Enamel9.rm.f$new.x)),
         col = alpha("orange", 0.3), border = NA)
 lines(proc.Enamel9.rm.f$new.x, proc.Enamel9.rm.f$avg, col= alpha("orange", 0.8),lwd=2)
 
-abline(h = segmented.D.Sr[1], lty = 2, lwd = 1.5)
-abline(h = segmented.D.Sr[2], lty = 2, lwd = 1.5)
+abline(h = segmented.D.Sr.1, lty = 2, lwd = 1.5)
+abline(h = segmented.D.Sr.2, lty = 2, lwd = 1.5)
 plot(fit_segmented.E9.rm, add = T)
 lines.segmented(fit_segmented.E9.rm)
 points.segmented(fit_segmented.E9.rm)
@@ -246,8 +246,8 @@ polygon(c(proc.Enamel10.rm.f$new.x, rev(proc.Enamel10.rm.f$new.x)),
         col = alpha("orange", 0.3), border = NA)
 lines(proc.Enamel10.rm.f$new.x, proc.Enamel10.rm.f$avg, col= alpha("orange", 0.8),lwd=2)
 
-abline(h = segmented.D.Sr[1], lty = 2, lwd = 1.5)
-abline(h = segmented.D.Sr[2], lty = 2, lwd = 1.5)
+abline(h = segmented.D.Sr.1, lty = 2, lwd = 1.5)
+abline(h = segmented.D.Sr.2, lty = 2, lwd = 1.5)
 plot(fit_segmented.E10.rm, add = T)
 lines.segmented(fit_segmented.E10.rm)
 points.segmented(fit_segmented.E10.rm)
@@ -320,41 +320,6 @@ plot(-1000, -1, col= "gray24",
 abline(h = CA.Sr)
 abline(h = UT.Sr)
 
-
-#################  Fig 4 #################
-############# estimated intake ###########
-
-par(mfrow=c(1, 2)) #1100 * 450
-# reconstructed Sr input signal from LA-ICP-MS molar enamel
-plot(En1.50avg.tl$avg.tl, En1.50avg.tl$avg.sr, type= "l", col= "#00b4ffff",
-     lwd = 2,
-     xlim=c(-400,1000),ylim=c(0.705,0.713),
-     xlab="Days from Misha's move",
-     main = "Estimated intake based on molar enamel LA-ICP-MS",
-     ylab = "87Sr/86Sr") 
-abline(h = CA.Sr)
-abline(h = UT.Sr)
-
-lines(1:t.En1 * En1.bt - d.offset.En1 - offset.en1, post.misha.En1.Rin.m.89[[1]], lwd = 2)
-lines(1:t.En1 * En1.bt - d.offset.En1 - offset.en1, post.misha.En1.Rin.m.89[[2]], lty = 2)
-lines(1:t.En1 * En1.bt - d.offset.En1 - offset.en1, post.misha.En1.Rin.m.89[[3]], lty = 2)
-legend(400,0.709,c("Est. intake","Measured"),lwd = c(2,2), col=c("black","#00b4ffff"))
-
-
-# reconstructed Sr input signal from micromilled tusk dentine
-plot(tusk.mill.tl$tl, tusk.mill.tl$Sr, pch=18, col= "#00b4ffff",
-     lwd = 2,
-     xlim=c(-400,1000),ylim=c(0.705,0.713),
-     xlab="Days from Misha's move",
-     main = "Estimated intake based on tusk dentine micromill",
-     ylab = "87Sr/86Sr") 
-abline(h = CA.Sr)
-abline(h = UT.Sr)
-
-lines(1:t.M640b * M640.bt -d.offset.M640-365, post.misha.M640b.Rin.m.89[[1]], lwd = 2)
-lines(1:t.M640b * M640.bt -d.offset.M640-365, post.misha.M640b.Rin.m.89[[2]], lty = 2)
-lines(1:t.M640b * M640.bt -d.offset.M640-365, post.misha.M640b.Rin.m.89[[3]], lty = 2)
-
 polygon(c(dent.tl$tl, rev(dent.tl$tl)), 
         c(dent.tl$Sr + dent.tl$sd, 
           rev(dent.tl$Sr - dent.tl$sd)), 
@@ -381,7 +346,7 @@ points(tusk.mill.tl$tl, tusk.mill.tl$Sr,
        pch=18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
 
 # Panel 3 molar enamel vs micromill tusk dentine 
-plot(drill.tl$tl, drill.tl$Sr, col= "red4",
+plot(Edrill.tl$tl, Edrill.tl$Sr, col= "red4",
      pch=16, cex = 2,
      xlim=c(-400,700),ylim=c(0.705,0.7115),
      xlab="Days from Misha's move",
@@ -411,72 +376,72 @@ points(tusk.mill.tl$tl, tusk.mill.tl$Sr,
 par(mfrow=c(2,5)) # 1200 * 550
 
 # 2 micromill tusk dentine and modeled serum, assumes no overprint
-plot(bin.thin*1:t - 400, post.comb.R1m.89[[1]], type = "l",
+plot(bin.thin.oc*1:t.oc - 400, post.comb.R1m.89[[1]], type = "l",
      xlim = c(-400, 1100), ylim = c(0.706, 0.712),
      lwd = 2,  
      xlab = "Timeline (days)", ylab = "87Sr/86Sr",
      main = "Ref. data 1: micromill tusk dentine")
-lines(bin.thin*1:t - 400, post.comb.R1m.89[[2]], lty = 2)
-lines(bin.thin*1:t - 400, post.comb.R1m.89[[3]], lty = 2)
+lines(bin.thin.oc*1:t.oc - 400, post.comb.R1m.89[[2]], lty = 2)
+lines(bin.thin.oc*1:t.oc - 400, post.comb.R1m.89[[3]], lty = 2)
 points(tusk.mill.tl$tl, tusk.mill.tl$Sr,
        pch = 18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
 
 # 3 LA-ICP MS EN 9 and mixed R
-plot(bin.thin*1:t - 400, post.comb.R1m.89[[1]], type = "l",
+plot(bin.thin.oc*1:t.oc - 400, post.comb.R1m.89[[1]], type = "l",
      xlim = c(-400, 1100), ylim = c(0.706, 0.712),
      lwd = 2, col = "gray56", 
      xlab = "Timeline (days)", ylab = "87Sr/86Sr",
      main = "LA-ICP-MS En 9")
 # lines(bin.thin*1:t - 400, post.comb.R1m.89[[2]], lty = 2, col = "gray48")
 # lines(bin.thin*1:t - 400, post.comb.R1m.89[[3]], lty = 2, col = "gray48")
-lines(bin.thin*1:t - 400, post.comb.R1.En9.89[[1]],lwd = 2, lty = 2)
+lines(bin.thin.oc*1:t.oc - 400, post.comb.R1.En9.89[[1]],lwd = 2, lty = 2)
 lines(En9.tl, R.En9,
       col = "orange3", lwd = 2)
 
 # 4 LA-ICP MS EN 10 and mixed R
-plot(bin.thin*1:t - 400, post.comb.R1m.89[[1]], type = "l",
+plot(bin.thin.oc*1:t.oc - 400, post.comb.R1m.89[[1]], type = "l",
      xlim = c(-400, 1100), ylim = c(0.706, 0.712),
      lwd = 2, col = "gray56", 
      xlab = "Timeline (days)", ylab = "87Sr/86Sr",
      main = "LA-ICP-MS En 10")
 # lines(bin.thin*1:t - 400, post.comb.R1m.89[[2]], lty = 2, col = "gray48")
 # lines(bin.thin*1:t - 400, post.comb.R1m.89[[3]], lty = 2, col = "gray48")
-lines(bin.thin*1:t - 400, post.comb.R1.En10.89[[1]],lwd = 2, lty = 2)
+lines(bin.thin.oc*1:t.oc - 400, post.comb.R1.En10.89[[1]],lwd = 2, lty = 2)
 lines(En10.tl, R.En10,
       col = "orange4", lwd = 2)
 
 # 5 hand drill and mixed R
-plot(bin.thin*1:t - 400, post.comb.R1m.89[[1]], type = "l",
+plot(bin.thin.oc*1:t.oc - 400, post.comb.R1m.89[[1]], type = "l",
      xlim = c(-400, 1100), ylim = c(0.706, 0.712),
      lwd = 2, col = "gray56", 
      xlab = "Timeline (days)", ylab = "87Sr/86Sr",
      main = "Enamel conventional drill")
 # lines(bin.thin*1:t - 400, post.comb.R1m.89[[2]], lty = 2, col = "gray48")
 # lines(bin.thin*1:t - 400, post.comb.R1m.89[[3]], lty = 2, col = "gray48")
-lines(bin.thin*1:t - 400, post.comb.R1.drill.89[[1]],lwd = 2, lty = 2)
-points(drill.tl.f$tl, drill.tl.f$Sr, 
+lines(bin.thin.oc*1:t.oc - 400, post.comb.R1.drill.89[[1]],lwd = 2, lty = 2)
+points(Edrill.tl.f$tl, Edrill.tl.f$Sr, 
        pch = 16, cex = 2, col = alpha("red4", 0.7))
 
 # 6 Rm3.5b micromill and mixed R
-plot(bin.thin*1:t - 400, post.comb.R1m.89[[1]], type = "l",
+plot(bin.thin.oc*1:t.oc - 400, post.comb.R1m.89[[1]], type = "l",
      xlim = c(-400, 1100), ylim = c(0.706, 0.712),
      lwd = 2, col = "gray56", 
      xlab = "Timeline (days)", ylab = "87Sr/86Sr",
      main = "Enamel micromill")
 # lines(bin.thin*1:t - 400, post.comb.R1m.89[[2]], lty = 2, col = "gray48",)
 # lines(bin.thin*1:t - 400, post.comb.R1m.89[[3]], lty = 2, col = "gray48",)
-lines(bin.thin*1:t - 400, post.comb.R1.Rm3.5b.89[[1]],lwd = 2, lty = 2)
+lines(bin.thin.oc*1:t.oc - 400, post.comb.R1.Rm3.5b.89[[1]],lwd = 2, lty = 2)
 points(Rm3.5b.mill.tl$tl, Rm3.5b.mill.tl$Sr, 
        pch = 16, cex = 2, col = alpha("cyan4", 0.5))
 
 # 1 LA-ICP MS and modeled serum, assumes no overprint
-plot(bin.thin*1:t - 400, post.comb.R1m.89[[1]], type = "l",
+plot(bin.thin.oc*1:t.oc - 400, post.comb.R1m.89[[1]], type = "l",
      xlim = c(-400, 1100), ylim = c(0.706, 0.712),
      lwd = 2 , 
      xlab = "Timeline (days)", ylab = "87Sr/86Sr",
      main = "Ref. data 2: LA-ICP-MS En 1")
-lines(bin.thin*1:t - 400, post.comb.R1m.89[[2]], lty = 2)
-lines(bin.thin*1:t - 400, post.comb.R1m.89[[3]], lty = 2)
+lines(bin.thin.oc*1:t.oc - 400, post.comb.R1m.89[[2]], lty = 2)
+lines(bin.thin.oc*1:t.oc - 400, post.comb.R1m.89[[3]], lty = 2)
 lines(En1.50avg.tl.f$avg.tl, En1.50avg.tl.f$avg.sr,
       col = "orange", lwd = 2)
 
@@ -519,4 +484,36 @@ abline(h = pr.Rm3.5b.map, lwd = 2)
 abline(h = pr.Rm3.5b.ci1, lty = 2)
 abline(h = pr.Rm3.5b.ci2, lty = 2)
 
+#################  Fig 4 #################
+############# estimated intake ###########
 
+par(mfrow=c(1, 2)) #1100 * 450
+# reconstructed Sr input signal from LA-ICP-MS molar enamel
+plot(En1.50avg.tl$avg.tl, En1.50avg.tl$avg.sr, type= "l", col= "#00b4ffff",
+     lwd = 2,
+     xlim=c(-400,1000),ylim=c(0.705,0.713),
+     xlab="Days from Misha's move",
+     main = "Estimated intake based on molar enamel LA-ICP-MS",
+     ylab = "87Sr/86Sr") 
+abline(h = CA.Sr)
+abline(h = UT.Sr)
+
+lines(1:t.En1 * En1.bt - d.offset.En1 - offset.en1, post.misha.En1.Rin.m.89[[1]], lwd = 2)
+lines(1:t.En1 * En1.bt - d.offset.En1 - offset.en1, post.misha.En1.Rin.m.89[[2]], lty = 2)
+lines(1:t.En1 * En1.bt - d.offset.En1 - offset.en1, post.misha.En1.Rin.m.89[[3]], lty = 2)
+legend(400,0.709,c("Est. intake","Measured"),lwd = c(2,2), col=c("black","#00b4ffff"))
+
+
+# reconstructed Sr input signal from micromilled tusk dentine
+plot(tusk.mill.tl$tl, tusk.mill.tl$Sr, pch=18, col= "#00b4ffff",
+     lwd = 2,
+     xlim=c(-400,1000),ylim=c(0.705,0.713),
+     xlab="Days from Misha's move",
+     main = "Estimated intake based on tusk dentine micromill",
+     ylab = "87Sr/86Sr") 
+abline(h = CA.Sr)
+abline(h = UT.Sr)
+
+lines(1:t.M640b * M640.bt -d.offset.M640-365, post.misha.M640b.Rin.m.89[[1]], lwd = 2)
+lines(1:t.M640b * M640.bt -d.offset.M640-365, post.misha.M640b.Rin.m.89[[2]], lty = 2)
+lines(1:t.M640b * M640.bt -d.offset.M640-365, post.misha.M640b.Rin.m.89[[3]], lty = 2)
