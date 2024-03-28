@@ -43,7 +43,7 @@ lines(ref.length.v, Pred.tan.Rm3.5)
 ############# end of growth rate plot ###########
 
 
-#################  Fig S4 ################# 
+#################  Fig S6 ################# 
 # linear regression showing the negative relationship between
 # model residual and sampling depth
 # supporting the notion that sampling depth affects sample 87Sr/86Sr
@@ -67,7 +67,7 @@ abline(v = mean(drill.tl.f2$depth))
 
 # no apparent correlation between sample depth and residual of 87Sr/86Sr
 
-#################  Fig S7 ################# 
+#################  Fig S8 ################# 
 # examine modeled serum ratios
 post.sens.R1m.89 <- MCMC.CI.bound(post.sens$BUGSoutput$sims.list$R1.m, 0.89)
 
@@ -83,9 +83,9 @@ abline(h = Sr.pri.map)
 abline(h = Sr.aft.map)
 # points(tusk.mill.tl$tl, tusk.mill.tl$Sr,
 #        pch = 18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
-#################  end Fig S7 #################
+#################  end Fig S8 #################
 
-#################  Fig S8 ################# 
+#################  Fig S9 ################# 
 par(mfrow=c(4, 1))
 par(mar = c(5, 4.5, 3, 2))
 plot(Misha.sim[[3]], 
@@ -113,7 +113,7 @@ plot(sheep.sim2[[3]],
      ylab = "Thickness")
 
 
-#################  Fig S9 ################# 
+#################  Fig S10 ################# 
 par(mfrow=c(4, 1))
 par(mar = c(4, 4, 3, 2))
 plot(Misha.sim.dist, Misha.sim[[1]], pch = 16, col ="red4",
@@ -160,32 +160,6 @@ lines(sheep.sim2[[2]]$x, sheep.sim2[[2]]$Intake)
 (max(sheep.sim2[[1]]) - min(sheep.sim2[[1]]))/(syn.high - syn.low)
 # 46% of the variation from a seasonal migration 2-month one place, 2-months the other place
 
-#################  Fig S10 #################
-
-plot(-1000, -1, col= "gray24",
-     xlim=c(-400,700),ylim=c(0.705,0.7115),
-     xlab="Days from Misha's move",
-     main = "Tusk micromill vs LA-ICP-MS molar D and tusk D",
-     ylab = "87Sr/86Sr") 
-abline(h = CA.Sr)
-abline(h = UT.Sr)
-
-polygon(c(dent.tl$tl, rev(dent.tl$tl)), 
-        c(dent.tl$Sr + dent.tl$sd, 
-          rev(dent.tl$Sr - dent.tl$sd)), 
-        col = "gray60", border = NA)
-lines(dent.tl$tl, dent.tl$Sr, col= "gray24", lwd=2)
-
-
-# misha's tusk dentine LA-ICP-MS with the same interference correction
-polygon(c(n.avg.misha.25.tl.al, rev(n.avg.misha.25.tl.al)), 
-        c(n.avg.misha.25.sr + n.sd.misha.25.sr, 
-          rev(n.avg.misha.25.sr - n.sd.misha.25.sr)), 
-        col = alpha("orange", 0.3), border = NA)
-lines(n.avg.misha.25.tl.al, n.avg.misha.25.sr, col = alpha("orange", 0.9), lwd=2)
-
-points(tusk.mill.tl$tl, tusk.mill.tl$Sr,
-       pch=18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
 
 ########## Fig S11 Comparing three isotope tracers in tusk and molar enamel##########
 # adding c13C and d18O to the curve
@@ -246,89 +220,31 @@ abline(v = 0, lty = 2)
 
 
 #################  Fig S12 #################
-par(mfrow=c(1, 2)) #1100 * 450
-# reconstructed Sr input signal from LA-ICP-MS molar enamel
-plot(En1.50avg.tl$avg.tl, En1.50avg.tl$avg.sr, type= "l", col= "#00b4ffff",
-     lwd = 2,
-     xlim=c(-400,1000),ylim=c(0.705,0.713),
+
+plot(-1000, -1, col= "gray24",
+     xlim=c(-400,700),ylim=c(0.705,0.7115),
      xlab="Days from Misha's move",
-     main = "Estimated intake based on molar enamel LA-ICP-MS",
+     main = "Tusk micromill vs LA-ICP-MS molar D and tusk D",
      ylab = "87Sr/86Sr") 
 abline(h = CA.Sr)
 abline(h = UT.Sr)
 
-lines(1:t.En1 * En1.bt - d.offset.En1 - offset.en1, post.misha.En1.Rin.m.89[[1]], lwd = 2)
-lines(1:t.En1 * En1.bt - d.offset.En1 - offset.en1, post.misha.En1.Rin.m.89[[2]], lty = 2)
-lines(1:t.En1 * En1.bt - d.offset.En1 - offset.en1, post.misha.En1.Rin.m.89[[3]], lty = 2)
-legend(400,0.709,c("Est. intake","Measured"),lwd = c(2,2), col=c("black","#00b4ffff"))
+polygon(c(dent.tl$tl, rev(dent.tl$tl)), 
+        c(dent.tl$Sr + dent.tl$sd, 
+          rev(dent.tl$Sr - dent.tl$sd)), 
+        col = "gray60", border = NA)
+lines(dent.tl$tl, dent.tl$Sr, col= "gray24", lwd=2)
 
 
-# reconstructed Sr input signal from micromilled tusk dentine
-plot(tusk.mill.tl$tl, tusk.mill.tl$Sr, pch=18, col= "#00b4ffff",
-     lwd = 2,
-     xlim=c(-400,1000),ylim=c(0.705,0.713),
-     xlab="Days from Misha's move",
-     main = "Estimated intake based on tusk dentine micromill",
-     ylab = "87Sr/86Sr") 
-abline(h = CA.Sr)
-abline(h = UT.Sr)
+# misha's tusk dentine LA-ICP-MS with the same interference correction
+polygon(c(n.avg.misha.25.tl.al, rev(n.avg.misha.25.tl.al)), 
+        c(n.avg.misha.25.sr + n.sd.misha.25.sr, 
+          rev(n.avg.misha.25.sr - n.sd.misha.25.sr)), 
+        col = alpha("orange", 0.3), border = NA)
+lines(n.avg.misha.25.tl.al, n.avg.misha.25.sr, col = alpha("orange", 0.9), lwd=2)
 
-lines(1:t.M640b * M640.bt -d.offset.M640-365, post.misha.M640b.Rin.m.89[[1]], lwd = 2)
-lines(1:t.M640b * M640.bt -d.offset.M640-365, post.misha.M640b.Rin.m.89[[2]], lty = 2)
-lines(1:t.M640b * M640.bt -d.offset.M640-365, post.misha.M640b.Rin.m.89[[3]], lty = 2)
-
-plot(En3.50avg.tl$avg.tl, En3.50avg.tl$avg.sr, type= "l", col= "#00b4ffff",
-     lwd = 2,
-     xlim=c(-400,1000),ylim=c(0.705,0.713),
-     xlab="Days from Misha's move",
-     main = "Estimated intake based on molar enamel LA-ICP-MS",
-     ylab = "87Sr/86Sr") 
-abline(h = CA.Sr)
-abline(h = UT.Sr)
-
-lines(1:t.En3 * En3.bt - d.offset.En3 - offset.en3, 
-      post.misha.En3.Rin.m.89[[1]], lwd = 2)
-lines(1:t.En3 * En3.bt - d.offset.En3 - offset.en3, 
-      post.misha.En3.Rin.m.89[[2]], lty = 2)
-lines(1:t.En3 * En3.bt - d.offset.En3 - offset.en3, 
-      post.misha.En3.Rin.m.89[[3]], lty = 2)
-legend(400,0.709,c("Est. intake","Measured"),lwd = c(2,2), col=c("black","#00b4ffff"))
-
-plot(En5.50avg.tl$avg.tl, En5.50avg.tl$avg.sr, type= "l", col= "#00b4ffff",
-     lwd = 2,
-     xlim=c(-400,1000),ylim=c(0.705,0.713),
-     xlab="Days from Misha's move",
-     main = "Estimated intake based on molar enamel LA-ICP-MS",
-     ylab = "87Sr/86Sr") 
-abline(h = CA.Sr)
-abline(h = UT.Sr)
-
-lines(1:t.En5 * En5.bt - d.offset.En5 - offset.en5, 
-      post.misha.En5.Rin.m.89[[1]], lwd = 2)
-lines(1:t.En5 * En5.bt - d.offset.En5 - offset.en5, 
-      post.misha.En5.Rin.m.89[[2]], lty = 2)
-lines(1:t.En5 * En5.bt - d.offset.En5 - offset.en5, 
-      post.misha.En5.Rin.m.89[[3]], lty = 2)
-legend(400,0.709,c("Est. intake","Measured"),lwd = c(2,2), col=c("black","#00b4ffff"))
-
-
-plot(En7.50avg.tl$avg.tl, En7.50avg.tl$avg.sr, type= "l", col= "#00b4ffff",
-     lwd = 2,
-     xlim=c(-400,1000),ylim=c(0.705,0.713),
-     xlab="Days from Misha's move",
-     main = "Estimated intake based on molar enamel LA-ICP-MS",
-     ylab = "87Sr/86Sr") 
-abline(h = CA.Sr)
-abline(h = UT.Sr)
-
-lines(1:t.En7 * En7.bt - d.offset.En7 - offset.en7, 
-      post.misha.En7.Rin.m.89[[1]], lwd = 2)
-lines(1:t.En7 * En7.bt - d.offset.En7 - offset.en7, 
-      post.misha.En7.Rin.m.89[[2]], lty = 2)
-lines(1:t.En7 * En7.bt - d.offset.En7 - offset.en7, 
-      post.misha.En7.Rin.m.89[[3]], lty = 2)
-legend(400,0.709,c("Est. intake","Measured"),lwd = c(2,2), col=c("black","#00b4ffff"))
-
+points(tusk.mill.tl$tl, tusk.mill.tl$Sr,
+       pch=18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
 
 
 #################  Fig S13 #################
@@ -355,3 +271,57 @@ legend(0.03,110,c("LA-ICP-MS tusk","LA-ICP-MS enamel"),
 
 #check posterior density of parameter a:
 # this tends to produce higher posterior of rate parameter a
+
+
+# plot(En3.50avg.tl$avg.tl, En3.50avg.tl$avg.sr, type= "l", col= "#00b4ffff",
+#      lwd = 2,
+#      xlim=c(-400,1000),ylim=c(0.705,0.713),
+#      xlab="Days from Misha's move",
+#      main = "Estimated intake based on molar enamel LA-ICP-MS",
+#      ylab = "87Sr/86Sr") 
+# abline(h = CA.Sr)
+# abline(h = UT.Sr)
+# 
+# lines(1:t.En3 * En3.bt - d.offset.En3 - offset.en3, 
+#       post.misha.En3.Rin.m.89[[1]], lwd = 2)
+# lines(1:t.En3 * En3.bt - d.offset.En3 - offset.en3, 
+#       post.misha.En3.Rin.m.89[[2]], lty = 2)
+# lines(1:t.En3 * En3.bt - d.offset.En3 - offset.en3, 
+#       post.misha.En3.Rin.m.89[[3]], lty = 2)
+# legend(400,0.709,c("Est. intake","Measured"),lwd = c(2,2), col=c("black","#00b4ffff"))
+# 
+# plot(En5.50avg.tl$avg.tl, En5.50avg.tl$avg.sr, type= "l", col= "#00b4ffff",
+#      lwd = 2,
+#      xlim=c(-400,1000),ylim=c(0.705,0.713),
+#      xlab="Days from Misha's move",
+#      main = "Estimated intake based on molar enamel LA-ICP-MS",
+#      ylab = "87Sr/86Sr") 
+# abline(h = CA.Sr)
+# abline(h = UT.Sr)
+# 
+# lines(1:t.En5 * En5.bt - d.offset.En5 - offset.en5, 
+#       post.misha.En5.Rin.m.89[[1]], lwd = 2)
+# lines(1:t.En5 * En5.bt - d.offset.En5 - offset.en5, 
+#       post.misha.En5.Rin.m.89[[2]], lty = 2)
+# lines(1:t.En5 * En5.bt - d.offset.En5 - offset.en5, 
+#       post.misha.En5.Rin.m.89[[3]], lty = 2)
+# legend(400,0.709,c("Est. intake","Measured"),lwd = c(2,2), col=c("black","#00b4ffff"))
+# 
+# 
+# plot(En7.50avg.tl$avg.tl, En7.50avg.tl$avg.sr, type= "l", col= "#00b4ffff",
+#      lwd = 2,
+#      xlim=c(-400,1000),ylim=c(0.705,0.713),
+#      xlab="Days from Misha's move",
+#      main = "Estimated intake based on molar enamel LA-ICP-MS",
+#      ylab = "87Sr/86Sr") 
+# abline(h = CA.Sr)
+# abline(h = UT.Sr)
+# 
+# lines(1:t.En7 * En7.bt - d.offset.En7 - offset.en7, 
+#       post.misha.En7.Rin.m.89[[1]], lwd = 2)
+# lines(1:t.En7 * En7.bt - d.offset.En7 - offset.en7, 
+#       post.misha.En7.Rin.m.89[[2]], lty = 2)
+# lines(1:t.En7 * En7.bt - d.offset.En7 - offset.en7, 
+#       post.misha.En7.Rin.m.89[[3]], lty = 2)
+# legend(400,0.709,c("Est. intake","Measured"),lwd = c(2,2), col=c("black","#00b4ffff"))
+

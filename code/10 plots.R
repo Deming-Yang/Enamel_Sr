@@ -320,6 +320,41 @@ plot(-1000, -1, col= "gray24",
 abline(h = CA.Sr)
 abline(h = UT.Sr)
 
+
+#################  Fig 4 #################
+############# estimated intake ###########
+
+par(mfrow=c(1, 2)) #1100 * 450
+# reconstructed Sr input signal from LA-ICP-MS molar enamel
+plot(En1.50avg.tl$avg.tl, En1.50avg.tl$avg.sr, type= "l", col= "#00b4ffff",
+     lwd = 2,
+     xlim=c(-400,1000),ylim=c(0.705,0.713),
+     xlab="Days from Misha's move",
+     main = "Estimated intake based on molar enamel LA-ICP-MS",
+     ylab = "87Sr/86Sr") 
+abline(h = CA.Sr)
+abline(h = UT.Sr)
+
+lines(1:t.En1 * En1.bt - d.offset.En1 - offset.en1, post.misha.En1.Rin.m.89[[1]], lwd = 2)
+lines(1:t.En1 * En1.bt - d.offset.En1 - offset.en1, post.misha.En1.Rin.m.89[[2]], lty = 2)
+lines(1:t.En1 * En1.bt - d.offset.En1 - offset.en1, post.misha.En1.Rin.m.89[[3]], lty = 2)
+legend(400,0.709,c("Est. intake","Measured"),lwd = c(2,2), col=c("black","#00b4ffff"))
+
+
+# reconstructed Sr input signal from micromilled tusk dentine
+plot(tusk.mill.tl$tl, tusk.mill.tl$Sr, pch=18, col= "#00b4ffff",
+     lwd = 2,
+     xlim=c(-400,1000),ylim=c(0.705,0.713),
+     xlab="Days from Misha's move",
+     main = "Estimated intake based on tusk dentine micromill",
+     ylab = "87Sr/86Sr") 
+abline(h = CA.Sr)
+abline(h = UT.Sr)
+
+lines(1:t.M640b * M640.bt -d.offset.M640-365, post.misha.M640b.Rin.m.89[[1]], lwd = 2)
+lines(1:t.M640b * M640.bt -d.offset.M640-365, post.misha.M640b.Rin.m.89[[2]], lty = 2)
+lines(1:t.M640b * M640.bt -d.offset.M640-365, post.misha.M640b.Rin.m.89[[3]], lty = 2)
+
 polygon(c(dent.tl$tl, rev(dent.tl$tl)), 
         c(dent.tl$Sr + dent.tl$sd, 
           rev(dent.tl$Sr - dent.tl$sd)), 
@@ -370,7 +405,7 @@ points(tusk.mill.tl$tl, tusk.mill.tl$Sr,
        pch=18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
 
 
-# Fig 4 compare estimated fraction of post-movement overprint,
+# Fig 3 D-M compare estimated fraction of post-movement overprint,
 # in each of the following selected data series
 # part I: model-data comparison
 par(mfrow=c(2,5)) # 1200 * 550
