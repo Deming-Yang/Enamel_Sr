@@ -83,5 +83,56 @@ post.misha.En1.R1.m.89 <- MCMC.CI.bound(post.misha.En1$BUGSoutput$sims.list$R1.m
 
 post.misha.En1.Rin.m.89 <- MCMC.CI.bound(post.misha.En1$BUGSoutput$sims.list$Rin.m, 0.89)
 
+# calculate RXN equivalent parameters
+
+#flux ratio
+En1.flux.ratio <- post.misha.En1$BUGSoutput$sims.list$a/post.misha.En1$BUGSoutput$sims.list$b
+
+En1.f1 <- En1.flux.ratio/(1+En1.flux.ratio)
+
+En1.f2 <- 1- En1.f1
+
+#pool ratio
+En1.lambda1 <- post.misha.En1$BUGSoutput$sims.list$a/En1.bt /En1.f1
+
+En1.lambda2 <- post.misha.En1$BUGSoutput$sims.list$c/En1.bt * En1.f1
+
+# Extract MAPE estimates
+map_estimate(En1.f1)[[1]]
+# 0.5495975
+
+En1.f1.ci1 <- hdi(En1.f1, .89)[[2]]
+# 0.4872724
+
+En1.f1.ci2 <- hdi(En1.f1, .89)[[3]]
+# 0.5926225
+
+map_estimate(En1.f2)[[1]]
+# 0.4504025
+
+En1.f2.ci1 <- hdi(En1.f2, .89)[[2]]
+# 0.4872724
+
+En1.f2.ci2 <- hdi(En1.f2, .89)[[3]]
+# 0.5926225
+
+map_estimate(En1.lambda1)[[1]]
+# 0.03984307
+
+En1.lambda1.ci1 <- hdi(En1.lambda1, .89)[[2]]
+# 0.02969899
+
+En1.lambda1.ci2 <- hdi(En1.lambda1, .89)[[3]]
+# 0.05061282
+
+map_estimate(En1.lambda2)[[1]]
+# 0.001887192
+
+En1.lambda2.ci1 <- hdi(En1.lambda2, .89)[[2]]
+# 0.001270117
+
+En1.lambda2.ci2 <- hdi(En1.lambda2, .89)[[3]]
+#0.5926225
+
 ####### End of data set 1 #############
 

@@ -272,6 +272,27 @@ lines(density(post.misha.M640b$BUGSoutput$sims.list$a/M640.bt),col="red")
 legend(0.03,110,c("LA-ICP-MS tusk","Micromill tusk"),
        lwd = c(1,1), col=c("blue","red"))
 
+#################  Fig S14 #################
+
+Rxn.misha <- read.csv("data/RxnProg_Misha ivory.csv")
+
+plot(tusk.mill.tl$tl, tusk.mill.tl$Sr, pch=18, col= "#00b4ffff",
+     lwd = 2,
+     xlim=c(-400,1000),ylim=c(0.705,0.713),
+     xlab="Days from Misha's move",
+     main = "Estimated intake based on tusk dentine micromill",
+     ylab = "87Sr/86Sr") 
+
+lines(1:t.M640b * M640.bt -d.offset.M640-365, post.misha.M640b.Rin.m.89[[1]], lwd = 2)
+lines(1:t.M640b * M640.bt -d.offset.M640-365, post.misha.M640b.Rin.m.89[[2]], lty = 2)
+lines(1:t.M640b * M640.bt -d.offset.M640-365, post.misha.M640b.Rin.m.89[[3]], lty = 2)
+
+lines(Rxn.misha$calculate.date, Rxn.misha$calculated.87Sr.86Sr.input, 
+      lty = 1, col = "red", lwd = 2)
+
+legend(600,0.707,c("BITS est. intake","RxnProg est. intake"),lwd = c(2,2), col=c("black","red"))
+
+
 # plot(density(exp(log.a)), col = "blue", ylim = c(0,110),
 #      main="Posteriors of parameter a", xlab = "Parameter a")
 # lines(density(post.misha.En3$BUGSoutput$sims.list$a/En3.bt),col="red")

@@ -84,6 +84,58 @@ post.misha.M640b.R1.m.89 <- MCMC.CI.bound(post.misha.M640b$BUGSoutput$sims.list$
 
 post.misha.M640b.Rin.m.89 <- MCMC.CI.bound(post.misha.M640b$BUGSoutput$sims.list$Rin.m, 0.89)
 
+
+# calculate RXN equivalent parameters
+
+#flux ratio
+M640b.flux.ratio <- post.misha.M640b$BUGSoutput$sims.list$a/post.misha.En1$BUGSoutput$sims.list$b
+
+M640b.f1 <- M640b.flux.ratio/(1+M640b.flux.ratio)
+
+M640b.f2 <- 1- M640b.f1
+
+#pool ratio
+M640b.lambda1 <- post.misha.M640b$BUGSoutput$sims.list$a/M640.bt /M640b.f1
+
+M640b.lambda2 <- post.misha.M640b$BUGSoutput$sims.list$c/M640.bt * M640b.f1
+
+# Extract MAPE estimates
+map_estimate(M640b.f1)[[1]]
+# 0.7126433
+
+M640b.f1.ci1 <- hdi(M640b.f1, .89)[[2]]
+# 0.5911979
+
+M640b.f1.ci2 <- hdi(M640b.f1, .89)[[3]]
+# 0.7837885
+
+map_estimate(M640b.f2)[[1]]
+# 0.2873567
+
+M640b.f2.ci1 <- hdi(M640b.f2, .89)[[2]]
+# 0.2162115
+
+M640b.f2.ci2 <- hdi(M640b.f2, .89)[[3]]
+# 0.4088021
+
+map_estimate(M640b.lambda1)[[1]]
+# 0.03842481
+
+M640b.lambda1.ci1 <- hdi(M640b.lambda1, .89)[[2]]
+# 0.02972423
+
+M640b.lambda1.ci2 <- hdi(M640b.lambda1, .89)[[3]]
+# 0.04848269
+
+map_estimate(M640b.lambda2)[[1]]
+# 0.002703624
+
+M640b.lambda2.ci1 <- hdi(M640b.lambda2, .89)[[2]]
+# 0.001583127
+
+M640b.lambda2.ci2 <- hdi(M640b.lambda2, .89)[[3]]
+# 0.004168115
+
 ############## Model sensitivity demonstrations ##############
 
 # here if the original range of uncertainty is used, the model will overfit the data

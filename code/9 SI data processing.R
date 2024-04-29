@@ -351,3 +351,38 @@ denplot(as.mcmc(post.misha.En7), parms = c("a","b","c"))
 post.misha.En7.R1.m.89 <- MCMC.CI.bound(post.misha.En7$BUGSoutput$sims.list$R1.m, 0.89)
 
 post.misha.En7.Rin.m.89 <- MCMC.CI.bound(post.misha.En7$BUGSoutput$sims.list$Rin.m, 0.89)
+
+############# Export all BITS data output to .csv #############
+
+# Misha's Sr intake from tusk micromill (M640b)
+
+M640b.Rin.tl <- 1:t.M640b * M640.bt -d.offset.M640-365
+
+M640b.Rin.MAPE <- post.misha.M640b.Rin.m.89[[1]]
+
+M640b.Rin.CIL <- post.misha.M640b.Rin.m.89[[2]]
+
+M640b.Rin.CIH <- post.misha.M640b.Rin.m.89[[3]]
+
+M640b.Rin.est <- data.frame(timeline = M640b.Rin.tl, Sr.est = M640b.Rin.MAPE, 
+           Sr.est.5pct = M640b.Rin.CIL, Sr.est.95pct = M640b.Rin.CIH)
+
+write.csv(M640b.Rin.est, file = "out/Sr intake est M640b.csv")
+
+#############
+# Misha's Sr intake from molar LA-ICP-MS (transect 1)
+
+ICPMS.en1.Rin.tl <- 1:t.En1 * En1.bt - d.offset.En1 - offset.en1
+
+ICPMS.en1.Rin.MAPE <- post.misha.En1.Rin.m.89[[1]]
+
+ICPMS.en1.Rin.CIL <- post.misha.En1.Rin.m.89[[2]]
+
+ICPMS.en1.Rin.CIH <- post.misha.En1.Rin.m.89[[3]]
+
+ICPMS.en1.Rin.est <- data.frame(timeline = ICPMS.en1.Rin.tl, Sr.est = ICPMS.en1.Rin.MAPE, 
+                            Sr.est.5pct = ICPMS.en1.Rin.CIL, Sr.est.95pct = ICPMS.en1.Rin.CIH)
+
+write.csv(ICPMS.en1.Rin.est, file = "out/Sr intake est LA-ICP-MS en1.csv")
+
+
