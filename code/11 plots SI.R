@@ -2,33 +2,287 @@ library(scales)
 library(lattice)
 
 #################  Fig S2 #################  
-############# compare position of the change points to appositional angle ###########
-par(mfrow=c(1, 2))
-plot(cp1.E.rm.x, cp1.E.rm.y, main = "Change point 1", xlim = c(50000,10000),
-     xlab = "Distance from the top of EDJ (micron)",
-     ylab = "Distance from the EDJ (micron)")
-#this is based on measurements by Uno et al 2020, with an appositional angle at 3.3 +- 0.5 degrees
-abline(a = 3.02e+03, b = -tan(3.3/180*pi), lwd = 6, col ="pink3")
-# abline(a = 3.02e+03, b = -tan(3.25/180*pi), lty = 2, col = "red3")
-# abline(a = 3.02e+03, b = -tan(3.35/180*pi), lty = 2, col = "red3")
-abline(lm.cp1.E.proj.inner,lwd = 2, col = "blue3")
-points(cp1.E.rm.x[1:8], cp1.E.rm.y[1:8], pch = 16) 
-points(cp1.E.rm.x[9:10], cp1.E.rm.y[9:10], col = "red2", pch = 16) #mark the ones that don't conform to the angle
+################# LA-ICP-MS enamel-dentine comparison #################
+################# overlay with shifted x values in change points ###############
+par(mfrow=c(2,5))
+#enamel 1, no x- shift is needed
+plot(dent.rm.f2$new.x, dent.rm.f2$avg, main = "Enamel 1",col= "gray24",
+     type="l", lwd=2, xlim=c(4e4,8e4),ylim=c(0.704,0.712)) #thick line
+polygon(c(dent.rm.f2$new.x, rev(dent.rm.f2$new.x)), 
+        c(dent.rm.f2$avg + dent.rm.f2$sd, rev(dent.rm.f2$avg - dent.rm.f2$sd)), 
+        col = "gray60", border = NA)
+lines(dent.rm.f2$new.x, dent.rm.f2$avg,col= "gray24", lwd=2)
 
-plot(cp2.E.rm.x, cp2.E.rm.y, main = "Change point 2",xlim = c(55000,15000),
-     xlab = "Distance from the top of EDJ (micron)",
-     ylab = "Distance from the EDJ (micron)")
-#this is based on measurements by Uno et al 2020, with an appositional angle at 3.3 degrees
-abline(a = 3.317e+03, b = -tan(3.3/180*pi), lwd = 6, col ="pink3")
-# abline(a = 3.317e+03, b = -tan(3.25/180*pi), lty = 2, col = "red3")
-# abline(a = 3.317e+03, b = -tan(3.35/180*pi), lty = 2, col = "red3")
-abline(lm.cp2.E.proj.inner,lwd = 2, col = "blue3")
-points(cp2.E.rm.x[1:8], cp2.E.rm.y[1:8], pch = 16) #mark the ones that don't conform to the angle
-points(cp2.E.rm.x[9:10], cp2.E.rm.y[9:10], col = "red2", pch = 16) #mark the ones that don't conform to the angle
 
-############# end of change point comparisons ###########
+polygon(c(proc.Enamel1.rm.f$new.x, rev(proc.Enamel1.rm.f$new.x)), 
+        c(proc.Enamel1.rm.f$avg + proc.Enamel1.rm.f$sd, 
+          rev(proc.Enamel1.rm.f$avg - proc.Enamel1.rm.f$sd)), 
+        col = alpha("orange", 0.3), border = NA)
+lines(proc.Enamel1.rm.f$new.x, proc.Enamel1.rm.f$avg, col= alpha("orange", 0.8),lwd=2)
 
-#################  Fig S3 #################  
+abline(h = segmented.D.Sr.1, lty = 2, lwd = 1.5)
+abline(h = segmented.D.Sr.2, lty = 2, lwd = 1.5)
+plot(fit_segmented.E1.rm, add = T)
+lines.segmented(fit_segmented.E1.rm)
+points.segmented(fit_segmented.E1.rm)
+
+#enamel 2, x- shift is needed, need to shift dentine values
+shift.x <- cp1.D.rm - cp1.E.rm.x[2]
+
+plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 2",col= "gray24",
+     type="l", lwd=2, xlim=c(3.5e4,7.5e4),ylim=c(0.704,0.712)) #thick line
+polygon(c(dent.rm.f2$new.x - shift.x, rev(dent.rm.f2$new.x - shift.x)), 
+        c(dent.rm.f2$avg + dent.rm.f2$sd, rev(dent.rm.f2$avg - dent.rm.f2$sd)), 
+        col = "gray60", border = NA)
+lines(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg,col= "gray24", lwd=2)
+
+polygon(c(proc.Enamel2.rm.f$new.x, rev(proc.Enamel2.rm.f$new.x)), 
+        c(proc.Enamel2.rm.f$avg + proc.Enamel2.rm.f$sd, 
+          rev(proc.Enamel2.rm.f$avg - proc.Enamel2.rm.f$sd)), 
+        col = alpha("orange", 0.3), border = NA)
+lines(proc.Enamel2.rm.f$new.x, proc.Enamel2.rm.f$avg, col= alpha("orange", 0.8),lwd=2)
+
+abline(h = segmented.D.Sr.1, lty = 2, lwd = 1.5)
+abline(h = segmented.D.Sr.2, lty = 2, lwd = 1.5)
+plot(fit_segmented.E2.rm, add = T)
+lines.segmented(fit_segmented.E2.rm)
+points.segmented(fit_segmented.E2.rm)
+
+#enamel 3, x- shift is needed, need to shift dentine values
+shift.x <- cp1.D.rm - cp1.E.rm.x[3] 
+
+plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 3",col= "gray24",
+     type="l", lwd=2, xlim=c(3e4,7e4),ylim=c(0.704,0.712)) #thick line
+polygon(c(dent.rm.f2$new.x - shift.x, rev(dent.rm.f2$new.x - shift.x)), 
+        c(dent.rm.f2$avg + dent.rm.f2$sd, rev(dent.rm.f2$avg - dent.rm.f2$sd)), 
+        col = "gray60", border = NA)
+lines(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg,col= "gray24", lwd=2)
+
+polygon(c(proc.Enamel3.rm.f$new.x, rev(proc.Enamel3.rm.f$new.x)), 
+        c(proc.Enamel3.rm.f$avg + proc.Enamel3.rm.f$sd, 
+          rev(proc.Enamel3.rm.f$avg - proc.Enamel3.rm.f$sd)), 
+        col = alpha("orange", 0.3), border = NA)
+lines(proc.Enamel3.rm.f$new.x, proc.Enamel3.rm.f$avg, col= alpha("orange", 0.8),lwd=2)
+
+abline(h = segmented.D.Sr.1, lty = 2, lwd = 1.5)
+abline(h = segmented.D.Sr.2, lty = 2, lwd = 1.5)
+plot(fit_segmented.E3.rm, add = T)
+lines.segmented(fit_segmented.E3.rm)
+points.segmented(fit_segmented.E3.rm)
+
+#enamel 4, x- shift is needed, need to shift dentine values
+shift.x <- cp1.D.rm - cp1.E.rm.x[4]
+
+plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 4",col= "gray24",
+     type="l", lwd=2, xlim=c(2.5e4,6.5e4),ylim=c(0.704,0.712)) #thick line
+polygon(c(dent.rm.f2$new.x - shift.x, rev(dent.rm.f2$new.x - shift.x)), 
+        c(dent.rm.f2$avg + dent.rm.f2$sd, rev(dent.rm.f2$avg - dent.rm.f2$sd)), 
+        col = "gray60", border = NA)
+lines(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg,col= "gray24", lwd=2)
+
+polygon(c(proc.Enamel4.rm.f$new.x, rev(proc.Enamel4.rm.f$new.x)), 
+        c(proc.Enamel4.rm.f$avg + proc.Enamel4.rm.f$sd, 
+          rev(proc.Enamel4.rm.f$avg - proc.Enamel4.rm.f$sd)), 
+        col = alpha("orange", 0.3), border = NA)
+lines(proc.Enamel4.rm.f$new.x, proc.Enamel4.rm.f$avg, col= alpha("orange", 0.8),lwd=2)
+
+abline(h = segmented.D.Sr.1, lty = 2, lwd = 1.5)
+abline(h = segmented.D.Sr.2, lty = 2, lwd = 1.5)
+plot(fit_segmented.E4.rm, add = T)
+lines.segmented(fit_segmented.E4.rm)
+points.segmented(fit_segmented.E4.rm)
+
+#enamel 5, x- shift is needed, need to shift dentine values
+shift.x <- cp1.D.rm - cp1.E.rm.x[5]
+
+plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 5",col= "gray24",
+     type="l", lwd=2, xlim=c(1.5e4,5.5e4),ylim=c(0.704,0.712)) #thick line
+polygon(c(dent.rm.f2$new.x - shift.x, rev(dent.rm.f2$new.x - shift.x)), 
+        c(dent.rm.f2$avg + dent.rm.f2$sd, rev(dent.rm.f2$avg - dent.rm.f2$sd)), 
+        col = "gray60", border = NA)
+lines(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg,col= "gray24", lwd=2)
+
+polygon(c(proc.Enamel5.rm.f$new.x, rev(proc.Enamel5.rm.f$new.x)), 
+        c(proc.Enamel5.rm.f$avg + proc.Enamel5.rm.f$sd, 
+          rev(proc.Enamel5.rm.f$avg - proc.Enamel5.rm.f$sd)), 
+        col = alpha("orange", 0.3), border = NA)
+lines(proc.Enamel5.rm.f$new.x, proc.Enamel5.rm.f$avg, col= alpha("orange", 0.8),lwd=2)
+
+abline(h = segmented.D.Sr.1, lty = 2, lwd = 1.5)
+abline(h = segmented.D.Sr.2, lty = 2, lwd = 1.5)
+plot(fit_segmented.E5.rm, add = T)
+lines.segmented(fit_segmented.E5.rm)
+points.segmented(fit_segmented.E5.rm)
+
+#enamel 6, x- shift is needed, need to shift dentine values
+shift.x <- cp1.D.rm - cp1.E.rm.x[6]
+
+plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 6",col= "gray24",
+     type="l", lwd=2, xlim=c(1.2e4,5.2e4),ylim=c(0.704,0.712)) #thick line
+polygon(c(dent.rm.f2$new.x - shift.x, rev(dent.rm.f2$new.x - shift.x)), 
+        c(dent.rm.f2$avg + dent.rm.f2$sd, rev(dent.rm.f2$avg - dent.rm.f2$sd)), 
+        col = "gray60", border = NA)
+lines(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg,col= "gray24", lwd=2)
+
+polygon(c(proc.Enamel6.rm.f$new.x, rev(proc.Enamel6.rm.f$new.x)), 
+        c(proc.Enamel6.rm.f$avg + proc.Enamel6.rm.f$sd, 
+          rev(proc.Enamel6.rm.f$avg - proc.Enamel6.rm.f$sd)), 
+        col = alpha("orange", 0.3), border = NA)
+lines(proc.Enamel6.rm.f$new.x, proc.Enamel6.rm.f$avg, col= alpha("orange", 0.8),lwd=2)
+
+abline(h = segmented.D.Sr.1, lty = 2, lwd = 1.5)
+abline(h = segmented.D.Sr.2, lty = 2, lwd = 1.5)
+plot(fit_segmented.E6.rm, add = T)
+lines.segmented(fit_segmented.E6.rm)
+points.segmented(fit_segmented.E6.rm)
+
+#enamel 7, x- shift is needed, need to shift dentine values
+shift.x <- cp1.D.rm - cp1.E.rm.x[7]
+
+plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 7",col= "gray24",
+     type="l", lwd=2, xlim=c(1e4,5e4),ylim=c(0.704,0.712)) #thick line
+polygon(c(dent.rm.f2$new.x - shift.x, rev(dent.rm.f2$new.x - shift.x)), 
+        c(dent.rm.f2$avg + dent.rm.f2$sd, rev(dent.rm.f2$avg - dent.rm.f2$sd)), 
+        col = "gray60", border = NA)
+lines(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg,col= "gray24", lwd=2)
+
+polygon(c(proc.Enamel7.rm.f$new.x, rev(proc.Enamel7.rm.f$new.x)), 
+        c(proc.Enamel7.rm.f$avg + proc.Enamel7.rm.f$sd, 
+          rev(proc.Enamel7.rm.f$avg - proc.Enamel7.rm.f$sd)), 
+        col = alpha("orange", 0.3), border = NA)
+lines(proc.Enamel7.rm.f$new.x, proc.Enamel7.rm.f$avg, col= alpha("orange", 0.8),lwd=2)
+
+abline(h = segmented.D.Sr.1, lty = 2, lwd = 1.5)
+abline(h = segmented.D.Sr.2, lty = 2, lwd = 1.5)
+plot(fit_segmented.E7.rm, add = T)
+lines.segmented(fit_segmented.E7.rm)
+points.segmented(fit_segmented.E7.rm)
+
+#enamel 8, x- shift is needed, need to shift dentine values
+shift.x <- cp1.D.rm - cp1.E.rm.x[8]
+
+plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 8",col= "gray24",
+     type="l", lwd=2, xlim=c(0.5e4,4.5e4),ylim=c(0.704,0.712)) #thick line
+polygon(c(dent.rm.f2$new.x - shift.x, rev(dent.rm.f2$new.x - shift.x)), 
+        c(dent.rm.f2$avg + dent.rm.f2$sd, rev(dent.rm.f2$avg - dent.rm.f2$sd)), 
+        col = "gray60", border = NA)
+lines(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg,col= "gray24", lwd=2)
+
+polygon(c(proc.Enamel8.rm.f$new.x, rev(proc.Enamel8.rm.f$new.x)), 
+        c(proc.Enamel8.rm.f$avg + proc.Enamel8.rm.f$sd, 
+          rev(proc.Enamel8.rm.f$avg - proc.Enamel8.rm.f$sd)), 
+        col = alpha("orange", 0.3), border = NA)
+lines(proc.Enamel8.rm.f$new.x, proc.Enamel8.rm.f$avg, col= alpha("orange", 0.8),lwd=2)
+
+abline(h = segmented.D.Sr.1, lty = 2, lwd = 1.5)
+abline(h = segmented.D.Sr.2, lty = 2, lwd = 1.5)
+plot(fit_segmented.E8.rm, add = T)
+lines.segmented(fit_segmented.E8.rm)
+points.segmented(fit_segmented.E8.rm)
+
+#enamel 9, x- shift is needed, need to shift dentine values
+shift.x <- cp1.D.rm - cp1.E.rm.x[9]
+
+plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 9",col= "gray24",
+     type="l", lwd=2, xlim=c(0.5e4,4.5e4),ylim=c(0.704,0.712)) #thick line
+polygon(c(dent.rm.f2$new.x - shift.x, rev(dent.rm.f2$new.x - shift.x)), 
+        c(dent.rm.f2$avg + dent.rm.f2$sd, rev(dent.rm.f2$avg - dent.rm.f2$sd)), 
+        col = "gray60", border = NA)
+lines(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg,col= "gray24", lwd=2)
+
+polygon(c(proc.Enamel9.rm.f$new.x, rev(proc.Enamel9.rm.f$new.x)), 
+        c(proc.Enamel9.rm.f$avg + proc.Enamel9.rm.f$sd, 
+          rev(proc.Enamel9.rm.f$avg - proc.Enamel9.rm.f$sd)), 
+        col = alpha("orange", 0.3), border = NA)
+lines(proc.Enamel9.rm.f$new.x, proc.Enamel9.rm.f$avg, col= alpha("orange", 0.8),lwd=2)
+
+abline(h = segmented.D.Sr.1, lty = 2, lwd = 1.5)
+abline(h = segmented.D.Sr.2, lty = 2, lwd = 1.5)
+plot(fit_segmented.E9.rm, add = T)
+lines.segmented(fit_segmented.E9.rm)
+points.segmented(fit_segmented.E9.rm)
+
+#enamel 10, x- shift is needed, need to shift dentine values
+shift.x <- cp1.D.rm - cp1.E.rm.x[10]
+
+plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 10",col= "gray24",
+     type="l", lwd=2, xlim=c(0e4,4e4),ylim=c(0.704,0.712)) #thick line
+polygon(c(dent.rm.f2$new.x - shift.x, rev(dent.rm.f2$new.x - shift.x)), 
+        c(dent.rm.f2$avg + dent.rm.f2$sd, rev(dent.rm.f2$avg - dent.rm.f2$sd)), 
+        col = "gray60", border = NA)
+lines(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg,col= "gray24", lwd=2)
+
+polygon(c(proc.Enamel10.rm.f$new.x, rev(proc.Enamel10.rm.f$new.x)), 
+        c(proc.Enamel10.rm.f$avg + proc.Enamel10.rm.f$sd, 
+          rev(proc.Enamel10.rm.f$avg - proc.Enamel10.rm.f$sd)), 
+        col = alpha("orange", 0.3), border = NA)
+lines(proc.Enamel10.rm.f$new.x, proc.Enamel10.rm.f$avg, col= alpha("orange", 0.8),lwd=2)
+
+abline(h = segmented.D.Sr.1, lty = 2, lwd = 1.5)
+abline(h = segmented.D.Sr.2, lty = 2, lwd = 1.5)
+plot(fit_segmented.E10.rm, add = T)
+lines.segmented(fit_segmented.E10.rm)
+points.segmented(fit_segmented.E10.rm)
+
+#################  Fig S3 ################# 
+
+################# Multi-substrate comparison with x axis transformed to time axis###############
+
+# Fig S3 A compare laser, hand drill and micromill transects using the molar plate geometry
+par(mfrow=c(1,1)) #700*390
+plot(-10, -10, col= alpha("lightcyan4", 0),
+     pch=16, cex=1, xlim=c(100,0),ylim=c(0.704,0.712),
+     xlab="Distance from cervix (mm)",
+     main = "Conventional vs LAICP-MS",
+     ylab = "87Sr/86Sr")
+
+#CA and UT Sr measurements from Yang et al. 2023
+abline(h = CA.Sr)
+
+abline(h = UT.Sr)
+# dentine transect
+# polygon(c(dent.rm.new.x, rev(dent.rm.new.x)), 
+#         c(dent.rm.f2$avg + dent.rm.f2$sd, rev(dent.rm.f2$avg - dent.rm.f2$sd)), 
+#         col = "gray60", border = NA)
+# lines(dent.rm.new.x, dent.rm.f2$avg,col= "gray24", lwd=2)
+
+# Enamel transect 1
+polygon(c(proc.Enamel1.rm.new.x, rev(proc.Enamel1.rm.new.x)), 
+        c(proc.Enamel1.rm.f$avg + proc.Enamel1.rm.f$sd, 
+          rev(proc.Enamel1.rm.f$avg - proc.Enamel1.rm.f$sd)), 
+        col = alpha("orange", 0.3), border = NA)
+lines(proc.Enamel1.rm.new.x, proc.Enamel1.rm.f$avg, col= alpha("orange", 0.9),lwd=2)
+
+# Enamel transect 7
+polygon(c(proc.Enamel7.rm.new.x, rev(proc.Enamel7.rm.new.x)), 
+        c(proc.Enamel7.rm.f$avg + proc.Enamel7.rm.f$sd, 
+          rev(proc.Enamel7.rm.f$avg - proc.Enamel7.rm.f$sd)), 
+        col = alpha("orange3", 0.3), border = NA)
+lines(proc.Enamel7.rm.new.x, proc.Enamel7.rm.f$avg, col= alpha("orange3", 0.9),lwd=2)
+
+# Enamel transect 10
+polygon(c(proc.Enamel10.rm.new.x, rev(proc.Enamel10.rm.new.x)), 
+        c(proc.Enamel10.rm.f$avg + proc.Enamel10.rm.f$sd, 
+          rev(proc.Enamel10.rm.f$avg - proc.Enamel10.rm.f$sd)), 
+        col = alpha("orange4", 0.3), border = NA)
+lines(proc.Enamel10.rm.new.x, proc.Enamel10.rm.f$avg, col= alpha("orange4", 0.9),lwd=2)
+
+points(Drill.no$Dist..From.cervix, Drill.no$corr..87Sr.86Sr, pch=16, cex = 1.2, col ="red4")
+
+# Fig S3 B
+# micromill enamel on its own 
+par(mfrow=c(1,1))
+plot(Rm3.5b.mill.no$Dist..From.EDJ, Rm3.5b.mill.no$corr..87Sr.86Sr, col= "cyan4",
+     pch=16, cex = 1.2,
+     xlim=c(0,2200),ylim=c(0.704,0.712),
+     xlab="Distance from EDJ (microns)",
+     main = "Enamel micromill data of Rm3.5",
+     ylab = "87Sr/86Sr") 
+abline(h = CA.Sr)
+abline(h = UT.Sr)
+
+
+#################  Fig S4 #################  
 ############# Figure modeling growth rate along the length of the crown #############
 # visualize the model fit
 par(mfrow=c(1, 2))
@@ -43,11 +297,207 @@ lines(ref.length.v, Pred.tan.Rm3.5)
 ############# end of growth rate plot ###########
 
 #################  Fig S5 ################# 
+# Fig S5 was made with InkScape
+
+#################  Fig S6 #################
+# comparing reconstructed timelines of three data series
+# 1. tusk micromill, 2. molar dentine ICPMS, 3. Tusk dentine ICPMS
+par(mfrow=c(1,1))
+plot(-1000, -1, col= "gray24",
+     xlim=c(-400,700),ylim=c(0.705,0.7115),
+     xlab="Days from Misha's move",
+     main = "Tusk micromill vs LA-ICP-MS molar D and tusk D",
+     ylab = "87Sr/86Sr") 
+abline(h = CA.Sr)
+abline(h = UT.Sr)
+
+polygon(c(dent.tl$tl, rev(dent.tl$tl)), 
+        c(dent.tl$Sr + dent.tl$sd, 
+          rev(dent.tl$Sr - dent.tl$sd)), 
+        col = "gray60", border = NA)
+lines(dent.tl$tl, dent.tl$Sr, col= "gray24", lwd=2)
+
+
+# misha's tusk dentine LA-ICP-MS with the same interference correction
+polygon(c(n.avg.misha.25.tl.al, rev(n.avg.misha.25.tl.al)), 
+        c(n.avg.misha.25.sr + n.sd.misha.25.sr, 
+          rev(n.avg.misha.25.sr - n.sd.misha.25.sr)), 
+        col = alpha("orange", 0.3), border = NA)
+lines(n.avg.misha.25.tl.al, n.avg.misha.25.sr, col = alpha("orange", 0.9), lwd=2)
+
+points(tusk.mill.tl$tl, tusk.mill.tl$Sr,
+       pch=18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
+
+#################  Fig S7 #################
+
+par(mfrow=c(3,3))
+plot(1:t.fwd.misha - ma.wind + 1, misha.sim.serum[[1]], type = "l",
+     main = "f.ma = 0.2, window = 300",
+     xlab = "Timeline (days)", ylab = "87Sr/86Sr")
+lines(1:t.fwd.misha - ma.wind + 1, misha.sim.en.1, col = "red")
+
+plot(1:t.fwd.misha - ma.wind + 1, misha.sim.serum[[1]], type = "l",
+     main = "f.ma = 0.2, window = 600",
+     xlab = "Timeline (days)", ylab = "87Sr/86Sr")
+lines(1:t.fwd.misha - ma.wind + 1, misha.sim.en.2, col = "red")
+
+plot(1:t.fwd.misha - ma.wind + 1, misha.sim.serum[[1]], type = "l",
+     main = "f.ma = 0.2, window = 900",
+     xlab = "Timeline (days)", ylab = "87Sr/86Sr")
+lines(1:t.fwd.misha - ma.wind + 1, misha.sim.en.3, col = "red")
+
+plot(1:t.fwd.misha - ma.wind + 1, misha.sim.serum[[1]], type = "l",
+     main = "f.ma = 0.4, window = 300",
+     xlab = "Timeline (days)", ylab = "87Sr/86Sr")
+lines(1:t.fwd.misha - ma.wind + 1, misha.sim.en.4, col = "red")
+
+plot(1:t.fwd.misha - ma.wind + 1, misha.sim.serum[[1]], type = "l",
+     main = "f.ma = 0.4, window = 600",
+     xlab = "Timeline (days)", ylab = "87Sr/86Sr")
+lines(1:t.fwd.misha - ma.wind + 1, misha.sim.en.5, col = "red")
+
+plot(1:t.fwd.misha - ma.wind + 1, misha.sim.serum[[1]], type = "l",
+     main = "f.ma = 0.4, window = 900",
+     xlab = "Timeline (days)", ylab = "87Sr/86Sr")
+lines(1:t.fwd.misha - ma.wind + 1, misha.sim.en.6, col = "red")
+
+plot(1:t.fwd.misha - ma.wind + 1, misha.sim.serum[[1]], type = "l",
+     main = "f.ma = 0.6, window = 300",
+     xlab = "Timeline (days)", ylab = "87Sr/86Sr")
+lines(1:t.fwd.misha - ma.wind + 1, misha.sim.en.7, col = "red")
+
+plot(1:t.fwd.misha - ma.wind + 1, misha.sim.serum[[1]], type = "l",
+     main = "f.ma = 0.6, window = 600",
+     xlab = "Timeline (days)", ylab = "87Sr/86Sr")
+lines(1:t.fwd.misha - ma.wind + 1, misha.sim.en.8, col = "red")
+
+plot(1:t.fwd.misha - ma.wind + 1, misha.sim.serum[[1]], type = "l",
+     main = "f.ma = 0.6, window = 900",
+     xlab = "Timeline (days)", ylab = "87Sr/86Sr")
+lines(1:t.fwd.misha - ma.wind + 1, misha.sim.en.9, col = "red")
+
+#################  Fig S8 #################
+# density plots showing posterior
 denplot(as.mcmc(post.comb), parms = c("a","b","c",
                                       "pr.drill","pr.Rm3.5b","pr.En9", "pr.En10",
                                       "Rpri.mod", "Raft.mod"))
 
-#################  Fig S6 ################# 
+#################  Fig S8 #################
+# compare estimated fraction of post-movement overprint,
+# in each of the following selected data series
+# part I: model-data comparison
+par(mfrow=c(2,5)) # 1200 * 550
+
+# 2 micromill tusk dentine and modeled serum, assumes no overprint
+plot(bin.thin.oc*1:t.oc - 400, post.comb.R1m.89[[1]], type = "l",
+     xlim = c(-400, 1100), ylim = c(0.706, 0.712),
+     lwd = 2,  
+     xlab = "Timeline (days)", ylab = "87Sr/86Sr",
+     main = "Ref. data 1: micromill tusk dentine")
+lines(bin.thin.oc*1:t.oc - 400, post.comb.R1m.89[[2]], lty = 2)
+lines(bin.thin.oc*1:t.oc - 400, post.comb.R1m.89[[3]], lty = 2)
+points(tusk.mill.tl$tl, tusk.mill.tl$Sr,
+       pch = 18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
+
+# 3 LA-ICP MS EN 9 and mixed R
+plot(bin.thin.oc*1:t.oc - 400, post.comb.R1m.89[[1]], type = "l",
+     xlim = c(-400, 1100), ylim = c(0.706, 0.712),
+     lwd = 2, col = "gray56", 
+     xlab = "Timeline (days)", ylab = "87Sr/86Sr",
+     main = "LA-ICP-MS En 9")
+# lines(bin.thin*1:t - 400, post.comb.R1m.89[[2]], lty = 2, col = "gray48")
+# lines(bin.thin*1:t - 400, post.comb.R1m.89[[3]], lty = 2, col = "gray48")
+lines(bin.thin.oc*1:t.oc - 400, post.comb.R1.En9.89[[1]],lwd = 2, lty = 2)
+lines(En9.tl, R.En9,
+      col = "orange3", lwd = 2)
+
+# 4 LA-ICP MS EN 10 and mixed R
+plot(bin.thin.oc*1:t.oc - 400, post.comb.R1m.89[[1]], type = "l",
+     xlim = c(-400, 1100), ylim = c(0.706, 0.712),
+     lwd = 2, col = "gray56", 
+     xlab = "Timeline (days)", ylab = "87Sr/86Sr",
+     main = "LA-ICP-MS En 10")
+# lines(bin.thin*1:t - 400, post.comb.R1m.89[[2]], lty = 2, col = "gray48")
+# lines(bin.thin*1:t - 400, post.comb.R1m.89[[3]], lty = 2, col = "gray48")
+lines(bin.thin.oc*1:t.oc - 400, post.comb.R1.En10.89[[1]],lwd = 2, lty = 2)
+lines(En10.tl, R.En10,
+      col = "orange4", lwd = 2)
+
+# 5 hand drill and mixed R
+plot(bin.thin.oc*1:t.oc - 400, post.comb.R1m.89[[1]], type = "l",
+     xlim = c(-400, 1100), ylim = c(0.706, 0.712),
+     lwd = 2, col = "gray56", 
+     xlab = "Timeline (days)", ylab = "87Sr/86Sr",
+     main = "Enamel conventional drill")
+# lines(bin.thin*1:t - 400, post.comb.R1m.89[[2]], lty = 2, col = "gray48")
+# lines(bin.thin*1:t - 400, post.comb.R1m.89[[3]], lty = 2, col = "gray48")
+lines(bin.thin.oc*1:t.oc - 400, post.comb.R1.drill.89[[1]],lwd = 2, lty = 2)
+points(Edrill.tl.f$tl, Edrill.tl.f$Sr, 
+       pch = 16, cex = 2, col = alpha("red4", 0.7))
+
+# 6 Rm3.5b micromill and mixed R
+plot(bin.thin.oc*1:t.oc - 400, post.comb.R1m.89[[1]], type = "l",
+     xlim = c(-400, 1100), ylim = c(0.706, 0.712),
+     lwd = 2, col = "gray56", 
+     xlab = "Timeline (days)", ylab = "87Sr/86Sr",
+     main = "Enamel micromill")
+# lines(bin.thin*1:t - 400, post.comb.R1m.89[[2]], lty = 2, col = "gray48",)
+# lines(bin.thin*1:t - 400, post.comb.R1m.89[[3]], lty = 2, col = "gray48",)
+lines(bin.thin.oc*1:t.oc - 400, post.comb.R1.Rm3.5b.89[[1]],lwd = 2, lty = 2)
+points(Rm3.5b.mill.tl$tl, Rm3.5b.mill.tl$Sr, 
+       pch = 16, cex = 2, col = alpha("cyan4", 0.5))
+
+# 1 LA-ICP MS and modeled serum, assumes no overprint
+plot(bin.thin.oc*1:t.oc - 400, post.comb.R1m.89[[1]], type = "l",
+     xlim = c(-400, 1100), ylim = c(0.706, 0.712),
+     lwd = 2 , 
+     xlab = "Timeline (days)", ylab = "87Sr/86Sr",
+     main = "Ref. data 2: LA-ICP-MS En 1")
+lines(bin.thin.oc*1:t.oc - 400, post.comb.R1m.89[[2]], lty = 2)
+lines(bin.thin.oc*1:t.oc - 400, post.comb.R1m.89[[3]], lty = 2)
+lines(En1.50avg.tl.f$avg.tl, En1.50avg.tl.f$avg.sr,
+      col = "orange", lwd = 2)
+
+# Part II: estimated fraction of post-movement overprint
+# record densities
+d.pr.En9 <- density(post.comb$BUGSoutput$sims.list$pr.En9)
+d.pr.En10 <- density(post.comb$BUGSoutput$sims.list$pr.En10)
+d.pr.drill <- density(post.comb$BUGSoutput$sims.list$pr.drill)
+d.pr.Rm3.5b <- density(post.comb$BUGSoutput$sims.list$pr.Rm3.5b)
+
+plot(d.pr.En9$y, d.pr.En9$x, type = "l",
+     ylim = c(0,0.35), col = "orange3", lwd = 2,
+     xlab = "Density", ylab = "Fraction",
+     main = "Est. f. post-relocation: En 9")
+abline(h = pr.En9.map, lwd = 2)
+abline(h = pr.En9.ci1, lty = 2)
+abline(h = pr.En9.ci2, lty = 2)
+
+plot(d.pr.En10$y, d.pr.En10$x, type = "l",
+     ylim = c(0,0.35), col = "orange4", lwd = 2,
+     xlab = "Density", ylab = "Fraction",
+     main = "Est. f. post-relocation: En10")
+abline(h = pr.En10.map, lwd = 2)
+abline(h = pr.En10.ci1, lty = 2)
+abline(h = pr.En10.ci2, lty = 2)
+
+plot(d.pr.drill$y, d.pr.drill$x, type = "l",
+     ylim = c(0,0.35), col = "red4", lwd = 2,
+     xlab = "Density", ylab = "Fraction",
+     main = "Est. f. post-relocation: Drill")
+abline(h = pr.drill.map, lwd = 2)
+abline(h = pr.drill.ci1, lty = 2)
+abline(h = pr.drill.ci2, lty = 2)
+
+plot(d.pr.Rm3.5b$y, d.pr.Rm3.5b$x, type = "l",
+     ylim = c(0,0.35), col = "cyan4", lwd = 2,
+     xlab = "Density", ylab = "Fraction",
+     main = "Est. f. post-relocation: Micromill")
+abline(h = pr.Rm3.5b.map, lwd = 2)
+abline(h = pr.Rm3.5b.ci1, lty = 2)
+abline(h = pr.Rm3.5b.ci2, lty = 2)
+
+#################  Fig S9 ################# 
 # linear regression showing the negative relationship between
 # model residual and sampling depth
 # supporting the notion that sampling depth affects sample 87Sr/86Sr
@@ -71,12 +521,13 @@ abline(v = mean(drill.tl.f2$depth))
 
 # no apparent correlation between sample depth and residual of 87Sr/86Sr
 
-#################  Fig S7 #################
+#################  Fig S10 #################
+# density plots showing posterior of the sensitivity test
 denplot(as.mcmc(post.sens), parms = c("a","b","c",
                                       "pr.drill","pr.Rm3.5b","pr.En9", "pr.En10",
                                       "Rpri.mod", "Raft.mod"))
 
-#################  Fig S8 ################# 
+#################  Fig S11 ################# 
 # examine modeled serum ratios
 post.sens.R1m.89 <- MCMC.CI.bound(post.sens$BUGSoutput$sims.list$R1.m, 0.89)
 
@@ -92,9 +543,11 @@ abline(h = Sr.pri.map)
 abline(h = Sr.aft.map)
 # points(tusk.mill.tl$tl, tusk.mill.tl$Sr,
 #        pch = 18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
-#################  end Fig S8 #################
+#################  end Fig S11 #################
 
-#################  Fig S9 ################# 
+#################  Fig S12 ################# 
+# simulated enamel Sr variation with the forwar model
+
 par(mfrow=c(4, 1))
 par(mar = c(5, 4.5, 3, 2))
 plot(Misha.sim[[3]], 
@@ -122,7 +575,9 @@ plot(sheep.sim2[[3]],
      ylab = "Thickness")
 
 
-#################  Fig S10 ################# 
+#################  Fig S13 ################# 
+# simulated Sr variation of samples, with the forwar model
+
 par(mfrow=c(4, 1))
 par(mar = c(4, 4, 3, 2))
 plot(Misha.sim.dist, Misha.sim[[1]], pch = 16, col ="red4",
@@ -170,7 +625,8 @@ lines(sheep.sim2[[2]]$x, sheep.sim2[[2]]$Intake)
 # 46% of the variation from a seasonal migration 2-month one place, 2-months the other place
 
 
-########## Fig S11 Comparing three isotope tracers in tusk and molar enamel##########
+#################  Fig S14 ################# 
+# Comparing three isotope tracers in tusk and molar enamel##########
 # adding c13C and d18O to the curve
 par(mfrow=c(3,2))
 # tusk dentine micromill Sr
@@ -227,36 +683,9 @@ plot(drill.tl$tl, rev(Drill.no$d18O),
      ylab = "d18O")
 abline(v = 0, lty = 2)
 
+#################  Fig S15 #################
+# posteriors of parameter a among BITS runs
 
-#################  Fig S12 #################
-par(mfrow=c(1,1))
-plot(-1000, -1, col= "gray24",
-     xlim=c(-400,700),ylim=c(0.705,0.7115),
-     xlab="Days from Misha's move",
-     main = "Tusk micromill vs LA-ICP-MS molar D and tusk D",
-     ylab = "87Sr/86Sr") 
-abline(h = CA.Sr)
-abline(h = UT.Sr)
-
-polygon(c(dent.tl$tl, rev(dent.tl$tl)), 
-        c(dent.tl$Sr + dent.tl$sd, 
-          rev(dent.tl$Sr - dent.tl$sd)), 
-        col = "gray60", border = NA)
-lines(dent.tl$tl, dent.tl$Sr, col= "gray24", lwd=2)
-
-
-# misha's tusk dentine LA-ICP-MS with the same interference correction
-polygon(c(n.avg.misha.25.tl.al, rev(n.avg.misha.25.tl.al)), 
-        c(n.avg.misha.25.sr + n.sd.misha.25.sr, 
-          rev(n.avg.misha.25.sr - n.sd.misha.25.sr)), 
-        col = alpha("orange", 0.3), border = NA)
-lines(n.avg.misha.25.tl.al, n.avg.misha.25.sr, col = alpha("orange", 0.9), lwd=2)
-
-points(tusk.mill.tl$tl, tusk.mill.tl$Sr,
-       pch=18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
-
-
-#################  Fig S13 #################
 par(mfrow=c(1, 2)) #900 * 450
 
 plot(density(exp(log.a)), col = "blue", ylim = c(0,110),
@@ -272,7 +701,8 @@ lines(density(post.misha.M640b$BUGSoutput$sims.list$a/M640.bt),col="red")
 legend(0.03,110,c("LA-ICP-MS tusk","Micromill tusk"),
        lwd = c(1,1), col=c("blue","red"))
 
-#################  Fig S14 #################
+#################  Fig S16 #################
+# compare estimated Sr intake using BITS vs RnxProg approaches
 
 Rxn.misha <- read.csv("data/RxnProg_Misha ivory.csv")
 

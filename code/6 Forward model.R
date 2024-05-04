@@ -183,7 +183,49 @@ sampling.sim <- function(leng, thick, angle, rate,
   
 }
 
-#########Forward model to demonstrate signal attenuation, using synthetic inputs#######
+#########Forward model to demonstrate signal attenuation due to En maturation#######
+
+# create Misha's intake history
+t.fwd.misha <- 3000
+
+misha.intake <- c(rep(0.706, t.fwd.misha * 0.25), rep(0.711, t.fwd.misha * 0.75))
+
+# forward model parameters
+a <- 0.0169 #reaction rate estimates from Yang et al. 2023
+b <- 0.0141
+c <- 0.0041
+
+# simulate serum from intake
+misha.sim.serum <- forw.m(t = t.fwd.misha, input = misha.intake, a = a, b = b, c = c, R1.int = NULL, R2.int = NULL)
+
+# maturation window (days), test three combinations
+ma.wind.sim <- 1 + c(300, 600, 900)
+
+# fraction of maturation overprint, test three combinations
+f.ma.sim <- c(0.2, 0.4, 0.6)
+
+# maturation simulation, f.ma = fraction of maturation
+misha.sim.en.1 <- forw.m.en(serum = misha.sim.serum[[1]], 
+                            f.ma = f.ma.sim[1], ma.wind = ma.wind.sim[1])
+misha.sim.en.2 <- forw.m.en(serum = misha.sim.serum[[1]], 
+                            f.ma = f.ma.sim[1], ma.wind = ma.wind.sim[2])
+misha.sim.en.3 <- forw.m.en(serum = misha.sim.serum[[1]], 
+                            f.ma = f.ma.sim[1], ma.wind = ma.wind.sim[3])
+misha.sim.en.4 <- forw.m.en(serum = misha.sim.serum[[1]], 
+                            f.ma = f.ma.sim[2], ma.wind = ma.wind.sim[1])
+misha.sim.en.5 <- forw.m.en(serum = misha.sim.serum[[1]], 
+                            f.ma = f.ma.sim[2], ma.wind = ma.wind.sim[2])
+misha.sim.en.6 <- forw.m.en(serum = misha.sim.serum[[1]], 
+                            f.ma = f.ma.sim[2], ma.wind = ma.wind.sim[3])
+misha.sim.en.7 <- forw.m.en(serum = misha.sim.serum[[1]], 
+                            f.ma = f.ma.sim[3], ma.wind = ma.wind.sim[1])
+misha.sim.en.8 <- forw.m.en(serum = misha.sim.serum[[1]], 
+                            f.ma = f.ma.sim[3], ma.wind = ma.wind.sim[2])
+misha.sim.en.9 <- forw.m.en(serum = misha.sim.serum[[1]], 
+                            f.ma = f.ma.sim[3], ma.wind = ma.wind.sim[3])
+
+
+#########Forward model to demonstrate attenuation due to sampling, using synthetic inputs#######
 
 ######### experiment 1: Misha's enamel using misha's molar parameters#########
 

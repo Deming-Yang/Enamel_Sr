@@ -233,37 +233,27 @@ MCMC.CI.bound <- function (MCMC.res, CI){
   return (list(map.res, hdi.low, hdi.high, CI))
 }
 
-# ########### fn 9 initiate switches ###########
-# initiate.switch <- function(t, n.switch, day.switch, a, gap, duration){
-#   
-#   #initial vector
-#   v.init <- rep(a, (day.switch -1))
-#   v.switch <- rep(a+gap, duration)
-#   v.back <- rep(a, duration)
-#   sw.d <- n.switch*duration
-#   
-#   v.switches <- c(v.switch, v.back)
-#   
-#   rep.switches <- rep(v.switches,ceiling(n.switch/2))
-#   
-#   if((day.switch -1 + sw.d) < t){#switch is completed before the total number of days
-#     t.end <- t-(day.switch -1 + sw.d)
-#     
-#     if((n.switch %% 2) == 0){#even number of switches
-#       r.end <- a
-#     }
-#     else{#odd number of switches
-#       r.end <- a + gap
-#     }
-#     v.end <- rep(r.end, t.end)
-#     all.input <- c(v.init, rep.switches[1:sw.d], v.end)
-#   }
-#   else{#switch is not completed before the total number of days
-#     #no need to worry about end values
-#     all.input <- c(v.init, rep.switches[1:sw.d])#take advantage of the vector recycling feature
-#   }
-#   Sr.input <- all.input[1:t]
-#   return(Sr.input)
-# }
+########### fn 9 simulate enamel with maturation overprint###########
+# the model is after Passey et al 2002.
+# with 1-D values and two parameters
+# f.ma = fraction of maturation overprint
+# ma.wind = maturation window (days)
+# the function returns a 1-D "history" of sim enamel
+# equivalent to data from the innermost enamel
 
+forw.m.en <- function(serum, f.ma, ma.wind){
+  if (f.ma >1 | f.ma < 0){
+    warning("f must be between 0 and 1")
+    break
+  } else{
+    
+    serum.rm <- rollmean(serum, ma.wind)
+    
+    serum.rm.sft <- c(serum.rm, rep(NA, ma.wind - 1))
+    
+    sim.en <- serum * (1 - f.ma) + serum.rm.sft * f.ma
+    
+    return(sim.en)
+  }
+}
 
