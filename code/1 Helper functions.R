@@ -2,6 +2,7 @@ library(MASS)
 library(dplyr)
 library(tidyr)
 library(sf)
+library(zoo)
 
 ############helper functions##############
 ###fn 1: convert time stamp to seconds####

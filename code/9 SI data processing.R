@@ -80,9 +80,9 @@ misha.tusk.micromill.tl.al <- misha.tusk.micromill.tl - 335
 
 # filter the data and focus on the timeline between 0 and 600
 
-drill.tl.f2 <- filter(drill.tl, drill.tl$tl > 0 & drill.tl$tl < 600)
+drill.tl.f2 <- dplyr::filter(Edrill.tl, Edrill.tl$tl > 0 & Edrill.tl$tl < 600)
 
-pred.drill <- approx(x = bin.thin*1:t - 400, y = post.comb.R1.drill.89[[1]]
+pred.drill <- approx(x = bin.thin.oc*1:t.oc - 400, y = post.comb.R1.drill.89[[1]]
                      , xout = drill.tl.f2$tl)$y
 # prediction: larger depths, lower 87Sr/86Sr, more deviation from predicted value
 res.drill <- drill.tl.f2$Sr - pred.drill
@@ -91,11 +91,6 @@ res.tib <- tibble(x = drill.tl.f2$depth, y = res.drill)
 
 lm.res <- lm(data = res.tib, y ~ x)
 summary(lm.res) # results are significant
-
-# Coefficients:
-#               Estimate  Std. Error t value  Pr(>|t|)    
-# (Intercept) -0.0007788  0.0002157  -3.611   0.002838 ** 
-# x            0.0012311  0.0002577   4.777   0.000295 ***
 
 # calculate 95% confidence intervals for plotting 
 newx = seq(min(res.tib$x), max(res.tib$x), by = 0.01)

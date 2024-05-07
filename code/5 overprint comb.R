@@ -106,7 +106,7 @@ turnover.params.vcov <- var(turnover.params)
 
 Rm3.5b.tl.sd <- Rm3.5b.mill.tl.sd #uncertainty in the timeline
 
-bin.thin <- min(drill.tl.sd, Rm3.5b.tl.sd, En1.tl.sd, En9.tl.sd, En10.tl.sd)
+bin.thin <- min(Edrill.tl.sd, Rm3.5b.tl.sd, En1.tl.sd, En9.tl.sd, En10.tl.sd)
 
 bin.thin.oc <- bin.thin
 
@@ -146,7 +146,7 @@ En1.tl <- En1.50avg.tl.f$avg.tl
 r2.tl <- En1.tl
 
 # 3 conventional drill data set
-n.drill <- length(drill.tl.f$Sr)
+n.drill <- length(Edrill.tl.f$Sr)
 
 # measurement data, timeline, Sr, and sd
 R.drill <- Edrill.tl.f$Sr
@@ -295,7 +295,7 @@ R.sd.r1 <- tusk.mill.tl$sd
 
 R.sd.En1 <- En1.50avg.tl.f$sd.sr
 
-R.sd.drill <- drill.tl.f$sd
+R.sd.drill <- Edrill.tl.f$sd
 
 R.sd.Rm3.5b <- Rm3.5b.mill.tl$sd 
 

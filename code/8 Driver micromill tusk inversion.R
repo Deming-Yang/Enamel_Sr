@@ -88,7 +88,7 @@ post.misha.M640b.Rin.m.89 <- MCMC.CI.bound(post.misha.M640b$BUGSoutput$sims.list
 # calculate RXN equivalent parameters
 
 #flux ratio
-M640b.flux.ratio <- post.misha.M640b$BUGSoutput$sims.list$a/post.misha.En1$BUGSoutput$sims.list$b
+M640b.flux.ratio <- post.misha.M640b$BUGSoutput$sims.list$a/post.misha.M640b$BUGSoutput$sims.list$b
 
 M640b.f1 <- M640b.flux.ratio/(1+M640b.flux.ratio)
 
@@ -197,7 +197,7 @@ post.misha.M640b.sens = do.call(jags.parallel,list(model.file = "code/Sr inversi
 #Time taken
 proc.time() - t1 #~ 40 min
 
-save(post.misha.M640b.sens, file = "out/post.misha.M640b.RData")
+save(post.misha.M640b.sens, file = "out/post.misha.M640b.sens.RData")
 
 load("out/post.misha.M640b.sens.RData")
 
@@ -209,8 +209,8 @@ post.misha.M640b.sens.R1.m.89 <- MCMC.CI.bound(post.misha.M640b.sens$BUGSoutput$
 post.misha.M640b.sens.Rin.m.89 <- MCMC.CI.bound(post.misha.M640b.sens$BUGSoutput$sims.list$Rin.m, 0.89)
 
 # check parameter a
-plot(density(exp(log.a)), col = "blue", ylim = c(0,110),
-     main="Posteriors of parameter a")
-lines(density(post.misha.M640b.sens$BUGSoutput$sims.list$a/M640.bt),col="red")
-legend(0.03,110,c("LA-ICP-MS tusk","Micromill tusk"),
-       lwd = c(1,1), col=c("blue","red"))
+# plot(density(exp(log.a)), col = "blue", ylim = c(0,110),
+#      main="Posteriors of parameter a")
+# lines(density(post.misha.M640b.sens$BUGSoutput$sims.list$a/M640.bt),col="red")
+# legend(0.03,110,c("LA-ICP-MS tusk","Micromill tusk"),
+#        lwd = c(1,1), col=c("blue","red"))

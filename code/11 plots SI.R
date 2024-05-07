@@ -331,50 +331,50 @@ points(tusk.mill.tl$tl, tusk.mill.tl$Sr,
 #################  Fig S7 #################
 
 par(mfrow=c(3,3))
-plot(1:t.fwd.misha - ma.wind + 1, misha.sim.serum[[1]], type = "l",
+plot(1:t.fwd.misha, misha.sim.serum[[1]], type = "l",
      main = "f.ma = 0.2, window = 300",
      xlab = "Timeline (days)", ylab = "87Sr/86Sr")
-lines(1:t.fwd.misha - ma.wind + 1, misha.sim.en.1, col = "red")
+lines(1:t.fwd.misha , misha.sim.en.1, col = "red")
 
-plot(1:t.fwd.misha - ma.wind + 1, misha.sim.serum[[1]], type = "l",
+plot(1:t.fwd.misha, misha.sim.serum[[1]], type = "l",
      main = "f.ma = 0.2, window = 600",
      xlab = "Timeline (days)", ylab = "87Sr/86Sr")
-lines(1:t.fwd.misha - ma.wind + 1, misha.sim.en.2, col = "red")
+lines(1:t.fwd.misha, misha.sim.en.2, col = "red")
 
-plot(1:t.fwd.misha - ma.wind + 1, misha.sim.serum[[1]], type = "l",
+plot(1:t.fwd.misha, misha.sim.serum[[1]], type = "l",
      main = "f.ma = 0.2, window = 900",
      xlab = "Timeline (days)", ylab = "87Sr/86Sr")
-lines(1:t.fwd.misha - ma.wind + 1, misha.sim.en.3, col = "red")
+lines(1:t.fwd.misha, misha.sim.en.3, col = "red")
 
-plot(1:t.fwd.misha - ma.wind + 1, misha.sim.serum[[1]], type = "l",
+plot(1:t.fwd.misha, misha.sim.serum[[1]], type = "l",
      main = "f.ma = 0.4, window = 300",
      xlab = "Timeline (days)", ylab = "87Sr/86Sr")
-lines(1:t.fwd.misha - ma.wind + 1, misha.sim.en.4, col = "red")
+lines(1:t.fwd.misha, misha.sim.en.4, col = "red")
 
-plot(1:t.fwd.misha - ma.wind + 1, misha.sim.serum[[1]], type = "l",
+plot(1:t.fwd.misha, misha.sim.serum[[1]], type = "l",
      main = "f.ma = 0.4, window = 600",
      xlab = "Timeline (days)", ylab = "87Sr/86Sr")
-lines(1:t.fwd.misha - ma.wind + 1, misha.sim.en.5, col = "red")
+lines(1:t.fwd.misha, misha.sim.en.5, col = "red")
 
-plot(1:t.fwd.misha - ma.wind + 1, misha.sim.serum[[1]], type = "l",
+plot(1:t.fwd.misha, misha.sim.serum[[1]], type = "l",
      main = "f.ma = 0.4, window = 900",
      xlab = "Timeline (days)", ylab = "87Sr/86Sr")
-lines(1:t.fwd.misha - ma.wind + 1, misha.sim.en.6, col = "red")
+lines(1:t.fwd.misha, misha.sim.en.6, col = "red")
 
-plot(1:t.fwd.misha - ma.wind + 1, misha.sim.serum[[1]], type = "l",
+plot(1:t.fwd.misha, misha.sim.serum[[1]], type = "l",
      main = "f.ma = 0.6, window = 300",
      xlab = "Timeline (days)", ylab = "87Sr/86Sr")
-lines(1:t.fwd.misha - ma.wind + 1, misha.sim.en.7, col = "red")
+lines(1:t.fwd.misha, misha.sim.en.7, col = "red")
 
-plot(1:t.fwd.misha - ma.wind + 1, misha.sim.serum[[1]], type = "l",
+plot(1:t.fwd.misha, misha.sim.serum[[1]], type = "l",
      main = "f.ma = 0.6, window = 600",
      xlab = "Timeline (days)", ylab = "87Sr/86Sr")
-lines(1:t.fwd.misha - ma.wind + 1, misha.sim.en.8, col = "red")
+lines(1:t.fwd.misha, misha.sim.en.8, col = "red")
 
-plot(1:t.fwd.misha - ma.wind + 1, misha.sim.serum[[1]], type = "l",
+plot(1:t.fwd.misha, misha.sim.serum[[1]], type = "l",
      main = "f.ma = 0.6, window = 900",
      xlab = "Timeline (days)", ylab = "87Sr/86Sr")
-lines(1:t.fwd.misha - ma.wind + 1, misha.sim.en.9, col = "red")
+lines(1:t.fwd.misha, misha.sim.en.9, col = "red")
 
 #################  Fig S8 #################
 # density plots showing posterior
@@ -444,7 +444,7 @@ plot(bin.thin.oc*1:t.oc - 400, post.comb.R1m.89[[1]], type = "l",
 # lines(bin.thin*1:t - 400, post.comb.R1m.89[[2]], lty = 2, col = "gray48",)
 # lines(bin.thin*1:t - 400, post.comb.R1m.89[[3]], lty = 2, col = "gray48",)
 lines(bin.thin.oc*1:t.oc - 400, post.comb.R1.Rm3.5b.89[[1]],lwd = 2, lty = 2)
-points(Rm3.5b.mill.tl$tl, Rm3.5b.mill.tl$Sr, 
+points(Rm3.5b.tl$tl, Rm3.5b.tl$Sr, 
        pch = 16, cex = 2, col = alpha("cyan4", 0.5))
 
 # 1 LA-ICP MS and modeled serum, assumes no overprint
@@ -533,12 +533,12 @@ post.sens.R1m.89 <- MCMC.CI.bound(post.sens$BUGSoutput$sims.list$R1.m, 0.89)
 
 # preliminary plot
 # 2 micromill tusk dentine and modeled serum, assumes no overprint
-plot(bin.thin*1:t - 400, post.sens.R1m.89[[1]], type = "l",
+plot(bin.thin.oc*1:t.oc - 400, post.sens.R1m.89[[1]], type = "l",
      xlim = c(-400, 1100), ylim = c(0.705, 0.712),
      xlab = "Timeline (days)", ylab = "87Sr/86Sr",
      lwd = 2, main = "Modeled serum 87Sr/86Sr")
-lines(bin.thin*1:t - 400, post.sens.R1m.89[[2]], lty = 2)
-lines(bin.thin*1:t - 400, post.sens.R1m.89[[3]], lty = 2)
+lines(bin.thin.oc*1:t.oc - 400, post.sens.R1m.89[[2]], lty = 2)
+lines(bin.thin.oc*1:t.oc - 400, post.sens.R1m.89[[3]], lty = 2)
 abline(h = Sr.pri.map)
 abline(h = Sr.aft.map)
 # points(tusk.mill.tl$tl, tusk.mill.tl$Sr,
@@ -638,7 +638,7 @@ plot(tusk.mill.tl$tl, tusk.mill.tl$Sr,
      ylab = "87Sr/86Sr")
 abline(v = 0, lty = 2)
 
-plot(drill.tl$tl, drill.tl$Sr, col= "red4",
+plot(Edrill.tl$tl, Edrill.tl$Sr, col= "red4",
      pch=16, cex = 2,
      xlim=c(-400,700), ylim=c(0.706,0.712),
      xlab="Days from Misha's move",
@@ -656,7 +656,7 @@ plot(M640.micromill.tl.al, rev(M640.micromill$d13C),
 abline(v = 0, lty = 2)
 
 
-plot(drill.tl$tl, rev(Drill.no$d13C), 
+plot(Edrill.tl$tl, rev(Drill.no$d13C), 
      xlim=c(-400,700),ylim=c(-15,-4),
      col = "orange",
      pch=16, cex = 2,
@@ -674,7 +674,7 @@ plot(M640.micromill.tl.al, rev(M640.micromill$d18O),
      ylab = "d18O")
 abline(v = 0, lty = 2)
 
-plot(drill.tl$tl, rev(Drill.no$d18O), 
+plot(Edrill.tl$tl, rev(Drill.no$d18O), 
      xlim=c(-400,700), ylim=c(-15,-7),
      col = "lightblue4",
      pch=16, cex = 2,
@@ -706,6 +706,7 @@ legend(0.03,110,c("LA-ICP-MS tusk","Micromill tusk"),
 
 Rxn.misha <- read.csv("data/RxnProg_Misha ivory.csv")
 
+par(mfrow=c(1, 1))
 plot(tusk.mill.tl$tl, tusk.mill.tl$Sr, pch=18, col= "#00b4ffff",
      lwd = 2,
      xlim=c(-400,1000),ylim=c(0.705,0.713),

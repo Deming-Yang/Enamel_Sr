@@ -246,7 +246,7 @@ Edrill.tl <- tibble(tl = days.cumm.drill.al,
                    sd = rev(Drill.no$comb..Err),
                    depth = rev(Drill.no$Sample.depth)) # sample depth is useful later
 
-Rm3.5b.mill.tl <- tibble(tl = Rm3.5b.mill.tl.al, Sr = rev(Rm3.5b.mill.no$corr..87Sr.86Sr),
+Rm3.5b.tl <- tibble(tl = Rm3.5b.mill.tl.al, Sr = rev(Rm3.5b.mill.no$corr..87Sr.86Sr),
                          sd = rev(Rm3.5b.mill.no$comb..Err))
 
 tusk.mill.tl <- tibble(tl = rev(misha.tusk.micromill.tl.al), 
