@@ -22,39 +22,81 @@ ggplot()+
 
 ###########EDJ flattened geometry###########
 ##############both transitions#################
-par(mfrow=c(1,1))
+n.y <- 4
+
+all.dat.rm.proj <- mutate(all.dat.rm.proj, Y2 = n.y * new.y)
+
+cp1.loc <- mutate(cp1.loc, Y2 = n.y * y)
+
+cp2.loc <- mutate(cp2.loc, Y2 = n.y * y)
+
+sf.all.dat.y2 <- st_as_sf(all.dat.rm.proj,  agr = NA_agr_,
+                               coords = c("new.x","Y2"),
+                               dim = "XY",
+                               remove = TRUE,
+                               na.fail = TRUE,
+                               sf_column_name = NULL)
+
+sf.cp1.y2 <- st_as_sf(cp1.loc,  agr = NA_agr_,
+                       coords = c("x","Y2"),
+                       dim = "XY",
+                       remove = TRUE,
+                       na.fail = TRUE,
+                       sf_column_name = NULL)
+
+sf.cp2.y2 <- st_as_sf(cp2.loc,  agr = NA_agr_,
+                      coords = c("x","Y2"),
+                      dim = "XY",
+                      remove = TRUE,
+                      na.fail = TRUE,
+                      sf_column_name = NULL)
+
 ggplot()+
-  geom_sf(data = sf.all.dat.rm.proj , aes(color = avg))+
+  geom_sf(data = sf.all.dat.y2 , aes(color = avg),cex=3.5)+
   scale_color_viridis_c()+
-  geom_sf(data = sf.cp2.loc, color = "black",pch=18,cex=3)+ 
-  geom_sf(data = sf.cp1.loc, color = "red",pch=18,cex=3)+ 
+
+  geom_abline(intercept = n.y * 3.02e+03, slope = n.y * -tan(3.3/180*pi), color="gray64",
+              linewidth=2.5)+
+  geom_abline(intercept = lm.cp1.E.proj.inner$coefficients[1] * n.y,
+              slope = lm.cp1.E.proj.inner$coefficients[2] * n.y,
+              color="black",
+              linetype="dashed", linewidth=1)+
+  geom_abline(intercept = n.y * 3.317e+03, slope = n.y * -tan(3.3/180*pi), color="gray64",
+              linewidth=2.5)+
+  geom_abline(intercept = lm.cp2.E.proj.inner$coefficients[1] * n.y,
+              slope = lm.cp2.E.proj.inner$coefficients[2] * n.y,
+              color="black",
+              linetype="dashed", linewidth=1)+
+  
+  geom_sf(data = sf.cp2.y2, color = "black",pch=18,cex=4)+ 
+  geom_sf(data = sf.cp1.y2, color = "red",pch=18,cex=4)+ 
   theme(legend.position = "bottom")
 
 ############# compare position of the change points to appositional angle ###########
-par(mfrow=c(1, 2))
-plot(cp1.E.rm.x, cp1.E.rm.y, cex = 0.1,
-     main = "Change point 1", xlim = c(10000, 50000),
-     xlab = "Distance from the top of EDJ (micron)",
-     ylab = "Distance from the EDJ (micron)")
-#this is based on measurements by Uno et al 2020, with an appositional angle at 3.3 +- 0.5 degrees
-abline(a = 3.02e+03, b = -tan(3.3/180*pi), lwd = 6, col ="gray64")
-# abline(a = 3.02e+03, b = -tan(3.25/180*pi), lty = 2, col = "red3")
-# abline(a = 3.02e+03, b = -tan(3.35/180*pi), lty = 2, col = "red3")
-abline(lm.cp1.E.proj.inner,lwd = 2, col = "black", lty = 2)
-points(cp1.E.rm.x[1:8], cp1.E.rm.y[1:8], pch = 18, cex = 1.5) 
-points(cp1.E.rm.x[9:10], cp1.E.rm.y[9:10], col = "orange", pch = 18, cex = 1.5) #mark the ones that don't conform to the angle
-
-plot(cp2.E.rm.x, cp2.E.rm.y, cex = 0.1,
-     main = "Change point 2",xlim = c(15000, 55000),
-     xlab = "Distance from the top of EDJ (micron)",
-     ylab = "Distance from the EDJ (micron)")
-#this is based on measurements by Uno et al 2020, with an appositional angle at 3.3 degrees
-abline(a = 3.317e+03, b = -tan(3.3/180*pi), lwd = 6, col ="gray64")
-# abline(a = 3.317e+03, b = -tan(3.25/180*pi), lty = 2, col = "red3")
-# abline(a = 3.317e+03, b = -tan(3.35/180*pi), lty = 2, col = "red3")
-abline(lm.cp2.E.proj.inner,lwd = 2, col = "black", lty = 2)
-points(cp2.E.rm.x[1:8], cp2.E.rm.y[1:8], pch = 18, cex = 1.5) #mark the ones that don't conform to the angle
-points(cp2.E.rm.x[9:10], cp2.E.rm.y[9:10], col = "orange", pch = 18, cex = 1.5) #mark the ones that don't conform to the angle
+# par(mfrow=c(1, 2))
+# plot(cp1.E.rm.x, cp1.E.rm.y, cex = 0.1,
+#      main = "Change point 1", xlim = c(10000, 50000),
+#      xlab = "Distance from the top of EDJ (micron)",
+#      ylab = "Distance from the EDJ (micron)")
+# #this is based on measurements by Uno et al 2020, with an appositional angle at 3.3 +- 0.5 degrees
+# abline(a = 3.02e+03, b = -tan(3.3/180*pi), lwd = 6, col ="gray64")
+# # abline(a = 3.02e+03, b = -tan(3.25/180*pi), lty = 2, col = "red3")
+# # abline(a = 3.02e+03, b = -tan(3.35/180*pi), lty = 2, col = "red3")
+# abline(lm.cp1.E.proj.inner,lwd = 2, col = "black", lty = 2)
+# points(cp1.E.rm.x[1:8], cp1.E.rm.y[1:8], pch = 18, cex = 1.5) 
+# points(cp1.E.rm.x[9:10], cp1.E.rm.y[9:10], col = "orange", pch = 18, cex = 1.5) #mark the ones that don't conform to the angle
+# 
+# plot(cp2.E.rm.x, cp2.E.rm.y, cex = 0.1,
+#      main = "Change point 2",xlim = c(15000, 55000),
+#      xlab = "Distance from the top of EDJ (micron)",
+#      ylab = "Distance from the EDJ (micron)")
+# #this is based on measurements by Uno et al 2020, with an appositional angle at 3.3 degrees
+# abline(a = 3.317e+03, b = -tan(3.3/180*pi), lwd = 6, col ="gray64")
+# # abline(a = 3.317e+03, b = -tan(3.25/180*pi), lty = 2, col = "red3")
+# # abline(a = 3.317e+03, b = -tan(3.35/180*pi), lty = 2, col = "red3")
+# abline(lm.cp2.E.proj.inner,lwd = 2, col = "black", lty = 2)
+# points(cp2.E.rm.x[1:8], cp2.E.rm.y[1:8], pch = 18, cex = 1.5) #mark the ones that don't conform to the angle
+# points(cp2.E.rm.x[9:10], cp2.E.rm.y[9:10], col = "orange", pch = 18, cex = 1.5) #mark the ones that don't conform to the angle
 
 ############# end of change point comparisons ###########
 
