@@ -1,16 +1,8 @@
 library(scales)
-library(MASS)
 library(viridisLite)
-library(EnvStats)
 library(dplyr)
-library(tidyr)
 library(sf)
-library(zoo)
-library(changepoint)
 library(ggplot2)
-library(gstat)
-library(stars)
-library(segmented)
 
 ###########real world tooth geometry###########
 #############plot 1 all dentine and enamel data with transition points#######

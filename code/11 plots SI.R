@@ -1,5 +1,9 @@
 library(scales)
 library(lattice)
+library(zoo)
+library(changepoint)
+library(segmented)
+library(viridisLite)
 
 #################  Fig S2 #################  
 ################# LA-ICP-MS enamel-dentine comparison #################
