@@ -75,14 +75,14 @@ misha.tusk.micromill.tl.al <- misha.tusk.micromill.tl - 335
 
 #################################################
 # prep for Fig S4
-# examine the relationships between the resituals between 
+# examine the relationships between the residuals between 
 # hand drill 87Sr/86Sr and the mixed serum as enamel input
 
 # filter the data and focus on the timeline between 0 and 600
 
 drill.tl.f2 <- dplyr::filter(Edrill.tl, Edrill.tl$tl > 0 & Edrill.tl$tl < 600)
 
-pred.drill <- approx(x = bin.thin.oc*1:t.oc - 400, y = post.comb.R1.drill.89[[1]]
+pred.drill <- approx(x = bin.thin.oc*(1:t.oc) - 400, y = post.comb.R1.drill.89[[1]]
                      , xout = drill.tl.f2$tl)$y
 # prediction: larger depths, lower 87Sr/86Sr, more deviation from predicted value
 res.drill <- drill.tl.f2$Sr - pred.drill
@@ -135,9 +135,9 @@ n.avg.misha.25.tl.al <- n.avg.misha.25.tl - 670
 ####### Inversion of more data transects #######
 ####### data set 2, enamel transect 3#############
 
-En3.50avg.tl <- x.pt.avg(proc.Enamel3.rm.f$avg, en3.tl$tl, 50)
+En3.50avg.tl <- x.pt.avg(proc.Enamel3.rm.f$mov.avg, en3.tl$tl, 50)
 
-Enamel3.Sr <- x.pt.avg(proc.Enamel3.rm.f$avg, 0, 50)
+Enamel3.Sr <- x.pt.avg(proc.Enamel3.rm.f$mov.avg, 0, 50)
 
 Enamel3.length <- x.pt.avg(proc.Enamel3.rm.new.x, 0, 50)
 
@@ -207,9 +207,9 @@ post.misha.En3.Rin.m.89 <- MCMC.CI.bound(post.misha.En3$BUGSoutput$sims.list$Rin
 
 ####### data set 3, enamel transect 5#############
 
-En5.50avg.tl <- x.pt.avg(proc.Enamel5.rm.f$avg, en5.tl$tl, 50)
+En5.50avg.tl <- x.pt.avg(proc.Enamel5.rm.f$mov.avg, en5.tl$tl, 50)
 
-Enamel5.Sr <- x.pt.avg(proc.Enamel5.rm.f$avg, 0, 50)
+Enamel5.Sr <- x.pt.avg(proc.Enamel5.rm.f$mov.avg, 0, 50)
 
 Enamel5.length <- x.pt.avg(proc.Enamel5.rm.new.x, 0, 50)
 
@@ -278,9 +278,9 @@ post.misha.En5.Rin.m.89 <- MCMC.CI.bound(post.misha.En5$BUGSoutput$sims.list$Rin
 
 
 ####### data set 4, enamel transect 7#############
-En7.50avg.tl <- x.pt.avg(proc.Enamel7.rm.f$avg, en7.tl$tl, 50)
+En7.50avg.tl <- x.pt.avg(proc.Enamel7.rm.f$mov.avg, en7.tl$tl, 50)
 
-Enamel7.Sr <- x.pt.avg(proc.Enamel7.rm.f$avg, 0, 50)
+Enamel7.Sr <- x.pt.avg(proc.Enamel7.rm.f$mov.avg, 0, 50)
 
 Enamel7.length <- x.pt.avg(proc.Enamel7.rm.new.x, 0, 50)
 

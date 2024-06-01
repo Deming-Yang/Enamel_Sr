@@ -1,13 +1,15 @@
 library(readxl)
 library(dplyr)
 library(coda)
-library(R2jags)
 library(ggplot2)
 library(mcmcplots)
 library(bayesplot)
 library(bayestestR)
 
-source("./code/1 Helper functions.R")
+###### Please note: JAGS is a standalone program that should be installed ######
+###### prior to the model run. Please use the link below to download and ######
+###### install JAGS: https://sourceforge.net/projects/mcmc-jags/ ######
+library(R2jags)
 
 # modeling the amount of maturation overprint in samples. 
 # this was done on four data series: LA-ICP-MS Enamel 9, Enamel 10, Drill, and micromill series
@@ -34,7 +36,7 @@ days.cumm.en10.al <- days.cumm.en10 - 195
 
 #visualize timeline adjustment
 par(mfrow=c(1,1))
-plot(days.cumm.en9.al, proc.Enamel9.rm.f$avg, col= alpha("lightcyan4", 0.9),
+plot(days.cumm.en9.al, proc.Enamel9.rm.f$mov.avg, col= alpha("lightcyan4", 0.9),
      type = "l", lwd=2, xlim=c(-400,500),ylim=c(0.704,0.712),
      xlab="Distance from cervix (mm)",
      main = "Conventional vs LAICP-MS",
@@ -45,14 +47,14 @@ abline(h = CA.Sr)
 
 abline(h = UT.Sr)
 
-lines(days.cumm.en10.al, proc.Enamel10.rm.f$avg, col= alpha("orange4", 0.9),lwd=2)
+lines(days.cumm.en10.al, proc.Enamel10.rm.f$mov.avg, col= alpha("orange4", 0.9),lwd=2)
 
 # data thinning, to reduce computational demand
-En1.50avg.tl <- x.pt.avg(proc.Enamel1.rm.f$avg, days.cumm.en1.al, 50)
+En1.50avg.tl <- x.pt.avg(proc.Enamel1.rm.f$mov.avg, days.cumm.en1.al, 50)
 
-En9.50avg.tl <- x.pt.avg(proc.Enamel9.rm.f$avg, days.cumm.en9.al, 50)
+En9.50avg.tl <- x.pt.avg(proc.Enamel9.rm.f$mov.avg, days.cumm.en9.al, 50)
 
-En10.50avg.tl <- x.pt.avg(proc.Enamel10.rm.f$avg, days.cumm.en10.al, 50)
+En10.50avg.tl <- x.pt.avg(proc.Enamel10.rm.f$mov.avg, days.cumm.en10.al, 50)
 
 #get the 1/2 average time interval as undertainty for timeline matching
 En1.tl.sd <- min(base::diff(En1.50avg.tl$avg.tl))/2
@@ -79,7 +81,7 @@ En1.50avg.tl.f <- dplyr::filter(En1.50avg.tl,
 
 Edrill.tl.sd <- min(base::diff(Edrill.tl.f$tl))/2
 
-Rm3.5b.mill.tl.sd <- min(base::diff(Rm3.5b.mill.tl$tl))/2 
+Rm3.5b.mill.tl.sd <- min(base::diff(Rm3.5b.tl$tl))/2 
 
 # parameter estimates from Misha's turnover model, generated from Yang et al., 2023
 # all parameters have been log-transformed
@@ -156,14 +158,14 @@ R.sd.drill <-rep(r.sd, n.drill)
 drill.tl <- Edrill.tl.f$tl
 
 # 4 micromill enamel data set
-n.Rm3.5b <- length(Rm3.5b.mill.tl$Sr)
+n.Rm3.5b <- length(Rm3.5b.tl$Sr)
 
 # measurement data, timeline, Sr, and sd
-R.Rm3.5b <- Rm3.5b.mill.tl$Sr
+R.Rm3.5b <- Rm3.5b.tl$Sr
 
 R.sd.Rm3.5b <-rep(r.sd, n.Rm3.5b)
 
-Rm3.5b.tl<- Rm3.5b.mill.tl$tl
+Rm3.5b.tl.rec<- Rm3.5b.tl$tl
 
 # 5 Enamel 9 transect
 n.En9 <- length(En9.50avg.tl$avg.sr)
@@ -200,7 +202,7 @@ dat = list( params.mu = turnover.params.mu, params.vcov = turnover.params.vcov,
             n.r1 = n.r1, R.r1 = R.r1, R.sd.r1 = rep(r.sd, n.r1), r1.tl = r1.tl,
             n.r2 = n.r2, R.r2 = R.r2, R.sd.r2 = rep(r.sd, n.r2), r2.tl = En1.tl,
             n.drill = n.drill, R.drill = R.drill, R.sd.drill = rep(r.sd, n.drill), drill.tl = drill.tl,
-            n.Rm3.5b = n.Rm3.5b, R.Rm3.5b = R.Rm3.5b, R.sd.Rm3.5b = rep(r.sd, n.Rm3.5b), Rm3.5b.tl = Rm3.5b.tl,
+            n.Rm3.5b = n.Rm3.5b, R.Rm3.5b = R.Rm3.5b, R.sd.Rm3.5b = rep(r.sd, n.Rm3.5b), Rm3.5b.tl = Rm3.5b.tl.rec,
             n.En9 = n.En9, R.En9 = R.En9, R.sd.En9 = rep(r.sd, n.En9), En9.tl = En9.tl,
             n.En10 = n.En10, R.En10 = R.En10, R.sd.En10 = rep(r.sd, n.En10), En10.tl = En10.tl,
             UT.Sr = UT.Sr, CA.Sr = CA.Sr)
@@ -297,7 +299,7 @@ R.sd.En1 <- En1.50avg.tl.f$sd.sr
 
 R.sd.drill <- Edrill.tl.f$sd
 
-R.sd.Rm3.5b <- Rm3.5b.mill.tl$sd 
+R.sd.Rm3.5b <- Rm3.5b.tl$sd 
 
 R.sd.En9 <- En9.50avg.tl$sd.sr 
 

@@ -60,28 +60,34 @@ data.process <- function(df, log, type = "e"){
   require(tidyr)
   require(dplyr)
   
+  df <- na.omit(df)
+  
   #convert character to number
   df$X88Sr<- as.numeric(df$X88Sr)
   df$X87Sr.86Sr..5.<- as.numeric(df$X87Sr.86Sr..5.)
-
-  df.ef <- filter(.data = df, df$X88Sr > 0.2)
   
-  df.ef <- na.omit(df.ef)
+  # mark data with low Sr 88 voltage
+  filtered <- rep(NA, nrow(df))
+  filtered[which(df$X88Sr > 0.25)] <- "N"
+  filtered[which(df$X88Sr <= 0.25)] <- "Y"
   
   #correction by Sr 88 voltage
   if(type == "d"){#dentine
-    X87Sr.86Sr.corr <- Corr1.87.86.to.88(df.ef$X88Sr, df.ef$X87Sr.86Sr..5.)
+    X87Sr.86Sr.corr <- Corr1.87.86.to.88(df$X88Sr, df$X87Sr.86Sr..5.)
   }
   else{
-    X87Sr.86Sr.corr <- Corr2.87.86.to.88(df.ef$X88Sr, df.ef$X87Sr.86Sr..5.)
+    X87Sr.86Sr.corr <- Corr2.87.86.to.88(df$X88Sr, df$X87Sr.86Sr..5.)
   }
   
   #get time stamp from the Time coloumn
-  df.ef <-  separate_wider_delim(df.ef, Time, delim = ":", names = c("hour", "minute", "second", "milisecond"),
+  df.ef <-  separate_wider_delim(df, Time, delim = ":", names = c("hour", "minute", "second", "milisecond"),
                                  too_few = "align_start")
+
   
   log.ef <- separate_wider_delim(log,Time, delim = ":", names = c("hour", "minute", "second", "milisecond"),
                                  too_few = "align_start")
+  
+
   
   #calculate total time in both data frames
   tt.df.ef <- time.total(df.ef)
@@ -100,7 +106,7 @@ data.process <- function(df, log, type = "e"){
   df.ef.tt.li <- li.interp(df = df.ef.tt, ref = log.ef.tt)
   
   #create a new data frame to store the corrected and interpolated data:
-  corr.df <- tibble(corr.87Sr.86Sr = X87Sr.86Sr.corr, x =df.ef.tt.li$x, y = df.ef.tt.li$y)
+  corr.df <- tibble(df, corr.87Sr.86Sr = X87Sr.86Sr.corr, x =df.ef.tt.li$x, y = df.ef.tt.li$y, filtered = filtered)
   
   return(na.omit(corr.df))
 }
@@ -108,12 +114,10 @@ data.process <- function(df, log, type = "e"){
 ###########fn 4 moving average and sd, n points########
 moving.avg <- function(df, n){
   require(zoo)
-  rm.dat <- rollmean(df$corr.87Sr.86Sr, n)
-  rsd.dat <- rollapply(df$corr.87Sr.86Sr, n, sd)
-  n.remove <- floor(n/2)
-  n.x <- df$x[(n.remove + 1): (nrow(df)-n.remove)]
-  n.y <- df$y[(n.remove + 1): (nrow(df)-n.remove)]
-  tibble(avg = rm.dat, sd = rsd.dat, x = n.x, y = n.y)
+  rm.dat <- rollmean(df$corr.87Sr.86Sr, n, fill = NA)
+  rsd.dat <- rollapply(df$corr.87Sr.86Sr, n, sd, fill = NA)
+
+  tibble(df, mov.avg = rm.dat, sd = rsd.dat)
 }
 
 

@@ -8,7 +8,7 @@ library(ggplot2)
 #############plot 1 all dentine and enamel data with transition points#######
 par(mfrow=c(1,1))
 ggplot()+
-  geom_sf(data = sf.all.dat.rm , aes(color = avg))+
+  geom_sf(data = sf.all.dat.rm , aes(color = mov.avg))+
   scale_color_viridis_c()+
   theme(legend.position = "bottom")
 
@@ -16,13 +16,13 @@ ggplot()+
 ##############both transitions#################
 n.y <- 4
 
-all.dat.rm.proj <- mutate(all.dat.rm.proj, Y2 = n.y * new.y)
+all.dat.narm.proj <- mutate(all.dat.narm.proj, Y2 = n.y * new.y)
 
 cp1.loc <- mutate(cp1.loc, Y2 = n.y * y)
 
 cp2.loc <- mutate(cp2.loc, Y2 = n.y * y)
 
-sf.all.dat.y2 <- st_as_sf(all.dat.rm.proj,  agr = NA_agr_,
+sf.all.dat.y2 <- st_as_sf(all.dat.narm.proj,  agr = NA_agr_,
                                coords = c("new.x","Y2"),
                                dim = "XY",
                                remove = TRUE,
@@ -44,7 +44,7 @@ sf.cp2.y2 <- st_as_sf(cp2.loc,  agr = NA_agr_,
                       sf_column_name = NULL)
 
 ggplot()+
-  geom_sf(data = sf.all.dat.y2 , aes(color = avg),cex=3.5)+
+  geom_sf(data = sf.all.dat.y2 , aes(color = mov.avg),cex=3.5)+
   scale_color_viridis_c()+
 
   geom_abline(intercept = n.y * 3.02e+03, slope = n.y * -tan(3.3/180*pi), color="gray64",
@@ -64,33 +64,7 @@ ggplot()+
   geom_sf(data = sf.cp1.y2, color = "red",pch=18,cex=4)+ 
   theme(legend.position = "bottom")
 
-############# compare position of the change points to appositional angle ###########
-# par(mfrow=c(1, 2))
-# plot(cp1.E.rm.x, cp1.E.rm.y, cex = 0.1,
-#      main = "Change point 1", xlim = c(10000, 50000),
-#      xlab = "Distance from the top of EDJ (micron)",
-#      ylab = "Distance from the EDJ (micron)")
-# #this is based on measurements by Uno et al 2020, with an appositional angle at 3.3 +- 0.5 degrees
-# abline(a = 3.02e+03, b = -tan(3.3/180*pi), lwd = 6, col ="gray64")
-# # abline(a = 3.02e+03, b = -tan(3.25/180*pi), lty = 2, col = "red3")
-# # abline(a = 3.02e+03, b = -tan(3.35/180*pi), lty = 2, col = "red3")
-# abline(lm.cp1.E.proj.inner,lwd = 2, col = "black", lty = 2)
-# points(cp1.E.rm.x[1:8], cp1.E.rm.y[1:8], pch = 18, cex = 1.5) 
-# points(cp1.E.rm.x[9:10], cp1.E.rm.y[9:10], col = "orange", pch = 18, cex = 1.5) #mark the ones that don't conform to the angle
-# 
-# plot(cp2.E.rm.x, cp2.E.rm.y, cex = 0.1,
-#      main = "Change point 2",xlim = c(15000, 55000),
-#      xlab = "Distance from the top of EDJ (micron)",
-#      ylab = "Distance from the EDJ (micron)")
-# #this is based on measurements by Uno et al 2020, with an appositional angle at 3.3 degrees
-# abline(a = 3.317e+03, b = -tan(3.3/180*pi), lwd = 6, col ="gray64")
-# # abline(a = 3.317e+03, b = -tan(3.25/180*pi), lty = 2, col = "red3")
-# # abline(a = 3.317e+03, b = -tan(3.35/180*pi), lty = 2, col = "red3")
-# abline(lm.cp2.E.proj.inner,lwd = 2, col = "black", lty = 2)
-# points(cp2.E.rm.x[1:8], cp2.E.rm.y[1:8], pch = 18, cex = 1.5) #mark the ones that don't conform to the angle
-# points(cp2.E.rm.x[9:10], cp2.E.rm.y[9:10], col = "orange", pch = 18, cex = 1.5) #mark the ones that don't conform to the angle
-
-############# end of change point comparisons ###########
+############ end of change point comparisons ###########
 
 ############# Fig 3 ############# 
 # Fig 3 after converting to time, 
@@ -99,7 +73,7 @@ ggplot()+
 par(mfrow=c(1,5)) #1200 * 400
 
 # Panel 1 molar enamel1 vs micromill tusk dentine 
-plot(-1000, -1, col= "gray24",
+plot(-1000, -1, col= "gray56",
      xlim=c(-400,700),ylim=c(0.705,0.7115),
      xlab="Days from Misha's move",
      main = "Reference turnover",
@@ -111,7 +85,7 @@ polygon(c(en1.tl$tl, rev(en1.tl$tl)),
         c(en1.tl$Sr + en1.tl$sd, 
           rev(en1.tl$Sr - en1.tl$sd)), 
         col = alpha("orange", 0.3), border = NA)
-lines(days.cumm.en1.al, proc.Enamel1.rm.f$avg,col = alpha("orange", 0.9), lwd=2)
+lines(days.cumm.en1.al, proc.Enamel1.rm.f$mov.avg,col = alpha("orange", 0.9), lwd=2)
 
 # reference fit
 lines(bin.thin.oc*1:t.oc - 400, post.comb.R1m.89[[1]],lwd = 2)
@@ -124,7 +98,7 @@ points(tusk.mill.tl$tl, tusk.mill.tl$Sr,
        pch=18, cex = 2.2, col = alpha("#00b4ffff", 0.8))
 
 # Panel 2 molar enamel9 vs micromill tusk dentine 
-plot(-1000, -1, col= "gray24",
+plot(-1000, -1, col= "gray56",
      xlim=c(-400,700),ylim=c(0.705,0.7115),
      xlab="Days from Misha's move",
      main = "Overprint: En9",
@@ -136,7 +110,7 @@ polygon(c(en9.tl$tl, rev(en9.tl$tl)),
         c(en9.tl$Sr + en9.tl$sd, 
           rev(en9.tl$Sr - en9.tl$sd)), 
         col = alpha("orange3", 0.3), border = NA)
-lines(days.cumm.en9.al, proc.Enamel9.rm.f$avg,col = alpha("orange3", 0.9), lwd=2)
+lines(days.cumm.en9.al, proc.Enamel9.rm.f$mov.avg,col = alpha("orange3", 0.9), lwd=2)
 
 # reference fit
 lines(bin.thin.oc*1:t.oc - 400, post.comb.R1m.89[[1]],lwd = 2, col = "gray56")
@@ -147,7 +121,7 @@ lines(bin.thin.oc*1:t.oc - 400, post.comb.R1.En9.89[[1]],lwd = 2, lty = 2)
 graphics::text(400, 0.707, "f = 0.06", cex = 1.3)
 
 # Panel 3 molar enamel10 vs micromill tusk dentine 
-plot(-1000, -1, col= "gray24",
+plot(-1000, -1, col= "gray56",
      xlim=c(-400,700),ylim=c(0.705,0.7115),
      xlab="Days from Misha's move",
      main = "Overprint: En10",
@@ -159,7 +133,7 @@ polygon(c(en10.tl$tl, rev(en10.tl$tl)),
         c(en10.tl$Sr + en10.tl$sd, 
           rev(en10.tl$Sr - en10.tl$sd)), 
         col = alpha("orange4", 0.3), border = NA)
-lines(days.cumm.en10.al, proc.Enamel10.rm.f$avg,col = alpha("orange4", 0.9), lwd=2)
+lines(days.cumm.en10.al, proc.Enamel10.rm.f$mov.avg,col = alpha("orange4", 0.9), lwd=2)
 
 # reference fit
 lines(bin.thin.oc*1:t.oc - 400, post.comb.R1m.89[[1]],lwd = 2, col = "gray56")

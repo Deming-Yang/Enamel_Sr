@@ -10,19 +10,19 @@ library(viridisLite)
 ################# overlay with shifted x values in change points ###############
 par(mfrow=c(2,5))
 #enamel 1, no x- shift is needed
-plot(dent.rm.f2$new.x, dent.rm.f2$avg, main = "Enamel 1",col= "gray24",
+plot(dent.rm.f2$new.x, dent.rm.f2$mov.avg, main = "Enamel 1",col= "gray24",
      type="l", lwd=2, xlim=c(4e4,8e4),ylim=c(0.704,0.712)) #thick line
 polygon(c(dent.rm.f2$new.x, rev(dent.rm.f2$new.x)), 
-        c(dent.rm.f2$avg + dent.rm.f2$sd, rev(dent.rm.f2$avg - dent.rm.f2$sd)), 
+        c(dent.rm.f2$mov.avg + dent.rm.f2$sd, rev(dent.rm.f2$mov.avg - dent.rm.f2$sd)), 
         col = "gray60", border = NA)
-lines(dent.rm.f2$new.x, dent.rm.f2$avg,col= "gray24", lwd=2)
+lines(dent.rm.f2$new.x, dent.rm.f2$mov.avg,col= "gray24", lwd=2)
 
-
-polygon(c(proc.Enamel1.rm.f$new.x, rev(proc.Enamel1.rm.f$new.x)), 
-        c(proc.Enamel1.rm.f$avg + proc.Enamel1.rm.f$sd, 
-          rev(proc.Enamel1.rm.f$avg - proc.Enamel1.rm.f$sd)), 
+proc.En1.plot <- na.omit(proc.Enamel1.rm.f)
+polygon(c(proc.En1.plot$new.x, rev(proc.En1.plot$new.x)), 
+        c(proc.En1.plot$mov.avg + proc.En1.plot$sd, 
+          rev(proc.En1.plot$mov.avg - proc.En1.plot$sd)), 
         col = alpha("orange", 0.3), border = NA)
-lines(proc.Enamel1.rm.f$new.x, proc.Enamel1.rm.f$avg, col= alpha("orange", 0.8),lwd=2)
+lines(proc.Enamel1.rm.f$new.x, proc.Enamel1.rm.f$mov.avg, col= alpha("orange", 0.8),lwd=2)
 
 abline(h = segmented.D.Sr.1, lty = 2, lwd = 1.5)
 abline(h = segmented.D.Sr.2, lty = 2, lwd = 1.5)
@@ -33,18 +33,19 @@ points.segmented(fit_segmented.E1.rm)
 #enamel 2, x- shift is needed, need to shift dentine values
 shift.x <- cp1.D.rm - cp1.E.rm.x[2]
 
-plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 2",col= "gray24",
+plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$mov.avg, main = "Enamel 2",col= "gray24",
      type="l", lwd=2, xlim=c(3.5e4,7.5e4),ylim=c(0.704,0.712)) #thick line
 polygon(c(dent.rm.f2$new.x - shift.x, rev(dent.rm.f2$new.x - shift.x)), 
-        c(dent.rm.f2$avg + dent.rm.f2$sd, rev(dent.rm.f2$avg - dent.rm.f2$sd)), 
+        c(dent.rm.f2$mov.avg + dent.rm.f2$sd, rev(dent.rm.f2$mov.avg - dent.rm.f2$sd)), 
         col = "gray60", border = NA)
-lines(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg,col= "gray24", lwd=2)
+lines(dent.rm.f2$new.x - shift.x, dent.rm.f2$mov.avg,col= "gray24", lwd=2)
 
-polygon(c(proc.Enamel2.rm.f$new.x, rev(proc.Enamel2.rm.f$new.x)), 
-        c(proc.Enamel2.rm.f$avg + proc.Enamel2.rm.f$sd, 
-          rev(proc.Enamel2.rm.f$avg - proc.Enamel2.rm.f$sd)), 
+proc.En2.plot <- na.omit(proc.Enamel2.rm.f)
+polygon(c(proc.En2.plot$new.x, rev(proc.En2.plot$new.x)), 
+        c(proc.En2.plot$mov.avg + proc.En2.plot$sd, 
+          rev(proc.En2.plot$mov.avg - proc.En2.plot$sd)), 
         col = alpha("orange", 0.3), border = NA)
-lines(proc.Enamel2.rm.f$new.x, proc.Enamel2.rm.f$avg, col= alpha("orange", 0.8),lwd=2)
+lines(proc.Enamel2.rm.f$new.x, proc.Enamel2.rm.f$mov.avg, col= alpha("orange", 0.8),lwd=2)
 
 abline(h = segmented.D.Sr.1, lty = 2, lwd = 1.5)
 abline(h = segmented.D.Sr.2, lty = 2, lwd = 1.5)
@@ -55,18 +56,19 @@ points.segmented(fit_segmented.E2.rm)
 #enamel 3, x- shift is needed, need to shift dentine values
 shift.x <- cp1.D.rm - cp1.E.rm.x[3] 
 
-plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 3",col= "gray24",
+plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$mov.avg, main = "Enamel 3",col= "gray24",
      type="l", lwd=2, xlim=c(3e4,7e4),ylim=c(0.704,0.712)) #thick line
 polygon(c(dent.rm.f2$new.x - shift.x, rev(dent.rm.f2$new.x - shift.x)), 
-        c(dent.rm.f2$avg + dent.rm.f2$sd, rev(dent.rm.f2$avg - dent.rm.f2$sd)), 
+        c(dent.rm.f2$mov.avg + dent.rm.f2$sd, rev(dent.rm.f2$mov.avg - dent.rm.f2$sd)), 
         col = "gray60", border = NA)
-lines(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg,col= "gray24", lwd=2)
+lines(dent.rm.f2$new.x - shift.x, dent.rm.f2$mov.avg,col= "gray24", lwd=2)
 
-polygon(c(proc.Enamel3.rm.f$new.x, rev(proc.Enamel3.rm.f$new.x)), 
-        c(proc.Enamel3.rm.f$avg + proc.Enamel3.rm.f$sd, 
-          rev(proc.Enamel3.rm.f$avg - proc.Enamel3.rm.f$sd)), 
+proc.En3.plot <- na.omit(proc.Enamel3.rm.f)
+polygon(c(proc.En3.plot$new.x, rev(proc.En3.plot$new.x)), 
+        c(proc.En3.plot$mov.avg + proc.En3.plot$sd, 
+          rev(proc.En3.plot$mov.avg - proc.En3.plot$sd)), 
         col = alpha("orange", 0.3), border = NA)
-lines(proc.Enamel3.rm.f$new.x, proc.Enamel3.rm.f$avg, col= alpha("orange", 0.8),lwd=2)
+lines(proc.Enamel3.rm.f$new.x, proc.Enamel3.rm.f$mov.avg, col= alpha("orange", 0.8),lwd=2)
 
 abline(h = segmented.D.Sr.1, lty = 2, lwd = 1.5)
 abline(h = segmented.D.Sr.2, lty = 2, lwd = 1.5)
@@ -77,18 +79,19 @@ points.segmented(fit_segmented.E3.rm)
 #enamel 4, x- shift is needed, need to shift dentine values
 shift.x <- cp1.D.rm - cp1.E.rm.x[4]
 
-plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 4",col= "gray24",
+plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$mov.avg, main = "Enamel 4",col= "gray24",
      type="l", lwd=2, xlim=c(2.5e4,6.5e4),ylim=c(0.704,0.712)) #thick line
 polygon(c(dent.rm.f2$new.x - shift.x, rev(dent.rm.f2$new.x - shift.x)), 
-        c(dent.rm.f2$avg + dent.rm.f2$sd, rev(dent.rm.f2$avg - dent.rm.f2$sd)), 
+        c(dent.rm.f2$mov.avg + dent.rm.f2$sd, rev(dent.rm.f2$mov.avg - dent.rm.f2$sd)), 
         col = "gray60", border = NA)
-lines(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg,col= "gray24", lwd=2)
+lines(dent.rm.f2$new.x - shift.x, dent.rm.f2$mov.avg,col= "gray24", lwd=2)
 
-polygon(c(proc.Enamel4.rm.f$new.x, rev(proc.Enamel4.rm.f$new.x)), 
-        c(proc.Enamel4.rm.f$avg + proc.Enamel4.rm.f$sd, 
-          rev(proc.Enamel4.rm.f$avg - proc.Enamel4.rm.f$sd)), 
+proc.En4.plot <- na.omit(proc.Enamel4.rm.f)
+polygon(c(proc.En4.plot$new.x, rev(proc.En4.plot$new.x)), 
+        c(proc.En4.plot$mov.avg + proc.En4.plot$sd, 
+          rev(proc.En4.plot$mov.avg - proc.En4.plot$sd)), 
         col = alpha("orange", 0.3), border = NA)
-lines(proc.Enamel4.rm.f$new.x, proc.Enamel4.rm.f$avg, col= alpha("orange", 0.8),lwd=2)
+lines(proc.Enamel4.rm.f$new.x, proc.Enamel4.rm.f$mov.avg, col= alpha("orange", 0.8),lwd=2)
 
 abline(h = segmented.D.Sr.1, lty = 2, lwd = 1.5)
 abline(h = segmented.D.Sr.2, lty = 2, lwd = 1.5)
@@ -99,18 +102,19 @@ points.segmented(fit_segmented.E4.rm)
 #enamel 5, x- shift is needed, need to shift dentine values
 shift.x <- cp1.D.rm - cp1.E.rm.x[5]
 
-plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 5",col= "gray24",
+plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$mov.avg, main = "Enamel 5",col= "gray24",
      type="l", lwd=2, xlim=c(1.5e4,5.5e4),ylim=c(0.704,0.712)) #thick line
 polygon(c(dent.rm.f2$new.x - shift.x, rev(dent.rm.f2$new.x - shift.x)), 
-        c(dent.rm.f2$avg + dent.rm.f2$sd, rev(dent.rm.f2$avg - dent.rm.f2$sd)), 
+        c(dent.rm.f2$mov.avg + dent.rm.f2$sd, rev(dent.rm.f2$mov.avg - dent.rm.f2$sd)), 
         col = "gray60", border = NA)
-lines(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg,col= "gray24", lwd=2)
+lines(dent.rm.f2$new.x - shift.x, dent.rm.f2$mov.avg,col= "gray24", lwd=2)
 
-polygon(c(proc.Enamel5.rm.f$new.x, rev(proc.Enamel5.rm.f$new.x)), 
-        c(proc.Enamel5.rm.f$avg + proc.Enamel5.rm.f$sd, 
-          rev(proc.Enamel5.rm.f$avg - proc.Enamel5.rm.f$sd)), 
+proc.En5.plot <- na.omit(proc.Enamel5.rm.f)
+polygon(c(proc.En5.plot$new.x, rev(proc.En5.plot$new.x)), 
+        c(proc.En5.plot$mov.avg + proc.En5.plot$sd, 
+          rev(proc.En5.plot$mov.avg - proc.En5.plot$sd)), 
         col = alpha("orange", 0.3), border = NA)
-lines(proc.Enamel5.rm.f$new.x, proc.Enamel5.rm.f$avg, col= alpha("orange", 0.8),lwd=2)
+lines(proc.Enamel5.rm.f$new.x, proc.Enamel5.rm.f$mov.avg, col= alpha("orange", 0.8),lwd=2)
 
 abline(h = segmented.D.Sr.1, lty = 2, lwd = 1.5)
 abline(h = segmented.D.Sr.2, lty = 2, lwd = 1.5)
@@ -121,18 +125,19 @@ points.segmented(fit_segmented.E5.rm)
 #enamel 6, x- shift is needed, need to shift dentine values
 shift.x <- cp1.D.rm - cp1.E.rm.x[6]
 
-plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 6",col= "gray24",
+plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$mov.avg, main = "Enamel 6",col= "gray24",
      type="l", lwd=2, xlim=c(1.2e4,5.2e4),ylim=c(0.704,0.712)) #thick line
 polygon(c(dent.rm.f2$new.x - shift.x, rev(dent.rm.f2$new.x - shift.x)), 
-        c(dent.rm.f2$avg + dent.rm.f2$sd, rev(dent.rm.f2$avg - dent.rm.f2$sd)), 
+        c(dent.rm.f2$mov.avg + dent.rm.f2$sd, rev(dent.rm.f2$mov.avg - dent.rm.f2$sd)), 
         col = "gray60", border = NA)
-lines(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg,col= "gray24", lwd=2)
+lines(dent.rm.f2$new.x - shift.x, dent.rm.f2$mov.avg,col= "gray24", lwd=2)
 
-polygon(c(proc.Enamel6.rm.f$new.x, rev(proc.Enamel6.rm.f$new.x)), 
-        c(proc.Enamel6.rm.f$avg + proc.Enamel6.rm.f$sd, 
-          rev(proc.Enamel6.rm.f$avg - proc.Enamel6.rm.f$sd)), 
+proc.En6.plot <- na.omit(proc.Enamel6.rm.f)
+polygon(c(proc.En6.plot$new.x, rev(proc.En6.plot$new.x)), 
+        c(proc.En6.plot$mov.avg + proc.En6.plot$sd, 
+          rev(proc.En6.plot$mov.avg - proc.En6.plot$sd)), 
         col = alpha("orange", 0.3), border = NA)
-lines(proc.Enamel6.rm.f$new.x, proc.Enamel6.rm.f$avg, col= alpha("orange", 0.8),lwd=2)
+lines(proc.Enamel6.rm.f$new.x, proc.Enamel6.rm.f$mov.avg, col= alpha("orange", 0.8),lwd=2)
 
 abline(h = segmented.D.Sr.1, lty = 2, lwd = 1.5)
 abline(h = segmented.D.Sr.2, lty = 2, lwd = 1.5)
@@ -143,18 +148,19 @@ points.segmented(fit_segmented.E6.rm)
 #enamel 7, x- shift is needed, need to shift dentine values
 shift.x <- cp1.D.rm - cp1.E.rm.x[7]
 
-plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 7",col= "gray24",
+plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$mov.avg, main = "Enamel 7",col= "gray24",
      type="l", lwd=2, xlim=c(1e4,5e4),ylim=c(0.704,0.712)) #thick line
 polygon(c(dent.rm.f2$new.x - shift.x, rev(dent.rm.f2$new.x - shift.x)), 
-        c(dent.rm.f2$avg + dent.rm.f2$sd, rev(dent.rm.f2$avg - dent.rm.f2$sd)), 
+        c(dent.rm.f2$mov.avg + dent.rm.f2$sd, rev(dent.rm.f2$mov.avg - dent.rm.f2$sd)), 
         col = "gray60", border = NA)
-lines(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg,col= "gray24", lwd=2)
+lines(dent.rm.f2$new.x - shift.x, dent.rm.f2$mov.avg,col= "gray24", lwd=2)
 
-polygon(c(proc.Enamel7.rm.f$new.x, rev(proc.Enamel7.rm.f$new.x)), 
-        c(proc.Enamel7.rm.f$avg + proc.Enamel7.rm.f$sd, 
-          rev(proc.Enamel7.rm.f$avg - proc.Enamel7.rm.f$sd)), 
+proc.En7.plot <- na.omit(proc.Enamel7.rm.f)
+polygon(c(proc.En7.plot$new.x, rev(proc.En7.plot$new.x)), 
+        c(proc.En7.plot$mov.avg + proc.En7.plot$sd, 
+          rev(proc.En7.plot$mov.avg - proc.En7.plot$sd)), 
         col = alpha("orange", 0.3), border = NA)
-lines(proc.Enamel7.rm.f$new.x, proc.Enamel7.rm.f$avg, col= alpha("orange", 0.8),lwd=2)
+lines(proc.Enamel7.rm.f$new.x, proc.Enamel7.rm.f$mov.avg, col= alpha("orange", 0.8),lwd=2)
 
 abline(h = segmented.D.Sr.1, lty = 2, lwd = 1.5)
 abline(h = segmented.D.Sr.2, lty = 2, lwd = 1.5)
@@ -165,18 +171,19 @@ points.segmented(fit_segmented.E7.rm)
 #enamel 8, x- shift is needed, need to shift dentine values
 shift.x <- cp1.D.rm - cp1.E.rm.x[8]
 
-plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 8",col= "gray24",
+plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$mov.avg, main = "Enamel 8",col= "gray24",
      type="l", lwd=2, xlim=c(0.5e4,4.5e4),ylim=c(0.704,0.712)) #thick line
 polygon(c(dent.rm.f2$new.x - shift.x, rev(dent.rm.f2$new.x - shift.x)), 
-        c(dent.rm.f2$avg + dent.rm.f2$sd, rev(dent.rm.f2$avg - dent.rm.f2$sd)), 
+        c(dent.rm.f2$mov.avg + dent.rm.f2$sd, rev(dent.rm.f2$mov.avg - dent.rm.f2$sd)), 
         col = "gray60", border = NA)
-lines(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg,col= "gray24", lwd=2)
+lines(dent.rm.f2$new.x - shift.x, dent.rm.f2$mov.avg,col= "gray24", lwd=2)
 
-polygon(c(proc.Enamel8.rm.f$new.x, rev(proc.Enamel8.rm.f$new.x)), 
-        c(proc.Enamel8.rm.f$avg + proc.Enamel8.rm.f$sd, 
-          rev(proc.Enamel8.rm.f$avg - proc.Enamel8.rm.f$sd)), 
+proc.En8.plot <- na.omit(proc.Enamel8.rm.f)
+polygon(c(proc.En8.plot$new.x, rev(proc.En8.plot$new.x)), 
+        c(proc.En8.plot$mov.avg + proc.En8.plot$sd, 
+          rev(proc.En8.plot$mov.avg - proc.En8.plot$sd)), 
         col = alpha("orange", 0.3), border = NA)
-lines(proc.Enamel8.rm.f$new.x, proc.Enamel8.rm.f$avg, col= alpha("orange", 0.8),lwd=2)
+lines(proc.Enamel8.rm.f$new.x, proc.Enamel8.rm.f$mov.avg, col= alpha("orange", 0.8),lwd=2)
 
 abline(h = segmented.D.Sr.1, lty = 2, lwd = 1.5)
 abline(h = segmented.D.Sr.2, lty = 2, lwd = 1.5)
@@ -187,18 +194,19 @@ points.segmented(fit_segmented.E8.rm)
 #enamel 9, x- shift is needed, need to shift dentine values
 shift.x <- cp1.D.rm - cp1.E.rm.x[9]
 
-plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 9",col= "gray24",
+plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$mov.avg, main = "Enamel 9",col= "gray24",
      type="l", lwd=2, xlim=c(0.5e4,4.5e4),ylim=c(0.704,0.712)) #thick line
 polygon(c(dent.rm.f2$new.x - shift.x, rev(dent.rm.f2$new.x - shift.x)), 
-        c(dent.rm.f2$avg + dent.rm.f2$sd, rev(dent.rm.f2$avg - dent.rm.f2$sd)), 
+        c(dent.rm.f2$mov.avg + dent.rm.f2$sd, rev(dent.rm.f2$mov.avg - dent.rm.f2$sd)), 
         col = "gray60", border = NA)
-lines(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg,col= "gray24", lwd=2)
+lines(dent.rm.f2$new.x - shift.x, dent.rm.f2$mov.avg,col= "gray24", lwd=2)
 
-polygon(c(proc.Enamel9.rm.f$new.x, rev(proc.Enamel9.rm.f$new.x)), 
-        c(proc.Enamel9.rm.f$avg + proc.Enamel9.rm.f$sd, 
-          rev(proc.Enamel9.rm.f$avg - proc.Enamel9.rm.f$sd)), 
+proc.En9.plot <- na.omit(proc.Enamel9.rm.f)
+polygon(c(proc.En9.plot$new.x, rev(proc.En9.plot$new.x)), 
+        c(proc.En9.plot$mov.avg + proc.En9.plot$sd, 
+          rev(proc.En9.plot$mov.avg - proc.En9.plot$sd)), 
         col = alpha("orange", 0.3), border = NA)
-lines(proc.Enamel9.rm.f$new.x, proc.Enamel9.rm.f$avg, col= alpha("orange", 0.8),lwd=2)
+lines(proc.Enamel9.rm.f$new.x, proc.Enamel9.rm.f$mov.avg, col= alpha("orange", 0.8),lwd=2)
 
 abline(h = segmented.D.Sr.1, lty = 2, lwd = 1.5)
 abline(h = segmented.D.Sr.2, lty = 2, lwd = 1.5)
@@ -209,18 +217,19 @@ points.segmented(fit_segmented.E9.rm)
 #enamel 10, x- shift is needed, need to shift dentine values
 shift.x <- cp1.D.rm - cp1.E.rm.x[10]
 
-plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg, main = "Enamel 10",col= "gray24",
+plot(dent.rm.f2$new.x - shift.x, dent.rm.f2$mov.avg, main = "Enamel 10",col= "gray24",
      type="l", lwd=2, xlim=c(0e4,4e4),ylim=c(0.704,0.712)) #thick line
 polygon(c(dent.rm.f2$new.x - shift.x, rev(dent.rm.f2$new.x - shift.x)), 
-        c(dent.rm.f2$avg + dent.rm.f2$sd, rev(dent.rm.f2$avg - dent.rm.f2$sd)), 
+        c(dent.rm.f2$mov.avg + dent.rm.f2$sd, rev(dent.rm.f2$mov.avg - dent.rm.f2$sd)), 
         col = "gray60", border = NA)
-lines(dent.rm.f2$new.x - shift.x, dent.rm.f2$avg,col= "gray24", lwd=2)
+lines(dent.rm.f2$new.x - shift.x, dent.rm.f2$mov.avg,col= "gray24", lwd=2)
 
-polygon(c(proc.Enamel10.rm.f$new.x, rev(proc.Enamel10.rm.f$new.x)), 
-        c(proc.Enamel10.rm.f$avg + proc.Enamel10.rm.f$sd, 
-          rev(proc.Enamel10.rm.f$avg - proc.Enamel10.rm.f$sd)), 
+proc.En10.plot <- na.omit(proc.Enamel10.rm.f)
+polygon(c(proc.En10.plot$new.x, rev(proc.En10.plot$new.x)), 
+        c(proc.En10.plot$mov.avg + proc.En10.plot$sd, 
+          rev(proc.En10.plot$mov.avg - proc.En10.plot$sd)), 
         col = alpha("orange", 0.3), border = NA)
-lines(proc.Enamel10.rm.f$new.x, proc.Enamel10.rm.f$avg, col= alpha("orange", 0.8),lwd=2)
+lines(proc.Enamel10.rm.f$new.x, proc.Enamel10.rm.f$mov.avg, col= alpha("orange", 0.8),lwd=2)
 
 abline(h = segmented.D.Sr.1, lty = 2, lwd = 1.5)
 abline(h = segmented.D.Sr.2, lty = 2, lwd = 1.5)

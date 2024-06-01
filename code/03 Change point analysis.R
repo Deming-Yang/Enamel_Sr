@@ -20,9 +20,11 @@ source("./code/1 Helper functions.R")
 # there are small cracks along the length of the molar
 # the filtering removes those data points
 
-dent.rm.f <- filter(dent.rm.proj, dent.rm.proj$avg > 0.703)
+# mark data with low Sr87/86 voltage
+dent.rm.proj$filtered[which(dent.rm.proj$mov.avg < 0.704)] <- "Y"
+dent.rm.f <- filter(dent.rm.proj, dent.rm.proj$filtered == "N")
 
-fit_lm.D.rm = lm(avg ~ 1 + new.x, data = dent.rm.f)  # intercept-only model
+fit_lm.D.rm = lm(mov.avg ~ 1 + new.x, data = dent.rm.f)  # intercept-only model
 set.seed(1234)
 fit_segmented.D.rm = segmented(fit_lm.D.rm, seg.Z = ~new.x, npsi = 3)  # Three change points along new.x
 
@@ -48,8 +50,10 @@ segmented.D.Sr.1 <- approx(fit_segmented.D.rm$model$new.x, fit_segmented.D.rm$mo
 segmented.D.Sr.2 <- approx(fit_segmented.D.rm$model$new.x, fit_segmented.D.rm$model$avg, xout = cp2.D.rm)
 
 ############Enamel 1###################
-proc.Enamel1.rm.f <- filter(proc.Enamel1.rm.proj, proc.Enamel1.rm.proj$avg > 0.703)
-fit_lm.E1.rm = lm(avg ~ 1 + new.x, data = proc.Enamel1.rm.f)  # intercept-only model
+proc.Enamel1.rm.proj$filtered[which(proc.Enamel1.rm.proj$mov.avg < 0.704)] <- "Y"
+proc.Enamel1.rm.f <- filter(proc.Enamel1.rm.proj, proc.Enamel1.rm.proj$filtered == "N")
+
+fit_lm.E1.rm = lm(mov.avg ~ 1 + new.x, data = proc.Enamel1.rm.f)  # intercept-only model
 set.seed(1234)
 fit_segmented.E1.rm = segmented(fit_lm.E1.rm, seg.Z = ~new.x, npsi = 2)  # Two change points along y
 
@@ -69,8 +73,10 @@ E1.rm.sl1 <- fit_segmented.E1.rm$coefficients[2] + fit_segmented.E1.rm$coefficie
 E1.rm.sl2 <- fit_segmented.E1.rm$coefficients[2]+ fit_segmented.E1.rm$coefficients[3]+ fit_segmented.E1.rm$coefficients[4] #third slope
 
 ############Enamel 2###################
-proc.Enamel2.rm.f <- filter(proc.Enamel2.rm.proj, proc.Enamel2.rm.proj$avg > 0.703)
-fit_lm.E2.rm = lm(avg ~ 1 + new.x, data = proc.Enamel2.rm.f)  # intercept-only model
+proc.Enamel2.rm.proj$filtered[which(proc.Enamel2.rm.proj$mov.avg < 0.704)] <- "Y"
+proc.Enamel2.rm.f <- filter(proc.Enamel2.rm.proj, proc.Enamel2.rm.proj$filtered == "N")
+
+fit_lm.E2.rm = lm(mov.avg ~ 1 + new.x, data = proc.Enamel2.rm.f)  # intercept-only model
 set.seed(1234)
 fit_segmented.E2.rm = segmented(fit_lm.E2.rm, seg.Z = ~new.x, npsi = 2)  # Two change points along y
 
@@ -90,8 +96,9 @@ E2.rm.sl1 <- fit_segmented.E2.rm$coefficients[2] + fit_segmented.E2.rm$coefficie
 E2.rm.sl2 <- fit_segmented.E2.rm$coefficients[2]+ fit_segmented.E2.rm$coefficients[3]+ fit_segmented.E2.rm$coefficients[4] #third slope
 
 ############Enamel 3###################
-proc.Enamel3.rm.f <- filter(proc.Enamel3.rm.proj, proc.Enamel3.rm.proj$avg > 0.703)
-fit_lm.E3.rm = lm(avg ~ 1 + new.x, data = proc.Enamel3.rm.f)  # intercept-only model
+proc.Enamel3.rm.proj$filtered[which(proc.Enamel3.rm.proj$mov.avg < 0.704)] <- "Y"
+proc.Enamel3.rm.f <- filter(proc.Enamel3.rm.proj, proc.Enamel3.rm.proj$filtered == "N")
+fit_lm.E3.rm = lm(mov.avg ~ 1 + new.x, data = proc.Enamel3.rm.f)  # intercept-only model
 set.seed(1234)
 fit_segmented.E3.rm = segmented(fit_lm.E3.rm, seg.Z = ~new.x, npsi = 2)  # Two change points along y
 
@@ -111,8 +118,10 @@ E3.rm.sl1 <- fit_segmented.E3.rm$coefficients[2] + fit_segmented.E3.rm$coefficie
 E3.rm.sl2 <- fit_segmented.E3.rm$coefficients[2]+ fit_segmented.E3.rm$coefficients[3]+ fit_segmented.E3.rm$coefficients[4] #third slope
 
 ############Enamel 4###################
-proc.Enamel4.rm.f <- filter(proc.Enamel4.rm.proj, proc.Enamel4.rm.proj$avg > 0.703)
-fit_lm.E4.rm = lm(avg ~ 1 + new.x, data = proc.Enamel4.rm.f)  # intercept-only model
+proc.Enamel4.rm.proj$filtered[which(proc.Enamel4.rm.proj$mov.avg < 0.704)] <- "Y"
+proc.Enamel4.rm.f <- filter(proc.Enamel4.rm.proj, proc.Enamel4.rm.proj$filtered == "N")
+
+fit_lm.E4.rm = lm(mov.avg ~ 1 + new.x, data = proc.Enamel4.rm.f)  # intercept-only model
 set.seed(1234)
 fit_segmented.E4.rm = segmented(fit_lm.E4.rm, seg.Z = ~new.x, npsi = 4)  # four change points along y to make sense
 
@@ -135,8 +144,10 @@ E4.rm.sl2 <- fit_segmented.E4.rm$coefficients[2]+ fit_segmented.E4.rm$coefficien
   fit_segmented.E4.rm$coefficients[5]#third slope
 
 ############Enamel 5###################
-proc.Enamel5.rm.f <- filter(proc.Enamel5.rm.proj, proc.Enamel5.rm.proj$avg > 0.703)
-fit_lm.E5.rm = lm(avg ~ 1 + new.x, data = proc.Enamel5.rm.f)  # intercept-only model
+proc.Enamel5.rm.proj$filtered[which(proc.Enamel5.rm.proj$mov.avg < 0.704)] <- "Y"
+proc.Enamel5.rm.f <- filter(proc.Enamel5.rm.proj, proc.Enamel5.rm.proj$filtered == "N")
+
+fit_lm.E5.rm = lm(mov.avg ~ 1 + new.x, data = proc.Enamel5.rm.f)  # intercept-only model
 set.seed(1234)
 fit_segmented.E5.rm = segmented(fit_lm.E5.rm, seg.Z = ~new.x, npsi = 2)  # Two change points along y
 
@@ -156,9 +167,10 @@ E5.rm.sl1 <- fit_segmented.E5.rm$coefficients[2] + fit_segmented.E5.rm$coefficie
 E5.rm.sl2 <- fit_segmented.E5.rm$coefficients[2]+ fit_segmented.E5.rm$coefficients[3]+ fit_segmented.E5.rm$coefficients[4] #third slope
 
 ############Enamel 6###################
-proc.Enamel6.rm.f <- filter(proc.Enamel6.rm.proj, proc.Enamel6.rm.proj$avg > 0.703)
+proc.Enamel6.rm.proj$filtered[which(proc.Enamel6.rm.proj$mov.avg < 0.704)] <- "Y"
+proc.Enamel6.rm.f <- filter(proc.Enamel6.rm.proj, proc.Enamel6.rm.proj$filtered == "N")
 
-fit_lm.E6.rm = lm(avg ~ 1 + new.x, data = proc.Enamel6.rm.f)  # intercept-only model
+fit_lm.E6.rm = lm(mov.avg ~ 1 + new.x, data = proc.Enamel6.rm.f)  # intercept-only model
 set.seed(1234)
 fit_segmented.E6.rm = segmented(fit_lm.E6.rm, seg.Z = ~new.x, npsi = 3)  # one change points along y
 
@@ -179,8 +191,10 @@ E6.rm.sl2 <- fit_segmented.E6.rm$coefficients[2]+ fit_segmented.E6.rm$coefficien
   fit_segmented.E6.rm$coefficients[5]#third slope
 
 ############Enamel 7###################
-proc.Enamel7.rm.f <- filter(proc.Enamel7.rm.proj, proc.Enamel7.rm.proj$avg > 0.703)
-fit_lm.E7.rm = lm(avg ~ 1 + new.x, data = proc.Enamel7.rm.f)  # intercept-only model
+proc.Enamel7.rm.proj$filtered[which(proc.Enamel7.rm.proj$mov.avg < 0.704)] <- "Y"
+proc.Enamel7.rm.f <- filter(proc.Enamel7.rm.proj, proc.Enamel7.rm.proj$filtered == "N")
+
+fit_lm.E7.rm = lm(mov.avg ~ 1 + new.x, data = proc.Enamel7.rm.f)  # intercept-only model
 set.seed(1234)
 fit_segmented.E7.rm = segmented(fit_lm.E7.rm, seg.Z = ~new.x, npsi = 3)  # one change point to make it work
 
@@ -201,8 +215,10 @@ E7.rm.sl2 <- fit_segmented.E7.rm$coefficients[2]+ fit_segmented.E7.rm$coefficien
  fit_segmented.E7.rm$coefficients[5]#third slope
 
 ############Enamel 8###################
-proc.Enamel8.rm.f <- filter(proc.Enamel8.rm.proj, proc.Enamel8.rm.proj$avg > 0.703)
-fit_lm.E8.rm = lm(avg ~ 1 + new.x, data = proc.Enamel8.rm.f)  # intercept-only model
+proc.Enamel8.rm.proj$filtered[which(proc.Enamel8.rm.proj$mov.avg < 0.704)] <- "Y"
+proc.Enamel8.rm.f <- filter(proc.Enamel8.rm.proj, proc.Enamel8.rm.proj$filtered == "N")
+
+fit_lm.E8.rm = lm(mov.avg ~ 1 + new.x, data = proc.Enamel8.rm.f)  # intercept-only model
 set.seed(1234)
 fit_segmented.E8.rm = segmented(fit_lm.E8.rm, seg.Z = ~new.x, npsi = 2)  # one change point to make it work
 
@@ -223,8 +239,10 @@ E8.rm.sl2 <- fit_segmented.E8.rm$coefficients[2]+ fit_segmented.E8.rm$coefficien
 
 
 ############Enamel 9###################
-proc.Enamel9.rm.f <- filter(proc.Enamel9.rm.proj, proc.Enamel9.rm.proj$avg > 0.703)
-fit_lm.E9.rm = lm(avg ~ 1 + new.x, data = proc.Enamel9.rm.f)  # intercept-only model
+proc.Enamel9.rm.proj$filtered[which(proc.Enamel9.rm.proj$mov.avg < 0.704)] <- "Y"
+proc.Enamel9.rm.f <- filter(proc.Enamel9.rm.proj, proc.Enamel9.rm.proj$filtered == "N")
+
+fit_lm.E9.rm = lm(mov.avg ~ 1 + new.x, data = proc.Enamel9.rm.f)  # intercept-only model
 set.seed(1234)
 fit_segmented.E9.rm = segmented(fit_lm.E9.rm, seg.Z = ~new.x, npsi = 2)  # one change point to make it work
 
@@ -244,8 +262,11 @@ E9.rm.sl1 <- fit_segmented.E9.rm$coefficients[2] + fit_segmented.E9.rm$coefficie
 E9.rm.sl2 <- fit_segmented.E9.rm$coefficients[2]+ fit_segmented.E9.rm$coefficients[3]+ fit_segmented.E9.rm$coefficients[4] #third slope
 
 ############Enamel 10###################
-proc.Enamel10.rm.f <- filter(proc.Enamel10.rm.proj, proc.Enamel10.rm.proj$avg > 0.703)
-fit_lm.E10.rm = lm(avg ~ 1 + new.x, data = proc.Enamel10.rm.f)  # intercept-only model
+proc.Enamel10.rm.proj$filtered[which(proc.Enamel10.rm.proj$mov.avg < 0.705)] <- "Y"
+proc.Enamel10.rm.f <- filter(proc.Enamel10.rm.proj, proc.Enamel10.rm.proj$filtered == "N")
+
+proc.Enamel10.rm.f <- filter(proc.Enamel10.rm.proj, proc.Enamel10.rm.proj$filtered == "N")
+fit_lm.E10.rm = lm(mov.avg ~ 1 + new.x, data = proc.Enamel10.rm.f)  # intercept-only model
 set.seed(1234)
 fit_segmented.E10.rm = segmented(fit_lm.E10.rm, seg.Z = ~new.x, npsi = 2)  # one change point to make it work
 
@@ -408,26 +429,15 @@ sf.all.dat.rm <- st_as_sf(all.dat.rm,  agr = NA_agr_,
                           sf_column_name = NULL)
 
 ###########EDJ flattened geometry########### in supplementary
-sf.all.dat.rm.proj <- st_as_sf(all.dat.rm.proj,  agr = NA_agr_,
+all.dat.narm.proj<- na.omit(data.frame(all.dat.rm.proj))
+
+sf.all.dat.rm.proj <- st_as_sf(all.dat.narm.proj,  agr = NA_agr_,
                                coords = c("new.x","new.y"),
                                dim = "XY",
                                remove = TRUE,
                                na.fail = TRUE,
                                sf_column_name = NULL)
 
-sf.all.enamel.rm <- st_as_sf(all.enamel.rm,  agr = NA_agr_,
-                             coords = c("y","x"),
-                             dim = "XY",
-                             remove = TRUE,
-                             na.fail = TRUE,
-                             sf_column_name = NULL)
-
-sf.all.enamel.rm.proj <- st_as_sf(all.enamel.rm.proj,  agr = NA_agr_,
-                                  coords = c("new.x","new.y"),
-                                  dim = "XY",
-                                  remove = TRUE,
-                                  na.fail = TRUE,
-                                  sf_column_name = NULL)
 
 # record change positions within enamel:
 cp1.loc <- data.frame(avg = rep(0.7,length(cp1.E.rm.x)), x = cp1.E.rm.x, y = cp1.E.rm.y)
@@ -446,3 +456,15 @@ sf.cp2.loc <- st_as_sf(cp2.loc,  agr = NA_agr_,
                        na.fail = TRUE,
                        sf_column_name = NULL)
 
+##### Export data for archiving #####
+
+# use raw data + raw position + moving average + x and y + corrected x and y coordinates
+
+all.proj <- list(dentine = dent.rm.proj, En1 = proc.Enamel1.rm.proj,
+                 En2 = proc.Enamel2.rm.proj, En3 = proc.Enamel3.rm.proj,
+                 En4 = proc.Enamel4.rm.proj, En5 = proc.Enamel5.rm.proj,
+                 En6 = proc.Enamel6.rm.proj, En7 = proc.Enamel7.rm.proj,
+                 En8 = proc.Enamel8.rm.proj, En9 = proc.Enamel9.rm.proj,
+                 En10 = proc.Enamel10.rm.proj)
+
+write_excel(all.proj, "out/all_LAICPMS_data.xlsx", creator = "Deming Yang")

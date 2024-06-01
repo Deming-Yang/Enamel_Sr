@@ -1,8 +1,8 @@
 
 ##### compile data from difference sources ####
 #filter out 
-dent.rm.fa <- filter(dent.rm.f, dent.rm.f$new.x < cp2.D.rm & dent.rm.f$avg < 0.7085)
-dent.rm.fb <- filter(dent.rm.f, dent.rm.f$new.x > cp2.D.rm & dent.rm.f$avg > 0.7085)
+dent.rm.fa <- filter(dent.rm.f, dent.rm.f$new.x < cp2.D.rm & dent.rm.f$mov.avg < 0.7085)
+dent.rm.fb <- filter(dent.rm.f, dent.rm.f$new.x > cp2.D.rm & dent.rm.f$mov.avg > 0.7085)
 
 dent.rm.f2 <- rbind(dent.rm.fa, dent.rm.fb)
 
@@ -222,23 +222,23 @@ days.cumm.en9.al <- days.cumm.en9 - 175
 days.cumm.en10.al <- days.cumm.en10 - 175 
 
 ## compile data frames for plotting later
-dent.tl <- tibble(tl = days.cumm.den.al, Sr = dent.rm.f2$avg, 
+dent.tl <- tibble(tl = days.cumm.den.al, Sr = dent.rm.f2$mov.avg, 
                   sd = dent.rm.f2$sd)
-en1.tl <- tibble(tl = days.cumm.en1.al, Sr = proc.Enamel1.rm.f$avg, 
+en1.tl <- tibble(tl = days.cumm.en1.al, Sr = proc.Enamel1.rm.f$mov.avg, 
                  sd = proc.Enamel1.rm.f$sd)
 
-en3.tl <- tibble(tl = days.cumm.en3.al, Sr = proc.Enamel3.rm.f$avg, 
+en3.tl <- tibble(tl = days.cumm.en3.al, Sr = proc.Enamel3.rm.f$mov.avg, 
                  sd = proc.Enamel3.rm.f$sd)
 
-en5.tl <- tibble(tl = days.cumm.en5.al, Sr = proc.Enamel5.rm.f$avg, 
+en5.tl <- tibble(tl = days.cumm.en5.al, Sr = proc.Enamel5.rm.f$mov.avg, 
                  sd = proc.Enamel5.rm.f$sd)
 
-en7.tl <- tibble(tl = days.cumm.en7.al, Sr = proc.Enamel7.rm.f$avg, 
+en7.tl <- tibble(tl = days.cumm.en7.al, Sr = proc.Enamel7.rm.f$mov.avg, 
                  sd = proc.Enamel7.rm.f$sd)
 
-en9.tl <- tibble(tl = days.cumm.en9.al, Sr = proc.Enamel9.rm.f$avg, 
+en9.tl <- tibble(tl = days.cumm.en9.al, Sr = proc.Enamel9.rm.f$mov.avg, 
                  sd = proc.Enamel9.rm.f$sd)
-en10.tl <- tibble(tl = days.cumm.en10.al, Sr = proc.Enamel10.rm.f$avg, 
+en10.tl <- tibble(tl = days.cumm.en10.al, Sr = proc.Enamel10.rm.f$mov.avg, 
                   sd = proc.Enamel10.rm.f$sd)
 
 Edrill.tl <- tibble(tl = days.cumm.drill.al, 
