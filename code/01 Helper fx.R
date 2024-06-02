@@ -209,7 +209,7 @@ x.pt.avg <- function(df.Sr, df.tl, n.avg){
     
     n.avg.sr[i] <- mean(df.Sr[x])
     
-    n.sd.sr[i] <- sd(df.Sr[x])
+    n.sd.sr[i] <- sd(df.Sr[x], na.rm = TRUE)
     
     n.avg.tl[i] <- mean(df.tl[x])
   }

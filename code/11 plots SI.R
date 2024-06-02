@@ -253,32 +253,31 @@ plot(-10, -10, col= alpha("lightcyan4", 0),
 abline(h = CA.Sr)
 
 abline(h = UT.Sr)
-# dentine transect
-# polygon(c(dent.rm.new.x, rev(dent.rm.new.x)), 
-#         c(dent.rm.f2$avg + dent.rm.f2$sd, rev(dent.rm.f2$avg - dent.rm.f2$sd)), 
-#         col = "gray60", border = NA)
-# lines(dent.rm.new.x, dent.rm.f2$avg,col= "gray24", lwd=2)
+
+proc.Enamel1.narm.f <- filter(proc.Enamel1.rm.f, is.na(mov.avg) == F)
+proc.Enamel7.narm.f <- filter(proc.Enamel7.rm.f, is.na(mov.avg) == F)
+proc.Enamel10.narm.f <- filter(proc.Enamel10.rm.f, is.na(mov.avg) == F)
 
 # Enamel transect 1
-polygon(c(proc.Enamel1.rm.new.x, rev(proc.Enamel1.rm.new.x)), 
-        c(proc.Enamel1.rm.f$avg + proc.Enamel1.rm.f$sd, 
-          rev(proc.Enamel1.rm.f$avg - proc.Enamel1.rm.f$sd)), 
+polygon(c(proc.Enamel1.narm.f$EDJ.mm, rev(proc.Enamel1.narm.f$EDJ.mm)), 
+        c(proc.Enamel1.narm.f$mov.avg + proc.Enamel1.narm.f$sd, 
+          rev(proc.Enamel1.narm.f$mov.avg - proc.Enamel1.narm.f$sd)), 
         col = alpha("orange", 0.3), border = NA)
-lines(proc.Enamel1.rm.new.x, proc.Enamel1.rm.f$avg, col= alpha("orange", 0.9),lwd=2)
+lines(proc.Enamel1.narm.f$EDJ.mm, proc.Enamel1.narm.f$mov.avg, col= alpha("orange", 0.9),lwd=2)
 
 # Enamel transect 7
-polygon(c(proc.Enamel7.rm.new.x, rev(proc.Enamel7.rm.new.x)), 
-        c(proc.Enamel7.rm.f$avg + proc.Enamel7.rm.f$sd, 
-          rev(proc.Enamel7.rm.f$avg - proc.Enamel7.rm.f$sd)), 
+polygon(c(proc.Enamel7.narm.f$EDJ.mm, rev(proc.Enamel7.narm.f$EDJ.mm)), 
+        c(proc.Enamel7.narm.f$mov.avg + proc.Enamel7.narm.f$sd, 
+          rev(proc.Enamel7.narm.f$mov.avg - proc.Enamel7.narm.f$sd)), 
         col = alpha("orange3", 0.3), border = NA)
-lines(proc.Enamel7.rm.new.x, proc.Enamel7.rm.f$avg, col= alpha("orange3", 0.9),lwd=2)
+lines(proc.Enamel7.narm.f$EDJ.mm, proc.Enamel7.narm.f$mov.avg, col= alpha("orange3", 0.9),lwd=2)
 
 # Enamel transect 10
-polygon(c(proc.Enamel10.rm.new.x, rev(proc.Enamel10.rm.new.x)), 
-        c(proc.Enamel10.rm.f$avg + proc.Enamel10.rm.f$sd, 
-          rev(proc.Enamel10.rm.f$avg - proc.Enamel10.rm.f$sd)), 
+polygon(c(proc.Enamel10.narm.f$EDJ.mm, rev(proc.Enamel10.narm.f$EDJ.mm)), 
+        c(proc.Enamel10.narm.f$mov.avg + proc.Enamel10.narm.f$sd, 
+          rev(proc.Enamel10.narm.f$mov.avg - proc.Enamel10.narm.f$sd)), 
         col = alpha("orange4", 0.3), border = NA)
-lines(proc.Enamel10.rm.new.x, proc.Enamel10.rm.f$avg, col= alpha("orange4", 0.9),lwd=2)
+lines(proc.Enamel10.narm.f$EDJ.mm, proc.Enamel10.narm.f$mov.avg, col= alpha("orange4", 0.9),lwd=2)
 
 points(Drill.no$Dist..From.cervix, Drill.no$corr..87Sr.86Sr, pch=16, cex = 1.2, col ="red4")
 
@@ -457,7 +456,7 @@ plot(bin.thin.oc*1:t.oc - 400, post.comb.R1m.89[[1]], type = "l",
 # lines(bin.thin*1:t - 400, post.comb.R1m.89[[2]], lty = 2, col = "gray48",)
 # lines(bin.thin*1:t - 400, post.comb.R1m.89[[3]], lty = 2, col = "gray48",)
 lines(bin.thin.oc*1:t.oc - 400, post.comb.R1.Rm3.5b.89[[1]],lwd = 2, lty = 2)
-points(Rm3.5b.tl$tl, Rm3.5b.tl$Sr, 
+points(Rm3.5b.mill.tl$tl, Rm3.5b.mill.tl$Sr, 
        pch = 16, cex = 2, col = alpha("cyan4", 0.5))
 
 # 1 LA-ICP MS and modeled serum, assumes no overprint
@@ -735,67 +734,3 @@ lines(Rxn.misha$calculate.date, Rxn.misha$calculated.87Sr.86Sr.input,
       lty = 1, col = "red", lwd = 2)
 
 legend(600,0.707,c("BITS est. intake","RxnProg est. intake"),lwd = c(2,2), col=c("black","red"))
-
-
-# plot(density(exp(log.a)), col = "blue", ylim = c(0,110),
-#      main="Posteriors of parameter a", xlab = "Parameter a")
-# lines(density(post.misha.En3$BUGSoutput$sims.list$a/En3.bt),col="red")
-# legend(0.03,110,c("LA-ICP-MS tusk","LA-ICP-MS enamel"),
-#        lwd = c(1,1), col=c("blue","red"))
-
-#check posterior density of parameter a:
-# this tends to produce higher posterior of rate parameter a
-
-
-# plot(En3.50avg.tl$avg.tl, En3.50avg.tl$avg.sr, type= "l", col= "#00b4ffff",
-#      lwd = 2,
-#      xlim=c(-400,1000),ylim=c(0.705,0.713),
-#      xlab="Days from Misha's move",
-#      main = "Estimated intake based on molar enamel LA-ICP-MS",
-#      ylab = "87Sr/86Sr") 
-# abline(h = CA.Sr)
-# abline(h = UT.Sr)
-# 
-# lines(1:t.En3 * En3.bt - d.offset.En3 - offset.en3, 
-#       post.misha.En3.Rin.m.89[[1]], lwd = 2)
-# lines(1:t.En3 * En3.bt - d.offset.En3 - offset.en3, 
-#       post.misha.En3.Rin.m.89[[2]], lty = 2)
-# lines(1:t.En3 * En3.bt - d.offset.En3 - offset.en3, 
-#       post.misha.En3.Rin.m.89[[3]], lty = 2)
-# legend(400,0.709,c("Est. intake","Measured"),lwd = c(2,2), col=c("black","#00b4ffff"))
-# 
-# plot(En5.50avg.tl$avg.tl, En5.50avg.tl$avg.sr, type= "l", col= "#00b4ffff",
-#      lwd = 2,
-#      xlim=c(-400,1000),ylim=c(0.705,0.713),
-#      xlab="Days from Misha's move",
-#      main = "Estimated intake based on molar enamel LA-ICP-MS",
-#      ylab = "87Sr/86Sr") 
-# abline(h = CA.Sr)
-# abline(h = UT.Sr)
-# 
-# lines(1:t.En5 * En5.bt - d.offset.En5 - offset.en5, 
-#       post.misha.En5.Rin.m.89[[1]], lwd = 2)
-# lines(1:t.En5 * En5.bt - d.offset.En5 - offset.en5, 
-#       post.misha.En5.Rin.m.89[[2]], lty = 2)
-# lines(1:t.En5 * En5.bt - d.offset.En5 - offset.en5, 
-#       post.misha.En5.Rin.m.89[[3]], lty = 2)
-# legend(400,0.709,c("Est. intake","Measured"),lwd = c(2,2), col=c("black","#00b4ffff"))
-# 
-# 
-# plot(En7.50avg.tl$avg.tl, En7.50avg.tl$avg.sr, type= "l", col= "#00b4ffff",
-#      lwd = 2,
-#      xlim=c(-400,1000),ylim=c(0.705,0.713),
-#      xlab="Days from Misha's move",
-#      main = "Estimated intake based on molar enamel LA-ICP-MS",
-#      ylab = "87Sr/86Sr") 
-# abline(h = CA.Sr)
-# abline(h = UT.Sr)
-# 
-# lines(1:t.En7 * En7.bt - d.offset.En7 - offset.en7, 
-#       post.misha.En7.Rin.m.89[[1]], lwd = 2)
-# lines(1:t.En7 * En7.bt - d.offset.En7 - offset.en7, 
-#       post.misha.En7.Rin.m.89[[2]], lty = 2)
-# lines(1:t.En7 * En7.bt - d.offset.En7 - offset.en7, 
-#       post.misha.En7.Rin.m.89[[3]], lty = 2)
-# legend(400,0.709,c("Est. intake","Measured"),lwd = c(2,2), col=c("black","#00b4ffff"))
-

@@ -421,7 +421,9 @@ all.enamel.rm.proj <- rbind(proc.Enamel1.rm.f, proc.Enamel2.rm.f, proc.Enamel3.r
 
 require(sf)
 ###########real world tooth geometry###########
-sf.all.dat.rm <- st_as_sf(all.dat.rm,  agr = NA_agr_,
+all.dat.narm<- na.omit(data.frame(all.dat.rm))
+
+sf.all.dat.rm <- st_as_sf(all.dat.narm,  agr = NA_agr_,
                           coords = c("y","x"),
                           dim = "XYZ",
                           remove = TRUE,

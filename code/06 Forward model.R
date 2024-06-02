@@ -9,8 +9,6 @@ library(zoo)
 library(segmented)
 library(raster)
 
-source("./code/1 Helper functions.R")
-
 ########### costom functions associated with the forward modeling ###########
 
 ########### fn 10 model P1 and P2 values ###########

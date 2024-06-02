@@ -15,13 +15,13 @@ dent.rm.f2 <- rbind(dent.rm.fa, dent.rm.fb)
 # 88 mm is the top of the crown
 # do this for selected transects
 
-dent.rm.new.x <- 88 - dent.rm.f2$new.x/1e3
-proc.Enamel1.rm.new.x <- 88 - proc.Enamel1.rm.f$new.x/1e3
-proc.Enamel3.rm.new.x <- 88 - proc.Enamel3.rm.f$new.x/1e3
-proc.Enamel5.rm.new.x <- 88 - proc.Enamel5.rm.f$new.x/1e3
-proc.Enamel7.rm.new.x <- 88 - proc.Enamel7.rm.f$new.x/1e3
-proc.Enamel9.rm.new.x <- 88 - proc.Enamel9.rm.f$new.x/1e3
-proc.Enamel10.rm.new.x <- 88 - proc.Enamel10.rm.f$new.x/1e3
+dent.rm.f2 <- dent.rm.f2 %>% mutate(EDJ.mm = 88 - new.x/1e3)
+proc.Enamel1.rm.f <- proc.Enamel1.rm.f %>% mutate(EDJ.mm = 88 - new.x/1e3)
+proc.Enamel3.rm.f <- proc.Enamel3.rm.f %>% mutate(EDJ.mm = 88 - new.x/1e3)
+proc.Enamel5.rm.f <- proc.Enamel5.rm.f %>% mutate(EDJ.mm = 88 - new.x/1e3)
+proc.Enamel7.rm.f <- proc.Enamel7.rm.f %>% mutate(EDJ.mm = 88 - new.x/1e3)
+proc.Enamel9.rm.f <- proc.Enamel9.rm.f %>% mutate(EDJ.mm = 88 - new.x/1e3)
+proc.Enamel10.rm.f <- proc.Enamel10.rm.f %>% mutate(EDJ.mm = 88 - new.x/1e3)
 
 ########## use growth rates to match tusk series and enamel LA-ICP-MS series
 # to estimate time line, linear interpolations have to be made based on the growth curve
@@ -246,7 +246,7 @@ Edrill.tl <- tibble(tl = days.cumm.drill.al,
                    sd = rev(Drill.no$comb..Err),
                    depth = rev(Drill.no$Sample.depth)) # sample depth is useful later
 
-Rm3.5b.tl <- tibble(tl = Rm3.5b.mill.tl.al, Sr = rev(Rm3.5b.mill.no$corr..87Sr.86Sr),
+Rm3.5b.mill.tl <- tibble(tl = Rm3.5b.mill.tl.al, Sr = rev(Rm3.5b.mill.no$corr..87Sr.86Sr),
                          sd = rev(Rm3.5b.mill.no$comb..Err))
 
 tusk.mill.tl <- tibble(tl = rev(misha.tusk.micromill.tl.al), 

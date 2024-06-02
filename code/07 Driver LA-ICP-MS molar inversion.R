@@ -8,8 +8,6 @@ library(MASS)
 library(viridisLite)
 library(EnvStats)
 
-source("code/1 Helper functions.R")
-
 ####### molar LA-ICP-MS inversion with data reduction and bin thinning#############
 
 ####### data set 1, enamel transect 1#############

@@ -162,7 +162,7 @@ lines(bin.thin.oc*1:t.oc - 400, post.comb.R1.drill.89[[1]],lwd = 2, lty = 2)
 graphics::text(400, 0.707, "f = 0.23", cex = 1.3)
 
 # Panel 5 molar enamel vs micromill molar enamel 
-plot(Rm3.5b.tl$tl, Rm3.5b.tl$Sr, col= "cyan4",
+plot(Rm3.5b.mill.tl$tl, Rm3.5b.mill.tl$Sr, col= "cyan4",
      pch=16, cex = 2,
      xlim=c(-400,700),ylim=c(0.705,0.7115),
      xlab="Days from Misha's move",

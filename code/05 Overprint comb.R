@@ -81,7 +81,7 @@ En1.50avg.tl.f <- dplyr::filter(En1.50avg.tl,
 
 Edrill.tl.sd <- min(base::diff(Edrill.tl.f$tl))/2
 
-Rm3.5b.mill.tl.sd <- min(base::diff(Rm3.5b.tl$tl))/2 
+Rm3.5b.mill.tl.sd <- min(base::diff(Rm3.5b.mill.tl$tl))/2 
 
 # parameter estimates from Misha's turnover model, generated from Yang et al., 2023
 # all parameters have been log-transformed
@@ -108,7 +108,7 @@ turnover.params.vcov <- var(turnover.params)
 
 Rm3.5b.tl.sd <- Rm3.5b.mill.tl.sd #uncertainty in the timeline
 
-bin.thin <- min(Edrill.tl.sd, Rm3.5b.tl.sd, En1.tl.sd, En9.tl.sd, En10.tl.sd)
+bin.thin <- min(Edrill.tl.sd, Rm3.5b.mill.tl.sd, En1.tl.sd, En9.tl.sd, En10.tl.sd)
 
 bin.thin.oc <- bin.thin
 
@@ -158,14 +158,14 @@ R.sd.drill <-rep(r.sd, n.drill)
 drill.tl <- Edrill.tl.f$tl
 
 # 4 micromill enamel data set
-n.Rm3.5b <- length(Rm3.5b.tl$Sr)
+n.Rm3.5b <- length(Rm3.5b.mill.tl$Sr)
 
 # measurement data, timeline, Sr, and sd
-R.Rm3.5b <- Rm3.5b.tl$Sr
+R.Rm3.5b <- Rm3.5b.mill.tl$Sr
 
 R.sd.Rm3.5b <-rep(r.sd, n.Rm3.5b)
 
-Rm3.5b.tl.rec<- Rm3.5b.tl$tl
+Rm3.5b.tl <- Rm3.5b.mill.tl$tl
 
 # 5 Enamel 9 transect
 n.En9 <- length(En9.50avg.tl$avg.sr)
@@ -202,7 +202,7 @@ dat = list( params.mu = turnover.params.mu, params.vcov = turnover.params.vcov,
             n.r1 = n.r1, R.r1 = R.r1, R.sd.r1 = rep(r.sd, n.r1), r1.tl = r1.tl,
             n.r2 = n.r2, R.r2 = R.r2, R.sd.r2 = rep(r.sd, n.r2), r2.tl = En1.tl,
             n.drill = n.drill, R.drill = R.drill, R.sd.drill = rep(r.sd, n.drill), drill.tl = drill.tl,
-            n.Rm3.5b = n.Rm3.5b, R.Rm3.5b = R.Rm3.5b, R.sd.Rm3.5b = rep(r.sd, n.Rm3.5b), Rm3.5b.tl = Rm3.5b.tl.rec,
+            n.Rm3.5b = n.Rm3.5b, R.Rm3.5b = R.Rm3.5b, R.sd.Rm3.5b = rep(r.sd, n.Rm3.5b), Rm3.5b.tl = Rm3.5b.tl,
             n.En9 = n.En9, R.En9 = R.En9, R.sd.En9 = rep(r.sd, n.En9), En9.tl = En9.tl,
             n.En10 = n.En10, R.En10 = R.En10, R.sd.En10 = rep(r.sd, n.En10), En10.tl = En10.tl,
             UT.Sr = UT.Sr, CA.Sr = CA.Sr)
@@ -299,7 +299,7 @@ R.sd.En1 <- En1.50avg.tl.f$sd.sr
 
 R.sd.drill <- Edrill.tl.f$sd
 
-R.sd.Rm3.5b <- Rm3.5b.tl$sd 
+R.sd.Rm3.5b <- Rm3.5b.mill.tl$sd 
 
 R.sd.En9 <- En9.50avg.tl$sd.sr 
 
